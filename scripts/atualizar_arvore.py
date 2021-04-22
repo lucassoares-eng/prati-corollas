@@ -10,7 +10,7 @@ def get_arvore(diretoria, gerencia):
         diretorias = dfArvore.loc[dfArvore.nivel=='diretoria', ['areaID','area', 'areaName']]
     else:
         diretorias = dfArvore.loc[dfArvore.area==diretoria, ['areaID','area', 'areaName']]
-    diretorias = diretorias.to_json(orient='records', force_ascii= False)
+    diretorias = diretorias[['areaID', 'areaName']].to_json(orient='records', force_ascii= False)
 
     # filtrar gerências:
     if gerencia == 'todos':
@@ -21,6 +21,6 @@ def get_arvore(diretoria, gerencia):
             gerencias = dfArvore.loc[(dfArvore.area.str.split('_').str[0]==diretoria)&(dfArvore.nivel=='gerencia'), ['areaID','area', 'areaName']]
     else:
         gerencias = dfArvore.loc[dfArvore.area==gerencia, ['areaID','area', 'areaName']]
-    gerencias = gerencias.to_json(orient='records', force_ascii= False)
+    gerencias = gerencias[['areaID', 'areaName']].to_json(orient='records', force_ascii= False)
     
     return diretorias, gerencias

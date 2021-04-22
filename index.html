@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+ <head>
+    <meta charset="utf-8"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Perdas em Corollas</title>
+    <link rel="icon" type="image/png" href="images/favicon.png"/>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body onload="carregar_filtros(); exibir_tabela(); exibir_pareto(abertura)" onresize="ajustar_tela()">
+<!--conteúdo da página-->
+<main>
+    <header>
+        <div class="row">
+            <div class="container">
+                <img alt="Prati-Donaduzzi" class="logo" src="images/logo-prati.png"/>
+            <div class="barra">
+            </div>
+                <h1>Perdas em Corollas</h1>
+            </div>
+        </div>
+    </header>
+    <!--menu lateral-->
+    <nav class="sidebar">
+        <div class="container">
+            <label for="rd-home" class="icone" title="Página Inicial" onclick="desativar_filtro_meses()">
+                <img src="images/icone-home.png" class="icone" alt="Home">
+            </label>
+            <label for="rd-pareto" class="icone" title="Gráfico de pareto" onclick="ativar_filtro_meses()">
+                <img src="images/icone-pareto.png" class="icone" alt="pareto">
+            </label>
+            <!-- icone Plano de Ação:
+            <label for="rd-tasks" class="icone" title="Plano de Ação" onclick="desativar_filtro_meses()">
+                <img src="images/icone-tasks.png" class="icone" alt="Ações">
+            </label>
+            -->
+        </div>
+    </nav>
+    <div class="filtros" id="filtros">
+        <div class="row">
+            <div class="container">
+                <span>Filtros</span>
+            </div>
+            <div class="container">
+                <select class="select-bx" id="select-bx-ano" name="">
+                    <option value="2021">2021</option>
+                </select>
+                <select class="select-bx" id="select-bx-mes" disabled>
+                    <option value="todos">Mês (todos)</option>
+                    <option value=1>Jan</option>
+                    <option value=2>Fev</option>
+                    <option value=3>Mar</option>
+                    <option value=4>Abr</option>
+                    <option value=5>Mai</option>
+                    <option value=6>Jun</option>
+                    <option value=7>Jul</option>
+                    <option value=8>Ago</option>
+                    <option value=9>Set</option>
+                    <option value=10>Out</option>
+                    <option value=11>Nov</option>
+                    <option value=12>Dez</option>
+                </select>
+                <select class="select-bx" id="select-bx-diretoria" name="" onchange="filtrar_diretoria()">
+                </select>
+                <select class="select-bx" id="select-bx-gerencia" name="" onchange="filtrar_gerencia()">
+                </select>
+            </div>
+        </div>
+    </div>
+    <!--radio buttons para navegação entre sections-->
+    <div class="scroll">
+        <input type="radio" id="rd-home" name="rd-grupo" checked/>
+        <input type="radio" id="rd-pareto" name="rd-grupo" checked/>
+        <input type="radio" id="rd-tasks" name="rd-grupo"/>
+        <div id="loader"></div>
+        <section class="sections">
+            <section class="bloco" id="bloco-home">
+                <div class="tabela">
+                    <div class="tb-header">
+                        <div class="destaque" id="container-indicador">
+                            <span>INDICADOR</span>
+                        </div>
+                        <div class="container">
+                            <span>JAN</span>
+                        </div>
+                        <div class="container">
+                            <span>FEV</span>
+                        </div>
+                        <div class="container">
+                            <span>MAR</span>
+                        </div>
+                        <div class="container">
+                            <span>ABR</span>
+                        </div>
+                        <div class="container">
+                            <span>MAI</span>
+                        </div>
+                        <div class="container">
+                            <span>JUN</span>
+                        </div>
+                        <div class="container">
+                            <span>JUL</span>
+                        </div>
+                        <div class="container">
+                            <span>AGO</span>
+                        </div>
+                        <div class="container">
+                            <span>SET</span>
+                        </div>
+                        <div class="container">
+                            <span>OUT</span>
+                        </div>
+                        <div class="container">
+                            <span>NOV</span>
+                        </div>
+                        <div class="container">
+                            <span>DEZ</span>
+                        </div>
+                        <div class="container destaque">
+                            <span>ACUM</span>
+                        </div>
+                        <div class="container destaque">
+                            <span>TOTAL</span>
+                        </div>
+                    </div>
+                    <div class="container" id="tabela-home">
+                    </div>
+                    <div class="timeout">Desculpe, não foi possível carregar os dados!</div>
+                </div>
+            </section>
+            <section class="bloco" id="bloco-pareto">
+                <div class="row">
+                    <span>Dashboard</span>
+                    <nav class="icones">
+                        <label class="icone" id="icone-diretorias" title="Diretorias" onclick="zerar_pag(); exibir_pareto('diretorias')">
+                            <span>D</span>
+                        </label>
+                        <label class="icone" id="icone-gerencias" title="Gerências" onclick="zerar_pag(); exibir_pareto('gerencias')">
+                            <span>G</span>
+                        </label>
+                        <label for="rd-indicadores" class="icone" id="icone-indicadores" title="Indicadores" onclick="zerar_pag(); exibir_pareto('indicadores')">
+                            <span>I</span>
+                        </label>
+                    </nav>
+                </div>
+                <div class="graficos">
+                    <div class="grafico">
+                        <div class="titulo">PARETO</div>
+                        <div class="timeout">Desculpe, não foi possível carregar os dados!</div>
+                        <div id="grafico-pareto">
+                            <nav class="anterior" onclick="pag_pareto_down()"></nav>
+                            <div class="arrow-left"></div>
+                            <svg></svg>
+                            <nav class="proximo" onclick="pag_pareto_up()"></nav>
+                            <div class="arrow-right"></div>
+                        </div>
+                        <div class="subtitulo"></div>
+                    </div>
+                    <div class="grafico">
+                        <div class="titulo">MENSAL</div>
+                        <div id="grafico-mensal"></div>
+                    </div>
+                </div>
+            </section>
+            <section class="bloco" id="bloco-tasks">
+                
+            </section>
+        </section>
+    </div>
+    <footer>
+    </footer>
+</main>
+<script src="scripts/grafico_pareto.js"></script>
+<script>
+    var area = location.hash.split('&')[0].slice(1)
+    var area_selecionada = area
+    var nivel = location.hash.split('&')[1]
+    var pag_pareto = 0
+    var abertura
+    function carregar_filtros(){
+        if (nivel=='grupo') {
+            abertura = 'diretorias'
+        } else {
+            document.querySelector('#icone-diretorias').style.display = "none";
+            if (nivel=='diretoria') {
+                abertura = 'gerencias'
+            } else {
+                document.querySelector('#icone-gerencias').style.display = "none";
+                abertura = 'indicadores'
+            }
+        }
+        /*filtro diretoria*/
+        fetch("_json/arvore/diretorias_GRUPO.json", {cache: "reload"})
+            .then(res => res.json())
+            .then(function(data){
+                let bx = document.querySelector('#select-bx-diretoria')
+                if(nivel=='grupo'){
+                    let opt = document.createElement('option')
+                    opt.value = 'todos'
+                    opt.innerText = 'Diretoria (todos)'
+                    bx.appendChild(opt)
+                    for (let i in data){
+                        let opt = document.createElement('option')
+                        opt.value = data[i].area
+                        opt.innerText = data[i].areaName
+                        bx.appendChild(opt)
+                    }
+                }else{
+                    let opt = document.createElement('option')
+                    if(nivel=='diretoria'){
+                        opt.value = area
+                    }
+                    else{
+                        opt.value = area.split('_')[0]
+                    }
+                    for (let i in data){
+                        if (data[i].area==opt.value){opt.innerText = data[i].areaName}
+                    }
+                    bx.appendChild(opt)
+                }
+            })
+        /*filtro gerencia*/
+        if(nivel=='gerencia'){
+            diretoria = area.split('_')[0]
+        }
+        else{
+            diretoria = area
+        }
+        fetch("_json/arvore/gerencias"+diretoria+".json", {cache: "reload"})
+            .then(res => res.json())
+            .then(function(data){
+                let bx = document.querySelector('#select-bx-gerencia')
+                if(nivel!='gerencia'){
+                    let opt = document.createElement('option')
+                    opt.value = 'todos'
+                    opt.innerText = 'Gerência (todos)'
+                    bx.appendChild(opt)
+                    for (let i in data){
+                        let opt = document.createElement('option')
+                        opt.value = data[i].area
+                        opt.innerText = data[i].areaName
+                        bx.appendChild(opt)
+                    }
+                }else{
+                    let opt = document.createElement('option')
+                    opt.value = area
+                    for (let i in data){
+                        if (data[i].area==opt.value){opt.innerText = data[i].areaName}
+                    }
+                    bx.appendChild(opt)
+                }
+            })
+    }
+    function filtrar_diretoria() {
+        let d = document.querySelector('#select-bx-diretoria').value;
+        /* alterar gerência para 'todos'*/
+        let cxd = document.querySelector('#select-bx-gerencia');
+        cxd.value = 'todos';
+        apagar_tabela();
+        /* exibir todas as gerências */
+        for (let i = 0; i < cxd.length; i++) {
+            cxd[i].disabled = false
+        }
+        if (d == 'todos') {
+            exibir_tabela('_GRUPO');
+            area_selecionada = area
+        }else {
+            area_selecionada = d
+            try {
+                exibir_tabela(d)
+            }
+            catch {
+                let elem = document.querySelector('#tabela-home');
+                elem.innerHTML = "dados não disponíveis";
+                elem.style.fontSize = "9pt";
+            }
+            finally {
+                /* ocultar gerências de outras diretorias */
+                for (let i = 1; i < cxd.length; i++) {
+                    if (cxd[i].value.split('_')[0] != d) {
+                        cxd[i].disabled = true
+                    }
+                }
+            }
+        }
+        destacar_pareto(area_selecionada)
+    }
+    function filtrar_gerencia() {
+        let cxd = document.querySelector('#select-bx-diretoria');
+        let g=document.querySelector('#select-bx-gerencia').value;
+        if(nivel=='grupo'){
+            /* alterar diretoria de acordo com a gerência */
+            let d=g.split('_')[0]
+            cxd.value = d;
+        }
+        apagar_tabela();
+        if(g=='todos'){
+            area_selecionada = area
+            /* exibir todas as gerências */
+            for (let i = 0; i < cxd.length; i++) {
+                cxd[i].disabled = false
+            }
+            try{
+                if(nivel=='grupo'){exibir_tabela(area)}
+                else{exibir_tabela(area.split('_')[0])}
+            }
+            catch{
+                let elem = document.querySelector('#tabela-home');
+                elem.innerHTML = "dados não disponíveis";
+                elem.style.fontSize = "9pt";
+            }
+        }else {
+            area_selecionada = g
+            try {
+                exibir_tabela(g)
+            }
+            catch {
+                let elem = document.querySelector('#tabela-home');
+                elem.innerHTML = "dados não disponíveis";
+                elem.style.fontSize = "9pt";
+            }
+        }
+        destacar_pareto(area_selecionada)
+     }
+    function apagar_tabela() {
+        document.getElementById("loader").style.display = "initial";
+        let myNode = document.querySelector("#tabela-home");
+        myNode.innerHTML = '';
+     }
+    async function exibir_tabela(area=location.hash.split('&')[0].slice(1)){
+        let metas
+        await fetch("_json/metas/metas"+area+".json", {cache: "reload"})
+            .then(res => res.json())
+            .then(data => metas = data)
+        let real 
+        await fetch("_json/real/real"+area+".json", {cache: "reload"})
+            .then(res => res.json())
+            .then(data => real = data)
+        let meses
+        await fetch("_json/real/_meses.json", {cache: "reload"})
+            .then(res => res.json())
+            .then(data => meses = data)
+        let indicadores
+        await fetch("_json/indicadores.json", {cache: "reload"})
+            .then(res => res.json())
+            .then(data => indicadores = data)
+        let totalMeta = new Array(14).fill(0)
+        let totalReal = new Array(14).fill(0)
+        let totalAnoAnterior = new Array(14).fill(0)
+        /*linha total*/
+        let l1 = document.createElement('div');
+        l1.className = 'row'
+        let p = document.querySelector('#tabela-home')
+        p.appendChild(l1)
+        let c1 = document.createElement('div')
+        c1.className = 'total row-name'
+        c1.id = 'total'
+        l1.appendChild(c1)
+        let span1 = document.createElement('span');
+        span1.textContent = 'Total'
+        c1.appendChild(span1)
+        let c2 = document.createElement('div')
+        c2.className = 'sub-container'
+        l1.appendChild(c2)
+        /*linha meta total*/
+        let l2 = document.createElement('div')
+        l2.className = 'sub-row'
+        c2.appendChild(l2)
+        let c21 = document.createElement('div')
+        c21.className = 'total row-subname'
+        l2.appendChild(c21)
+        let span2 = document.createElement('span');
+        span2.textContent = 'META'
+        c21.appendChild(span2)
+        /*linha real total*/
+        let l3 = document.createElement('div')
+        l3.className = 'sub-row'
+        c2.appendChild(l3)
+        let c23 = document.createElement('div')
+        c23.className = 'total row-subname'
+        l3.appendChild(c23)
+        let span3 = document.createElement('span');
+        span3.textContent = 'REAL'
+        c23.appendChild(span3)
+        /*linha real ano anterior*/
+        let l4 = document.createElement('div')
+        l4.className = 'sub-row'
+        c2.appendChild(l4)
+        let c24 = document.createElement('div')
+        c24.className = 'total row-subname'
+        l4.appendChild(c24)
+        let span4 = document.createElement('span');
+        span4.textContent = '2020'
+        c24.appendChild(span4)
+        for (let i in metas) {
+            /*linha*/
+            let l1 = document.createElement('div');
+            l1.className = 'row'
+            l1.onmouseover = function() {over(this)}
+            l1.onmouseout = function() {out(this)}
+            let p = document.querySelector('#tabela-home')
+            p.appendChild(l1)
+            let c1 = document.createElement('div')
+            c1.className = 'row-name'
+            l1.appendChild(c1)
+            let span1 = document.createElement('nav')
+            span1.textContent = indicadores.find(element => element.indicador === metas[i].indicador).indicadorName
+            c1.appendChild(span1)
+            let c2 = document.createElement('div')
+            c2.className = 'sub-container'
+            l1.appendChild(c2)
+            /*linha meta*/
+            let l2 = document.createElement('div')
+            l2.className = 'sub-row'
+            c2.appendChild(l2)
+            let c21 = document.createElement('div')
+            c21.className = 'row-subname'
+            l2.appendChild(c21)
+            let span2 = document.createElement('span');
+            span2.textContent = 'META'
+            c21.appendChild(span2)
+            /*linha real*/
+            let l3 = document.createElement('div')
+            l3.className = 'sub-row'
+            c2.appendChild(l3)
+            let c23 = document.createElement('div')
+            c23.className = 'row-subname'
+            l3.appendChild(c23)
+            let span3 = document.createElement('span');
+            span3.textContent = 'REAL'
+            c23.appendChild(span3)
+            /*linha real ano anterior*/
+            let l4 = document.createElement('div')
+            l4.className = 'sub-row'
+            c2.appendChild(l4)
+            let c24 = document.createElement('div')
+            c24.className = 'row-subname'
+            l4.appendChild(c24)
+            let span4 = document.createElement('span');
+            span4.textContent = '2020'
+            c24.appendChild(span4)
+            /*filtrar real*/
+            let arr3 = []
+            for (let k in real){
+                if (real[k].indicador==metas[i].indicador){
+                    arr3.push(real[k])
+                }
+            }
+            /*sub-row meta*/
+            for (let j=0; j < 12; j++) {
+                let cm = document.createElement('div')
+                cm.className = 'container-valor'
+                l2.appendChild(cm)
+                let sm = document.createElement('span')
+                sm.className = 'span-valor'
+                let v=metas[i].meta/12
+                sm.textContent = v.toFixed(2)
+                cm.appendChild(sm)
+                totalMeta[j] += v
+            }
+            /*sub-row real*/
+            for (let j=0; j < 12; j++) {
+                let cm = document.createElement('div')
+                cm.className = 'container-valor'
+                l3.appendChild(cm)
+                let sm = document.createElement('span')
+                sm.className = 'span-valor'
+                if (j < meses.length){
+                    let v=0.00
+                    sm.textContent=v.toFixed(2)
+                    for (let k in arr3){
+                        if(j+1==arr3[k].mes){
+                            sm.textContent = arr3[k].corollas.toFixed(2)
+                            totalReal[k] += arr3[k].corollas
+                        }
+                    }
+                    if(sm.textContent > metas[i].meta/12){
+                        sm.className += ' vermelho'
+                    }else{
+                        sm.className += ' verde'
+                    }
+                }
+                cm.appendChild(sm)
+            }
+            /*sub-row real ano anterior*/
+            for (let j=0; j < 12; j++) {
+                let cm = document.createElement('div')
+                cm.className = 'container-valor'
+                l4.appendChild(cm)
+                let sm = document.createElement('span')
+                sm.className = 'span-valor'
+                let v=metas[i].ano_anterior/12
+                sm.textContent = v.toFixed(2)
+                cm.appendChild(sm)
+                totalAnoAnterior[j] += v
+            }
+            /*meta acum*/
+            let cma = document.createElement('div')
+            cma.className = 'container-valor'
+            l2.appendChild(cma)
+            let sma = document.createElement('div')
+            sma.className = 'span-valor'
+            let v=(metas[i].meta/12)*meses.length
+            sma.textContent = v.toFixed(2)
+            cma.appendChild(sma)
+            totalMeta[12] += v
+            /*meta total*/
+            let cmt = document.createElement('div')
+            cmt.className = 'container-valor'
+            l2.appendChild(cmt)
+            let smt = document.createElement('span')
+            smt.className = 'span-valor'
+            smt.textContent = metas[i].meta.toFixed(2)
+            cmt.appendChild(smt)
+            totalMeta[13] += metas[i].meta
+            /*real acum*/
+            let cra = document.createElement('div')
+            cra.className = 'container-valor'
+            l3.appendChild(cra)
+            let sra = document.createElement('div')
+            sra.className = 'span-valor'
+            if(arr3.length>0){
+                sra.textContent = arr3[arr3.length-1].corollas.toFixed(2)
+                totalReal[12] += arr3[arr3.length-1].corollas
+            }
+            else{
+                let v=0.00
+                sra.textContent = v.toFixed(2)
+            }
+            if(sra.textContent>(metas[i].meta/12)*meses.length){
+                sra.className += ' vermelho'
+            }else{
+                sra.className += ' verde'
+            }
+            cra.appendChild(sra)
+            /*real total*/
+            let crt = document.createElement('div')
+            crt.className = 'container-valor'
+            l3.appendChild(crt)
+            let srt = document.createElement('span')
+            srt.className = 'span-valor'
+            if(arr3.length>0){
+                srt.textContent = arr3[arr3.length-1].corollas.toFixed(2)
+                totalReal[13] += arr3[arr3.length-1].corollas
+            }
+            else{
+                let v=0.00
+                srt.textContent = v.toFixed(2)
+            }
+            if(srt.textContent>metas[i].meta){
+                srt.className += ' vermelho'
+            }else{
+                srt.className += ' verde'
+            }
+            crt.appendChild(srt)
+            /*ano anterior acum*/
+            let caaa = document.createElement('div')
+            caaa.className = 'container-valor'
+            l4.appendChild(caaa)
+            let saaa = document.createElement('div')
+            saaa.className = 'span-valor'
+            v=(metas[i].ano_anterior/12)*meses.length
+            saaa.textContent = v.toFixed(2)
+            caaa.appendChild(saaa)
+            totalAnoAnterior[12] += v
+            /*ano anterior total*/
+            let caa = document.createElement('div')
+            caa.className = 'container-valor'
+            l4.appendChild(caa)
+            let saa = document.createElement('span')
+            saa.className = 'span-valor'
+            saa.textContent = metas[i].ano_anterior.toFixed(2)
+            caa.appendChild(saa)
+            totalAnoAnterior[13] += metas[i].ano_anterior
+        }
+        for (let i in totalMeta) {
+            /*linha total meta*/
+            let cmt = document.createElement('div')
+            cmt.className = 'total container-valor'
+            l2.appendChild(cmt)
+            let smt = document.createElement('span')
+            smt.className = 'span-valor'
+            smt.textContent = totalMeta[i].toFixed(2)
+            cmt.appendChild(smt)
+            /*linha total real*/
+            let crt = document.createElement('div')
+            crt.className = 'total2 container-valor'
+            l3.appendChild(crt)
+            let srt = document.createElement('span')
+            srt.className = 'span-valor'
+            if (i < meses.length | i >11){
+                    srt.textContent = totalReal[i].toFixed(2)
+                    if(totalReal[i] > totalMeta[i]){
+                        srt.className += ' vermelho'
+                    }else{
+                        srt.className += ' verde'
+                    }
+                }
+            crt.appendChild(srt)
+            /*linha total ano anterior*/
+            let caat = document.createElement('div')
+            caat.className = 'total container-valor'
+            l4.appendChild(caat)
+            let saat = document.createElement('span')
+            saat.className = 'span-valor'
+            saat.textContent = totalAnoAnterior[i].toFixed(2)
+            caat.appendChild(saat)
+        }
+        ajustar_tela()
+        document.getElementById("loader").style.display = "none";
+    }
+    function ajustar_tela() {
+        let j = document.querySelector('main')
+        let h = document.querySelector('#filtros').offsetHeight
+        let g = '60px ' + h + 'px calc(100vh - 60px - '+ h +'px - 30px) 30px'
+        j.style.gridTemplateRows = g
+        let c = document.querySelector('#total').offsetWidth
+        let i = document.querySelector('#container-indicador')
+        i.style.width = c + 25 + 'px'
+        let sticky = document.querySelectorAll('.row-subname')
+        sticky.forEach(element => {
+            element.setAttribute('style', 'left: ' + c + 'px')
+        })
+    }
+    function over(linha) {
+        let color = 'rgb(240, 240, 255)'
+        let name = linha.querySelector('.row-name')
+        name.style.backgroundColor = color
+        let subContainer = linha.querySelector('.sub-container')
+        subContainer.style.backgroundColor = color
+        let subRows = subContainer.querySelectorAll('.sub-row')
+        subRows[0].querySelector('.row-subname').style.backgroundColor = color
+        subRows[1].querySelector('.row-subname').style.backgroundColor = color
+        subRows[2].querySelector('.row-subname').style.backgroundColor = color
+    }
+    function out(linha) {
+        let color = '#fff'
+        let name = linha.querySelector('.row-name')
+        name.style.backgroundColor = color
+        let subContainer = linha.querySelector('.sub-container')
+        subContainer.style.backgroundColor = color
+        let subRows = subContainer.querySelectorAll('.sub-row')
+        subRows[0].querySelector('.row-subname').style.backgroundColor = color
+        subRows[1].querySelector('.row-subname').style.backgroundColor = color
+        subRows[2].querySelector('.row-subname').style.backgroundColor = color
+    }
+    function ativar_filtro_meses(){
+        document.querySelector('#select-bx-mes').disabled=false
+    }
+    function desativar_filtro_meses(){
+        document.querySelector('#select-bx-mes').value='todos'
+        document.querySelector('#select-bx-mes').disabled=true
+    }
+    function salvar_log(tipoAcesso){
+        $.ajax({ 
+            type: "POST",
+            url: "_json/logs/",
+            contentType: "application/json", 
+            data:JSON.stringify({areaID:'100', acesso:tipoAcesso, data:"13042021", hora:"1518"})
+        })
+    }
+</script>
+</body>
+</html>

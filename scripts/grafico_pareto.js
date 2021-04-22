@@ -1,3 +1,6 @@
+var pag_pareto = 0
+var abertura
+
 function pag_pareto_up() {
   pag_pareto ++
   document.querySelector('.anterior').style.pointerEvents = "initial";
@@ -19,14 +22,14 @@ function apagar_pareto() {
   myNode.innerHTML = '';
 }
 
-function destacar_pareto(area_selecionada) {  
-  if (area_selecionada == area) {
+function destacar_pareto(active_areaID) {  
+  if (active_areaID == area) {
     d3.selectAll('#grafico-pareto .bar')
       .attr('opacity', 1)
   } else {
     d3.selectAll('#grafico-pareto .bar')
       .attr('opacity', 0.5)
-      .filter(function(d) { return d.name == area_selecionada; })
+      .filter(function(d) { return d.name == active_areaID; })
       .attr('opacity', 1);
   }
 }
@@ -138,7 +141,7 @@ async function exibir_pareto(abertura){
       chart.selectAll('.value').remove()
     })
     .on('click', function () {
-      if (area_selecionada == d3.select(this).data()[0].name) {
+      if (active_areaID == d3.select(this).data()[0].name) {
         if (abertura == 'diretorias'){
           document.querySelector('#select-bx-diretoria').value = 'todos'
           filtrar_diretoria()

@@ -9,63 +9,43 @@ function filtrar_diretoria() {
         cxd[i].disabled = false
     }
     if (d == 'todos') {
-        exibir_tabela('_GRUPO');
-        area_selecionada = area
+        active_areaID = areaID
+        exibir_tabela();
     }else {
-        area_selecionada = d
-        try {
-            exibir_tabela(d)
-        }
-        catch {
-            let elem = document.querySelector('#tabela-home');
-            elem.innerHTML = "dados não disponíveis";
-            elem.style.fontSize = "9pt";
-        }
-        finally {
-            /* ocultar gerências de outras diretorias */
-            for (let i = 1; i < cxd.length; i++) {
-                if (cxd[i].value.split('_')[0] != d) {
-                    cxd[i].disabled = true
-                }
+        active_areaID = parseInt(d)
+        exibir_tabela()
+        /* ocultar gerências de outras diretorias */
+        for (let i = 1; i < cxd.length; i++) {
+            if ( Math.round(cxd[i].value / 10) * 10 != d) {
+                cxd[i].disabled = true
             }
         }
     }
-    destacar_pareto(area_selecionada)
+    destacar_pareto()
 }
 function filtrar_gerencia() {
     let cxd = document.querySelector('#select-bx-diretoria');
-    let g=document.querySelector('#select-bx-gerencia').value;
-    if(nivel=='grupo'){
+    let g = document.querySelector('#select-bx-gerencia').value;
+    if (nivel == 'grupo') {
         /* alterar diretoria de acordo com a gerência */
-        let d=g.split('_')[0]
-        cxd.value = d;
+        let d= Math.round(g / 10) * 10
+        cxd.value = d
     }
     apagar_tabela();
-    if(g=='todos'){
-        area_selecionada = area
+    if(g == 'todos') {
+        active_areaID = areaID
+        cxd.value = 'todos'
         /* exibir todas as gerências */
         for (let i = 0; i < cxd.length; i++) {
             cxd[i].disabled = false
         }
-        try{
-            if(nivel=='grupo'){exibir_tabela(area)}
-            else{exibir_tabela(area.split('_')[0])}
-        }
-        catch{
-            let elem = document.querySelector('#tabela-home');
-            elem.innerHTML = "dados não disponíveis";
-            elem.style.fontSize = "9pt";
-        }
+        exibir_tabela()
     }else {
-        area_selecionada = g
-        try {
-            exibir_tabela(g)
-        }
-        catch {
-            let elem = document.querySelector('#tabela-home');
-            elem.innerHTML = "dados não disponíveis";
-            elem.style.fontSize = "9pt";
-        }
+        active_areaID = parseInt(g)
+        exibir_tabela()
     }
-    destacar_pareto(area_selecionada)
+    destacar_pareto()
+}
+function filtrar_mes() {
+    exibir_pareto()
 }

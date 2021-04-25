@@ -1,7 +1,3 @@
-var areaID = parseInt(location.hash.split('&')[0].slice(1))
-var nivel = location.hash.split('&')[1]
-var active_areaID = areaID
-
 function carregar_filtros(){
     if (nivel=='grupo') {
         abertura = 'diretorias'

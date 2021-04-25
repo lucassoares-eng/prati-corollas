@@ -1,15 +1,12 @@
-var pag_pareto = 0
-var abertura
-
 function pag_pareto_up() {
   pag_pareto ++
   document.querySelector('.anterior').style.pointerEvents = "initial";
-  exibir_pareto(abertura)
+  exibir_pareto()
 }
 
 function pag_pareto_down() {
   pag_pareto --
-  exibir_pareto(abertura)
+  exibir_pareto()
 }
 
 function zerar_pag() {
@@ -22,8 +19,8 @@ function apagar_pareto() {
   myNode.innerHTML = '';
 }
 
-function destacar_pareto(active_areaID) {  
-  if (active_areaID == area) {
+function destacar_pareto() { 
+  if (active_areaID == areaID) {
     d3.selectAll('#grafico-pareto .bar')
       .attr('opacity', 1)
   } else {
@@ -34,11 +31,15 @@ function destacar_pareto(active_areaID) {
   }
 }
 
-var selectedBar
+function change_abertura(abertura_selected) {
+  abertura = abertura_selected
+  exibir_pareto()
+}
 
-async function exibir_pareto(abertura){
+function exibir_pareto(){
 
   apagar_pareto()
+
   var periodo
   if (document.querySelector('#select-bx-mes').value == 'todos'){
     periodo = 'acum'
@@ -46,10 +47,63 @@ async function exibir_pareto(abertura){
     periodo = 'mes' + document.querySelector('#select-bx-mes').value
   }
 
-  let dados
-  await fetch("_json/grafico_pareto/" + area + "_" + abertura + "_" + periodo + ".json", {cache: "reload"})
-    .then(res => res.json())
-    .then(data => dados = data)
+  let bars
+  let dados = []
+  if (abertura != 'indicadores') {
+    bars = eval(abertura)
+    if (document.querySelector('#select-bx-mes').value == 'todos') {
+      for (let i in bars) {
+        let el = []
+        let metaAcum = metas.filter((el) => {
+          return el.areaID === bars[i].areaID
+        }).map((el) => {
+          return el.meta
+        }).reduce((a, b) => a + b, 0) / 12 * meses
+
+        let realAcum = real.filter((el) => {
+          return el.areaID === bars[i].areaID
+        }).map((el) => {
+          return el.perda
+        }).reduce((a, b) => a + b, 0)
+        if (realAcum > 0) {
+          realAcum = realAcum / 125000
+        } else{
+          realAcum = 0
+        }
+
+        el['name'] = bars[i].areaID
+        el['text'] = bars[i].areaName
+        el['meta'] = metaAcum
+        el['corollas'] = realAcum
+
+        dados.push(el)
+      }
+    } else {
+      for (let i in bars) {
+        let el = []
+        let meta = metas.filter((el) => {
+          return el.areaID === bars[i].areaID
+        }).map((el) => {
+          return el.meta
+        }).reduce((a, b) => a + b, 0) / 12 * meses
+
+        let r = real.filter((el) => {
+          return el.areaID === bars[i].areaID && el.mes == document.querySelector('#select-bx-mes').value
+        }).map((el) => {
+          return el.corollas
+        }).reduce((a, b) => a + b, 0)
+
+        el['name'] = bars[i].areaID
+        el['text'] = bars[i].areaName
+        el['meta'] = meta
+        el['corollas'] = r
+
+        dados.push(el)
+      }
+    }
+  } else {
+
+  }
   
   const numBars = 6;
   let npg = Math.ceil(dados.length / numBars)

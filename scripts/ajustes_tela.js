@@ -34,9 +34,15 @@ function out(linha) {
     subRows[2].querySelector('.row-subname').style.backgroundColor = color
 }
 function ativar_filtro_meses(){
-    document.querySelector('#select-bx-mes').disabled=false
+    let cxd = document.querySelector('#select-bx-mes');
+    for (let i = 0; i <= meses; i++) {
+        cxd[i].disabled = false
+    }
 }
 function desativar_filtro_meses(){
     document.querySelector('#select-bx-mes').value='todos'
-    document.querySelector('#select-bx-mes').disabled=true
+    let cxd = document.querySelector('#select-bx-mes');
+    for (let i = 1; i < cxd.length; i++) {
+        cxd[i].disabled = true
+    }
 }

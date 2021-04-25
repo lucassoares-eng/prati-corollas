@@ -9,7 +9,7 @@
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <link rel="stylesheet" href="styles/main.css">
 </head>
-<body onload="carregar_filtros(); exibir_tabela(areaID); exibir_pareto(abertura)" onresize="ajustar_tela()">
+<body onload="carregar_filtros(); exibir_tabela(); exibir_pareto(); desativar_filtro_meses()" onresize="ajustar_tela()">
 <!--conteúdo da página-->
 <main>
     <header>
@@ -47,7 +47,7 @@
                 <select class="select-bx" id="select-bx-ano" name="">
                     <option value="2021">2021</option>
                 </select>
-                <select class="select-bx" id="select-bx-mes" disabled>
+                <select class="select-bx" id="select-bx-mes" onchange="filtrar_mes()">
                     <option value="todos">Mês (todos)</option>
                     <option value=1>Jan</option>
                     <option value=2>Fev</option>
@@ -72,7 +72,7 @@
     <!--radio buttons para navegação entre sections-->
     <div class="scroll">
         <input type="radio" id="rd-home" name="rd-grupo" checked/>
-        <input type="radio" id="rd-pareto" name="rd-grupo"/>
+        <input type="radio" id="rd-pareto" name="rd-grupo" checked/>
         <input type="radio" id="rd-tasks" name="rd-grupo"/>
         <div id="loader"></div>
         <section class="sections">
@@ -134,13 +134,13 @@
                 <div class="row">
                     <span>Dashboard</span>
                     <nav class="icones">
-                        <label class="icone" id="icone-diretorias" title="Diretorias" onclick="zerar_pag(); exibir_pareto('diretorias')">
+                        <label class="icone" id="icone-diretorias" title="Diretorias" onclick="zerar_pag(); change_abertura('diretorias')">
                             <span>D</span>
                         </label>
-                        <label class="icone" id="icone-gerencias" title="Gerências" onclick="zerar_pag(); exibir_pareto('gerencias')">
+                        <label class="icone" id="icone-gerencias" title="Gerências" onclick="zerar_pag(); change_abertura('gerencias')">
                             <span>G</span>
                         </label>
-                        <label for="rd-indicadores" class="icone" id="icone-indicadores" title="Indicadores" onclick="zerar_pag(); exibir_pareto('indicadores')">
+                        <label for="rd-indicadores" class="icone" id="icone-indicadores" title="Indicadores" onclick="zerar_pag();  change_abertura('indicadores')">
                             <span>I</span>
                         </label>
                     </nav>
@@ -165,16 +165,99 @@
                 </div>
             </section>
             <section class="bloco" id="bloco-tasks">
-                
             </section>
         </section>
     </div>
     <footer>
     </footer>
 </main>
-<script id="arvore"></script>
-<script id="indicadores"></script>
-<script id="dados"></script>
+<script id="arvore">
+    const diretorias = [
+        {"areaID": 200, "areaName": "diretoria 1"},
+        {"areaID": 300, "areaName": "diretoria 2"},
+    ]
+    const gerencias = [
+        {"areaID": 201, "areaName": "gerencia 11"},
+        {"areaID": 202, "areaName": "gerencia 12"},
+        {"areaID": 301, "areaName": "gerencia 21"},
+        {"areaID": 302, "areaName": "gerencia 22"},
+    ]
+</script>
+<script id="indicadores">
+    const indicadores = [
+        {"indicadorID": 1, "indicadorName": "indicador 1"},
+        {"indicadorID": 2, "indicadorName": "indicador 2"},
+        {"indicadorID": 3, "indicadorName": "indicador 3"},
+        {"indicadorID": 4, "indicadorName": "indicador 4"},
+    ]
+</script>
+<script id="dados">
+    const metas = [
+        {"indicadorID": 1, "areaID": 100, "ano_anterior": 24, "meta": 12},
+        {"indicadorID": 2, "areaID": 100, "ano_anterior": 36, "meta": 24},
+        {"indicadorID": 3, "areaID": 100, "ano_anterior": 48, "meta": 36},
+        {"indicadorID": 4, "areaID": 100, "ano_anterior": 60, "meta": 48},
+        {"indicadorID": 1, "areaID": 200, "ano_anterior": 240, "meta": 120},
+        {"indicadorID": 2, "areaID": 200, "ano_anterior": 360, "meta": 240},
+        {"indicadorID": 3, "areaID": 200, "ano_anterior": 480, "meta": 360},
+        {"indicadorID": 4, "areaID": 200, "ano_anterior": 600, "meta": 480},
+        {"indicadorID": 1, "areaID": 201, "ano_anterior": 240, "meta": 120},
+        {"indicadorID": 2, "areaID": 201, "ano_anterior": 360, "meta": 240},
+        {"indicadorID": 3, "areaID": 201, "ano_anterior": 480, "meta": 360},
+        {"indicadorID": 4, "areaID": 201, "ano_anterior": 600, "meta": 480},
+        {"indicadorID": 1, "areaID": 300, "ano_anterior": 240, "meta": 120},
+        {"indicadorID": 2, "areaID": 300, "ano_anterior": 360, "meta": 240},
+        {"indicadorID": 3, "areaID": 300, "ano_anterior": 480, "meta": 360},
+        {"indicadorID": 4, "areaID": 300, "ano_anterior": 600, "meta": 480},
+    ]
+    const real = [
+        {"indicadorID": 1, "areaID": 100, "mes": 1, "perda":125000, "corollas": 1},
+        {"indicadorID": 2, "areaID": 100, "mes": 1, "perda":250000, "corollas": 2},
+        {"indicadorID": 3, "areaID": 100, "mes": 1, "perda":375000, "corollas": 3},
+        {"indicadorID": 4, "areaID": 100, "mes": 1, "perda":500000, "corollas": 4},
+        {"indicadorID": 1, "areaID": 100, "mes": 2, "perda":0, "corollas": 0},
+        {"indicadorID": 2, "areaID": 100, "mes": 2, "perda":125000, "corollas": 1},
+        {"indicadorID": 3, "areaID": 100, "mes": 2, "perda":-500000, "corollas": 0},
+        {"indicadorID": 4, "areaID": 100, "mes": 2, "perda":-250000, "corollas": 0},
+        {"indicadorID": 1, "areaID": 200, "mes": 1, "perda":625000, "corollas": 5},
+        {"indicadorID": 2, "areaID": 200, "mes": 1, "perda":750000, "corollas": 6},
+        {"indicadorID": 3, "areaID": 200, "mes": 1, "perda":875000, "corollas": 7},
+        {"indicadorID": 4, "areaID": 200, "mes": 1, "perda":1000000, "corollas": 8},
+        {"indicadorID": 1, "areaID": 200, "mes": 2, "perda":625000, "corollas": 5},
+        {"indicadorID": 2, "areaID": 200, "mes": 2, "perda":750000, "corollas": 6},
+        {"indicadorID": 3, "areaID": 200, "mes": 2, "perda":875000, "corollas": 7},
+        {"indicadorID": 4, "areaID": 200, "mes": 2, "perda":1000000, "corollas": 8},
+        {"indicadorID": 1, "areaID": 201, "mes": 1, "perda":125000, "corollas": 5},
+        {"indicadorID": 2, "areaID": 201, "mes": 1, "perda":125000, "corollas": 6},
+        {"indicadorID": 3, "areaID": 201, "mes": 1, "perda":125000, "corollas": 7},
+        {"indicadorID": 4, "areaID": 201, "mes": 1, "perda":125000, "corollas": 8},
+        {"indicadorID": 1, "areaID": 201, "mes": 2, "perda":125000, "corollas": 5},
+        {"indicadorID": 2, "areaID": 201, "mes": 2, "perda":125000, "corollas": 6},
+        {"indicadorID": 3, "areaID": 201, "mes": 2, "perda":125000, "corollas": 7},
+        {"indicadorID": 4, "areaID": 201, "mes": 2, "perda":125000, "corollas": 8},
+        {"indicadorID": 1, "areaID": 300, "mes": 1, "perda":625000, "corollas": 5},
+        {"indicadorID": 2, "areaID": 300, "mes": 1, "perda":750000, "corollas": 6},
+        {"indicadorID": 3, "areaID": 300, "mes": 1, "perda":875000, "corollas": 7},
+        {"indicadorID": 4, "areaID": 300, "mes": 1, "perda":1000000, "corollas": 8},
+        {"indicadorID": 1, "areaID": 300, "mes": 2, "perda":625000, "corollas": 5},
+        {"indicadorID": 2, "areaID": 300, "mes": 2, "perda":750000, "corollas": 6},
+        {"indicadorID": 3, "areaID": 300, "mes": 2, "perda":875000, "corollas": 7},
+        {"indicadorID": 4, "areaID": 300, "mes": 2, "perda":-1000000, "corollas": 0},
+    ]
+</script>
+<script id="variaveis-globais">
+    var areaID = parseInt(location.hash.split('&')[0].slice(1))
+    var nivel = location.hash.split('&')[1]
+    var active_areaID = areaID
+    var meses = real.map((el) => {
+            return el.mes
+        }).reduce(function(a, b) {
+            return Math.max(a, b);
+        });
+    var abertura
+    var pag_pareto = 0
+    var selectedBar
+</script>
 <script src="scripts/grafico_pareto.js"></script>
 <script src="scripts/carregar_filtros.js"></script>
 <script src="scripts/filtrar.js"></script>

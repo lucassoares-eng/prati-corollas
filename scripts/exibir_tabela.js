@@ -16,20 +16,10 @@ function filtrar_real() {
     })
 }
 
-function get_num_meses() {
-    let arr = real.map((el) => {
-        return el.mes
-    })
-    return max = arr.reduce(function(a, b) {
-        return Math.max(a, b);
-    });
-}
-
 function exibir_tabela() {
 
     var metasFt = filtrar_metas()
     var realFt = filtrar_real()
-    var meses = get_num_meses()
 
     let totalMeta = new Array(14).fill(0)
     let totalReal = new Array(14).fill(0)
@@ -130,8 +120,8 @@ function exibir_tabela() {
         /*filtrar real*/
         let arr3 = []
         for (let k in realFt){
-            if (real[k].indicador==metas[i].indicador){
-                arr3.push(real[k])
+            if (realFt[k].indicadorID==metasFt[i].indicadorID){
+                arr3.push(realFt[k])
             }
         }
         /*sub-row meta*/
@@ -141,7 +131,7 @@ function exibir_tabela() {
             l2.appendChild(cm)
             let sm = document.createElement('span')
             sm.className = 'span-valor'
-            let v=metas[i].meta/12
+            let v=metasFt[i].meta/12
             sm.textContent = v.toFixed(2)
             cm.appendChild(sm)
             totalMeta[j] += v
@@ -153,7 +143,7 @@ function exibir_tabela() {
             l3.appendChild(cm)
             let sm = document.createElement('span')
             sm.className = 'span-valor'
-            if (j < meses.length){
+            if (j < meses){
                 let v=0.00
                 sm.textContent=v.toFixed(2)
                 for (let k in arr3){
@@ -162,7 +152,7 @@ function exibir_tabela() {
                         totalReal[k] += arr3[k].corollas
                     }
                 }
-                if(sm.textContent > metas[i].meta/12){
+                if(sm.textContent > metasFt[i].meta/12){
                     sm.className += ' vermelho'
                 }else{
                     sm.className += ' verde'
@@ -177,7 +167,7 @@ function exibir_tabela() {
             l4.appendChild(cm)
             let sm = document.createElement('span')
             sm.className = 'span-valor'
-            let v=metas[i].ano_anterior/12
+            let v=metasFt[i].ano_anterior/12
             sm.textContent = v.toFixed(2)
             cm.appendChild(sm)
             totalAnoAnterior[j] += v
@@ -188,7 +178,7 @@ function exibir_tabela() {
         l2.appendChild(cma)
         let sma = document.createElement('div')
         sma.className = 'span-valor'
-        let v=(metas[i].meta/12)*meses.length
+        let v=(metasFt[i].meta/12)*meses
         sma.textContent = v.toFixed(2)
         cma.appendChild(sma)
         totalMeta[12] += v
@@ -198,9 +188,9 @@ function exibir_tabela() {
         l2.appendChild(cmt)
         let smt = document.createElement('span')
         smt.className = 'span-valor'
-        smt.textContent = metas[i].meta.toFixed(2)
+        smt.textContent = metasFt[i].meta.toFixed(2)
         cmt.appendChild(smt)
-        totalMeta[13] += metas[i].meta
+        totalMeta[13] += metasFt[i].meta
         /*real acum*/
         let cra = document.createElement('div')
         cra.className = 'container-valor'
@@ -208,14 +198,22 @@ function exibir_tabela() {
         let sra = document.createElement('div')
         sra.className = 'span-valor'
         if(arr3.length>0){
-            sra.textContent = arr3[arr3.length-1].corollas.toFixed(2)
-            totalReal[12] += arr3[arr3.length-1].corollas
+            let v = arr3.map((el) => {
+                return el.perda
+            }).reduce((a, b) => a + b, 0)
+            if (v > 0) {
+                v = v / 125000
+            } else{
+                v = 0
+            }
+            sra.textContent = v.toFixed(2)
+            totalReal[12] += v
         }
         else{
             let v=0.00
             sra.textContent = v.toFixed(2)
         }
-        if(sra.textContent>(metas[i].meta/12)*meses.length){
+        if(sra.textContent>(metasFt[i].meta/12)*meses){
             sra.className += ' vermelho'
         }else{
             sra.className += ' verde'
@@ -228,14 +226,18 @@ function exibir_tabela() {
         let srt = document.createElement('span')
         srt.className = 'span-valor'
         if(arr3.length>0){
-            srt.textContent = arr3[arr3.length-1].corollas.toFixed(2)
-            totalReal[13] += arr3[arr3.length-1].corollas
+            srt.textContent = arr3.map((el) => {
+                return el.corollas
+            }).reduce((a, b) => a + b, 0).toFixed(2)
+            totalReal[13] += arr3.map((el) => {
+                return el.corollas
+            }).reduce((a, b) => a + b, 0)
         }
         else{
             let v=0.00
             srt.textContent = v.toFixed(2)
         }
-        if(srt.textContent>metas[i].meta){
+        if(srt.textContent>metasFt[i].meta){
             srt.className += ' vermelho'
         }else{
             srt.className += ' verde'
@@ -247,7 +249,7 @@ function exibir_tabela() {
         l4.appendChild(caaa)
         let saaa = document.createElement('div')
         saaa.className = 'span-valor'
-        v=(metas[i].ano_anterior/12)*meses.length
+        v=(metasFt[i].ano_anterior/12)*meses
         saaa.textContent = v.toFixed(2)
         caaa.appendChild(saaa)
         totalAnoAnterior[12] += v
@@ -257,9 +259,9 @@ function exibir_tabela() {
         l4.appendChild(caa)
         let saa = document.createElement('span')
         saa.className = 'span-valor'
-        saa.textContent = metas[i].ano_anterior.toFixed(2)
+        saa.textContent = metasFt[i].ano_anterior.toFixed(2)
         caa.appendChild(saa)
-        totalAnoAnterior[13] += metas[i].ano_anterior
+        totalAnoAnterior[13] += metasFt[i].ano_anterior
     }
     for (let i in totalMeta) {
         /*linha total meta*/
@@ -276,7 +278,7 @@ function exibir_tabela() {
         l3.appendChild(crt)
         let srt = document.createElement('span')
         srt.className = 'span-valor'
-        if (i < meses.length | i >11){
+        if (i < meses | i >11){
                 srt.textContent = totalReal[i].toFixed(2)
                 if(totalReal[i] > totalMeta[i]){
                     srt.className += ' vermelho'

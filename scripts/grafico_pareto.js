@@ -37,7 +37,7 @@ function change_abertura(abertura_selected) {
 }
 
 function exibir_pareto(){
-
+  abertura = 'indicadores'
   apagar_pareto()
 
   var periodo
@@ -102,7 +102,11 @@ function exibir_pareto(){
       }
     }
   } else {
-
+    if (document.querySelector('#select-bx-mes').value == 'todos') {
+      console.log(metasFt)
+    } else {
+      console.log(realFt)
+    }
   }
   
   const numBars = 6;

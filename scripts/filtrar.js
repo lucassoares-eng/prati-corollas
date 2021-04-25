@@ -49,3 +49,21 @@ function filtrar_gerencia() {
 function filtrar_mes() {
     exibir_pareto()
 }
+function removeDuplicates (data) {
+    let unique = data.reduce( function (a, b) {
+        if (a.indexOf(b) < 0) a.push(b)
+        return a
+    }, [])
+    return unique
+}
+function ordemDescrescente (property) {
+    var sortOrder = -1;
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a,b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}

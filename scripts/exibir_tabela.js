@@ -18,9 +18,54 @@ function filtrar_real() {
 
 function exibir_tabela() {
 
-    var metasFt = filtrar_metas()
-    var realFt = filtrar_real()
+    /*filtrar dados*/
+    metasFt = filtrar_metas()
+    realFt = filtrar_real()
 
+    /*incluir meta para os indicadores com real > 0*/
+    var indicReal = removeDuplicates( 
+        realFt.map( (el) => {
+            return el.indicadorID
+        })
+    )
+    var indicMeta = metasFt.map( (el) => {
+        return el.indicadorID
+    })
+    var incluir = indicReal.filter( (el) => {
+        return (indicMeta.includes(el) == false)
+    })
+    for (let i in incluir) {
+        let el = []
+        el["indicadorID"] = incluir[i]
+        el["areaID"] = active_areaID
+        el["ano_anterior"] = 0
+        el["meta"] = 0
+        metasFt.push(el)
+    }
+
+    /*classificar metas em ordem decrescente por realAcum*/
+    /*incluir realAcum*/
+    indicMeta = metasFt.map( (el) => {
+        return el.indicadorID
+    })
+    incluir = []
+    for (let i in metasFt) {
+        var realAcum = realFt.filter( (el) => {
+            return el.indicadorID == metasFt[i].indicadorID
+        }).map( (el) => {
+            return el.perda
+        }).reduce((a, b) => a + b, 0)
+        if (realAcum > 0) {
+            realAcum /= 125000 
+        } else {
+            realAcum = 0
+        }
+        metasFt[i].realAcum = realAcum
+    }
+    /*classificar*/
+    metasFt.sort(ordemDescrescente("realAcum"))
+
+    /*renderizar tabela*/
     let totalMeta = new Array(14).fill(0)
     let totalReal = new Array(14).fill(0)
     let totalAnoAnterior = new Array(14).fill(0)

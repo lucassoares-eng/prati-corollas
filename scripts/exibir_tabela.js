@@ -253,6 +253,7 @@ function exibir_tabela() {
             }
             sra.textContent = v.toFixed(2)
             totalReal[12] += v
+            totalReal[13] += v
         }
         else{
             let v=0.00
@@ -270,18 +271,7 @@ function exibir_tabela() {
         l3.appendChild(crt)
         let srt = document.createElement('span')
         srt.className = 'span-valor'
-        if(arr3.length>0){
-            srt.textContent = arr3.map((el) => {
-                return el.corollas
-            }).reduce((a, b) => a + b, 0).toFixed(2)
-            totalReal[13] += arr3.map((el) => {
-                return el.corollas
-            }).reduce((a, b) => a + b, 0)
-        }
-        else{
-            let v=0.00
-            srt.textContent = v.toFixed(2)
-        }
+        srt.textContent = sra.textContent
         if(srt.textContent>metasFt[i].meta){
             srt.className += ' vermelho'
         }else{

@@ -244,10 +244,13 @@
         {"indicadorID": 4, "areaID": 300, "mes": 2, "perda":-1000000, "corollas": 0},
     ]
 </script>
+<script id="proprietario">
+    const areaID = 100
+    const nivel = 'grupo'
+</script>
 <script id="variaveis-globais">
-    var areaID = parseInt(location.hash.split('&')[0].slice(1))
-    var nivel = location.hash.split('&')[1]
     var active_areaID = areaID
+    var active_indicadorID
     var meses = real.map((el) => {
             return el.mes
         }).reduce(function(a, b) {

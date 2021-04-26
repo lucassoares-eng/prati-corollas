@@ -21,7 +21,11 @@ function filtrar_diretoria() {
             }
         }
     }
-    destacar_pareto()
+    if (abertura != 'indicadores') {
+        destacar_pareto()
+    }else {
+        exibir_pareto()
+    }
 }
 function filtrar_gerencia() {
     let cxd = document.querySelector('#select-bx-diretoria');
@@ -44,7 +48,11 @@ function filtrar_gerencia() {
         active_areaID = parseInt(g)
         exibir_tabela()
     }
-    destacar_pareto()
+    if (abertura != 'indicadores') {
+        destacar_pareto()
+    }else {
+        exibir_pareto()
+    }
 }
 function filtrar_mes() {
     exibir_pareto()

@@ -37,7 +37,6 @@ function change_abertura(abertura_selected) {
 }
 
 function exibir_pareto(){
-  abertura = 'indicadores'
   apagar_pareto()
 
   var periodo
@@ -103,11 +102,36 @@ function exibir_pareto(){
     }
   } else {
     if (document.querySelector('#select-bx-mes').value == 'todos') {
-      console.log(metasFt)
+      bars = metasFt.map( (el) => {
+        return [el.indicadorID, el.meta, el.realAcum]
+      })
+      for (let i in bars) {
+        let el = []
+        el['name'] = bars[i][0]
+        el['text'] = indicadores.find(element => element.indicadorID === bars[i][0]).indicadorName
+        el['meta'] = bars[i][1] / 12 * meses
+        el['corollas'] = bars[i][2]
+
+        dados.push(el)
+      }
     } else {
-      console.log(realFt)
+      bars = realFt.filter( (el) => {
+        return el.mes == parseInt(document.querySelector('#select-bx-mes').value)
+      })
+      for (let i in bars) {
+        let el = []
+        el['name'] = bars[i].indicadorID
+        el['text'] = indicadores.find(element => element.indicadorID === bars[i].indicadorID).indicadorName
+        el['meta'] = metasFt.find(element => element.indicadorID === bars[i].indicadorID).meta / 12 * meses
+        el['corollas'] = bars[i].corollas
+
+        dados.push(el)
+      }
     }
   }
+
+  /*ordenar dados*/
+  dados.sort(ordemDescrescente("corollas"))
   
   const numBars = 6;
   let npg = Math.ceil(dados.length / numBars)
@@ -199,20 +223,34 @@ function exibir_pareto(){
       chart.selectAll('.value').remove()
     })
     .on('click', function () {
-      if (active_areaID == d3.select(this).data()[0].name) {
-        if (abertura == 'diretorias'){
-          document.querySelector('#select-bx-diretoria').value = 'todos'
+      if (abertura != 'indicadores') {
+        if (active_areaID == d3.select(this).data()[0].name) {
+          if (abertura == 'diretorias'){
+            document.querySelector('#select-bx-diretoria').value = 'todos'
+            filtrar_diretoria()
+          } else if (abertura == 'gerencias'){
+            document.querySelector('#select-bx-gerencia').value = 'todos'
+            filtrar_gerencia()
+          }
+        }else if (abertura == 'diretorias') {
+          document.querySelector('#select-bx-diretoria').value = d3.select(this).data()[0].name
           filtrar_diretoria()
-        } else if (abertura == 'gerencias'){
-          document.querySelector('#select-bx-gerencia').value = 'todos'
+        } else if (abertura == 'gerencias') {
+          document.querySelector('#select-bx-gerencia').value = d3.select(this).data()[0].name
           filtrar_gerencia()
         }
-      }else if (abertura == 'diretorias') {
-        document.querySelector('#select-bx-diretoria').value = d3.select(this).data()[0].name
-        filtrar_diretoria()
-      } else if (abertura == 'gerencias') {
-        document.querySelector('#select-bx-gerencia').value = d3.select(this).data()[0].name
-        filtrar_gerencia()
+      }else {
+        if (active_indicadorID == d3.select(this).data()[0].name) {
+          active_indicadorID = null
+          d3.selectAll('#grafico-pareto .bar')
+            .attr('opacity', 1)
+        } else {
+          active_indicadorID = d3.select(this).data()[0].name
+          d3.selectAll('#grafico-pareto .bar')
+            .attr('opacity', 0.5)
+            .filter(function(d) { return d.name == active_indicadorID; })
+            .attr('opacity', 1);
+        }
       }
     })  
   document.getElementById("loader").style.display = "none";

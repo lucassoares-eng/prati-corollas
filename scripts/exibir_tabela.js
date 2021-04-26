@@ -43,7 +43,7 @@ function exibir_tabela() {
         metasFt.push(el)
     }
 
-    /*classificar metas em ordem decrescente por realAcum*/
+    /*metas em ordem decrescente por realAcum*/
     /*incluir realAcum*/
     indicMeta = metasFt.map( (el) => {
         return el.indicadorID
@@ -62,7 +62,7 @@ function exibir_tabela() {
         }
         metasFt[i].realAcum = realAcum
     }
-    /*classificar*/
+    /*ordenar*/
     metasFt.sort(ordemDescrescente("realAcum"))
 
     /*renderizar tabela*/

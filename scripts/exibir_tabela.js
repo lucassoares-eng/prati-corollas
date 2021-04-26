@@ -188,15 +188,15 @@ function exibir_tabela() {
             l3.appendChild(cm)
             let sm = document.createElement('span')
             sm.className = 'span-valor'
-            if (j < meses){
-                let v=0.00
-                sm.textContent=v.toFixed(2)
-                for (let k in arr3){
-                    if(j+1==arr3[k].mes){
-                        sm.textContent = arr3[k].corollas.toFixed(2)
-                        totalReal[k] += arr3[k].corollas
-                    }
+            if (j < meses) {
+                let v
+                try {
+                    v = arr3.find(element => element.mes === j + 1).corollas
+                } catch {
+                    v = 0.00
                 }
+                sm.textContent = v.toFixed(2)
+                totalReal[j] += v
                 if(sm.textContent > metasFt[i].meta/12){
                     sm.className += ' vermelho'
                 }else{

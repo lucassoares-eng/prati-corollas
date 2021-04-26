@@ -165,9 +165,11 @@ function exibir_pareto(){
     .domain(dados.slice(pag_pareto * numBars,numBars + (pag_pareto * numBars)).map((s) => s.text))
     .padding(0.4)
 
+  let vMax = Math.max(d3.max(dados.slice(pag_pareto * numBars,numBars + (pag_pareto * numBars)), function (d) { return d.meta; }), d3.max(dados.slice(pag_pareto * numBars,numBars + (pag_pareto * numBars)), function (d) { return d.corollas; }))
+  
   const yScale = d3.scaleLinear()
     .range([height, 0])
-    .domain([0, d3.max(dados.slice(pag_pareto * numBars,numBars + (pag_pareto * numBars)), function (d) { return d.corollas; })])
+    .domain([0, vMax])
 
   const makeYLines = () => d3.axisLeft()
     .scale(yScale)

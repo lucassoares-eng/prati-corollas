@@ -15,7 +15,7 @@ def get_metas(diretoria, gerencia):
     #carregar dados da arvore:
     dfArvore = read_csv('dados/arvore.csv', sep= ';', encoding='latin 1', usecols=[0, 1], dtype={0: 'Int64'})
     #join areaID:
-    dfMetas = dfMetas.join(dfArvore.set_index('area'), 'area')
+    dfMetas = dfMetas.join(dfArvore.set_index('area'), on= 'area', how= 'inner')
     #carregar dados de indicadores:
     dfIndicadores = read_csv('dados/indicadores.csv', sep= ';', encoding='latin 1', usecols=[0, 1])
     #join areaID:
@@ -60,7 +60,7 @@ def get_real(diretoria, gerencia):
     #carregar dados da arvore:
     dfArvore = read_csv('dados/arvore.csv', sep= ';', encoding='latin 1', usecols=[0, 1], dtype={0: 'Int64'})
     #join areaID:
-    dfReal = dfReal.join(dfArvore.set_index('area'), 'area')
+    dfReal = dfReal.join(dfArvore.set_index('area'), on= 'area', how= 'inner')
     #carregar dados de indicadores:
     dfIndicadores = read_csv('dados/indicadores.csv', sep= ';', encoding='latin 1', usecols=[0, 1])
     #join areaID:

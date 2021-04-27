@@ -148,7 +148,7 @@ function exibir_pareto(){
 
   const svg = d3.select('svg');
 
-  const margin = { top: 20, bottom: 40, left: 30, right: 0 };
+  const margin = { top: 20, bottom: 50, left: 30, right: 0 };
   const width = 550 - margin.left - margin.right;
   const height = 290 - margin.top - margin.bottom;
 
@@ -175,8 +175,11 @@ function exibir_pareto(){
     .scale(yScale)
 
   chart.append('g')
+    .attr("class", "x axis")
     .attr('transform', `translate(0, ${height})`)
-    .call(d3.axisBottom(xText));
+    .call(d3.axisBottom(xText))
+  .selectAll(".tick text")
+    .call(wrap, xScale.bandwidth())
 
   chart.append('g')
     .call(d3.axisLeft(yScale));
@@ -193,7 +196,15 @@ function exibir_pareto(){
     .enter()
     .append('g')
 
-  barGroups
+    barGroups
+    .append('rect')
+    .attr('class', 'barMeta')
+    .attr('x', (g) => xScale(g.name))
+    .attr('y', (g) => yScale(g.meta))
+    .attr('height', (g) => height - yScale(g.meta))
+    .attr('width', xScale.bandwidth())
+  
+    barGroups
     .append('rect')
     .attr('class', 'bar')
     .attr('x', (g) => xScale(g.name))
@@ -207,6 +218,14 @@ function exibir_pareto(){
         .attr('x', (a) => xScale(a.name) - 5)
         .attr('width', xScale.bandwidth() + 10)
       
+      let barName = d3.select(this).data()[0].name      
+      d3.selectAll('#grafico-pareto .barMeta')
+        .filter(function(d) { return d.name == barName; })
+        .transition()
+        .duration(300)
+        .attr('x', (a) => xScale(a.name) - 5)
+        .attr('width', xScale.bandwidth() + 10)
+      
       barGroups 
         .append('text')
         .attr('class', 'value')
@@ -214,6 +233,15 @@ function exibir_pareto(){
         .attr('y', (a) => yScale(a.corollas) + 12)
         .attr('text-anchor', 'middle')
         .text((a) => `${(a.corollas).toFixed(1)}`)
+
+      barGroups 
+        .append('line')
+        .attr('class', 'line')
+        .attr('x1', (a) => xScale(a.name) +5)
+        .attr('y1', (a) => yScale(a.meta))
+        .attr('x2', (a) => xScale(a.name) + xScale.bandwidth() -5)
+        .attr('y2', (a) => yScale(a.meta))
+      
     })
     .on('mouseleave', function () {
       d3.select(this)
@@ -221,8 +249,17 @@ function exibir_pareto(){
         .duration(300)
         .attr('x', (a) => xScale(a.name))
         .attr('width', xScale.bandwidth())
+      
+      let barName = d3.select(this).data()[0].name      
+      d3.selectAll('#grafico-pareto .barMeta')
+        .filter(function(d) { return d.name == barName; })
+        .transition()
+        .duration(300)
+        .attr('x', (a) => xScale(a.name))
+        .attr('width', xScale.bandwidth())
 
       chart.selectAll('.value').remove()
+      chart.selectAll('.line').remove()
     })
     .on('click', function () {
       if (abertura != 'indicadores') {
@@ -254,6 +291,31 @@ function exibir_pareto(){
             .attr('opacity', 1);
         }
       }
-    })  
+    })
+
   document.getElementById("loader").style.display = "none";
+}
+
+function wrap(text, width) {
+  text.each(function() {
+    var text = d3.select(this),
+        words = text.text().split(/\s+/).reverse(),
+        word,
+        line = [],
+        lineNumber = 0,
+        lineHeight = 1.1,
+        y = text.attr("y"),
+        dy = parseFloat(text.attr("dy")),
+        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+    while (word = words.pop()) {
+      line.push(word);
+      tspan.text(line.join(" "));
+      if (tspan.node().getComputedTextLength() > width) {
+        line.pop();
+        tspan.text(line.join(" "));
+        line = [word];
+        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+      }
+    }
+  });
 }

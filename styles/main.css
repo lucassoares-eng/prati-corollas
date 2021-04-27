@@ -390,6 +390,9 @@ svg {
 svg .bar {
     fill: #4695ff;
 }
+svg .barMeta {
+    fill: whitesmoke;
+}
 svg .value{
     fill: white;
     font-weight: bolder;

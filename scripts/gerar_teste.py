@@ -19,7 +19,7 @@ metas = dados.get_metas(diretoria, gerencia)
 real = dados.get_real(diretoria, gerencia)
 
 #abrir arquivo html:
-with open('index.html', encoding='UTF-8') as html:
+with open('indexDev.html', encoding='UTF-8') as html:
     soup = BeautifulSoup(html, 'html.parser')
 
 #atualizar tag arvore:

@@ -1,5 +1,3 @@
-let dirA
-
 function filtrar_diretoria() {
     let d = document.querySelector('#select-bx-diretoria').value;
     /* alterar gerência para 'todos'*/
@@ -46,7 +44,7 @@ function filtrar_gerencia() {
         exibir_tabela()
     }else {
         active_areaID = parseInt(g)
-        dirA = document.querySelector('#select-bx-diretoria').value
+        dirA = parseInt(document.querySelector('#select-bx-diretoria').value)
         exibir_tabela()
     }
 

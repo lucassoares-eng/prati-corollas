@@ -22,7 +22,7 @@ function apagar_pareto() {
 }
 
 function destacar_pareto() { 
-  if (active_areaID == areaID) {
+  if (active_areaID == areaID || active_areaID == dirA) {
     d3.selectAll('#grafico-pareto .bar')
       .attr('opacity', 1)
 

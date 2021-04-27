@@ -1,13 +1,17 @@
+let dirA
+
 function filtrar_diretoria() {
     let d = document.querySelector('#select-bx-diretoria').value;
     /* alterar gerência para 'todos'*/
     let cxd = document.querySelector('#select-bx-gerencia');
     cxd.value = 'todos';
     apagar_tabela();
+
     /* exibir todas as gerências */
     for (let i = 0; i < cxd.length; i++) {
         cxd[i].disabled = false
     }
+
     if (d == 'todos') {
         active_areaID = areaID
         exibir_tabela();
@@ -21,33 +25,44 @@ function filtrar_diretoria() {
             }
         }
     }
+
     if (abertura == 'diretorias') {
         destacar_pareto()
     }else {
         exibir_pareto()
     }
+
+    exibir_grafico_mensal()
 }
 function filtrar_gerencia() {
-    let cxd = document.querySelector('#select-bx-diretoria');
-    let g = document.querySelector('#select-bx-gerencia').value;
+    let cxd = document.querySelector('#select-bx-diretoria')
+    let g = document.querySelector('#select-bx-gerencia').value
+
+    apagar_tabela();
+
+    if(g == 'todos') {
+        active_areaID = areaID
+        cxd.value = dirA
+        exibir_tabela()
+    }else {
+        active_areaID = parseInt(g)
+        dirA = document.querySelector('#select-bx-diretoria').value
+        exibir_tabela()
+    }
+
     if (nivel == 'grupo' && g != 'todos') {
         /* alterar diretoria de acordo com a gerência */
         let d= Math.round(g / 100) * 100
         cxd.value = d
     }
-    apagar_tabela();
-    if(g == 'todos') {
-        active_areaID = areaID
-        exibir_tabela()
-    }else {
-        active_areaID = parseInt(g)
-        exibir_tabela()
-    }
+
     if (abertura == 'gerencias') {
         destacar_pareto()
     }else {
         exibir_pareto()
     }
+
+    exibir_grafico_mensal()
 }
 function filtrar_mes() {
     active_mes = document.querySelector('#select-bx-mes').value

@@ -52,7 +52,7 @@ def get_real(diretoria, gerencia):
     dfReal.perda = dfReal.perda.replace({',': '.'}, regex= True).astype('float')
     dfReal.corollas = dfReal.corollas.replace({',': '.'}, regex= True).astype('float')
     # excluir linhas com perda == 0:
-    dfReal = dfReal.loc[dfReal.corollas>0]
+    dfReal = dfReal.loc[dfReal.perda != 0]
     #incluir area
     dfReal = dfReal.reset_index()
     dfReal.loc[dfReal.gerencia != '_TOTAL', 'area'] = dfReal.diretoria + '_' + dfReal.gerencia

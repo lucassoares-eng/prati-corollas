@@ -17,7 +17,7 @@ function zerar_pag() {
 
 function apagar_pareto() {
   document.getElementById("loader").style.display = "initial"
-  let myNode = document.querySelector("svg");
+  let myNode = document.querySelector("#grafico-pareto svg");
   myNode.innerHTML = '';
 }
 
@@ -72,15 +72,25 @@ function exibir_pareto(){
           return el.meta
         }).reduce((a, b) => a + b, 0) / 12 * meses
 
-        let realAcum = real.filter((el) => {
+        let indicReal = removeDuplicates(real.filter((el) => {
           return el.areaID === bars[i].areaID
-        }).map((el) => {
-          return el.perda
-        }).reduce((a, b) => a + b, 0)
-        if (realAcum > 0) {
-          realAcum = realAcum / 125000
-        } else{
-          realAcum = 0
+        }).map( (el) => {
+          return el.indicadorID
+        }))
+
+        let realAcum = 0
+        for (let j in indicReal) {
+          let elAcum = real.filter((el) => {
+            return (el.areaID === bars[i].areaID) && (el.indicadorID == indicReal[j])
+          }).map((el) => {
+            return el.perda
+          }).reduce((a, b) => a + b, 0)
+          if (elAcum > 0) {
+            elAcum = elAcum / 125000
+          } else{
+            elAcum = 0
+          }
+          realAcum += elAcum
         }
 
         el['name'] = bars[i].areaID
@@ -97,7 +107,7 @@ function exibir_pareto(){
           return el.areaID === bars[i].areaID
         }).map((el) => {
           return el.meta
-        }).reduce((a, b) => a + b, 0) / 12 * meses
+        }).reduce((a, b) => a + b, 0) / 12
 
         let r = real.filter((el) => {
           return el.areaID === bars[i].areaID && el.mes == document.querySelector('#select-bx-mes').value
@@ -276,7 +286,7 @@ function exibir_pareto(){
         }
       }else {
         if (active_indicadorID == d3.select(this).data()[0].name) {
-          active_indicadorID = null
+          active_indicadorID = 'todos'
           d3.selectAll('#grafico-pareto .bar')
             .attr('opacity', 1)
         } else {
@@ -286,6 +296,7 @@ function exibir_pareto(){
             .filter(function(d) { return d.name == active_indicadorID; })
             .attr('opacity', 1);
         }
+        exibir_grafico_mensal()
       }
     })
 

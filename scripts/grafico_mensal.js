@@ -15,22 +15,75 @@ function destacar_grafico_mensal() {
   }
 }
 
+function apagar_grafico_mensal() {
+  document.getElementById("loader").style.display = "initial"
+  let myNode = document.querySelector("#grafico-mensal svg");
+  myNode.innerHTML = '';
+}
+
+const mesText = [
+  {name:1, text:'jan'},
+  {name:2, text:'fev'},
+  {name:3, text:'mar'},
+  {name:4, text:'abr'},
+  {name:5, text:'mai'},
+  {name:6, text:'jun'},
+  {name:7, text:'jul'},
+  {name:8, text:'ago'},
+  {name:9, text:'set'},
+  {name:10, text:'out'},
+  {name:11, text:'nov'},
+  {name:12, text:'dez'},
+]
+
 function exibir_grafico_mensal() {
+  apagar_grafico_mensal()
+
+  /*carregar dados*/
   let dados = []
-  dados = [
-    {'name':1, 'text':'jan', 'meta':10, 'corollas':15},
-    {'name':2, 'text':'fev', 'meta':10, 'corollas':15},
-    {'name':3, 'text':'mar', 'meta':10, 'corollas':15},
-    {'name':4, 'text':'abr', 'meta':10, 'corollas':15},
-    {'name':5, 'text':'mai', 'meta':10, 'corollas':5},
-    {'name':6, 'text':'jun', 'meta':10, 'corollas':5},
-    {'name':7, 'text':'jul', 'meta':10, 'corollas':5},
-    {'name':8, 'text':'ago', 'meta':10, 'corollas':15},
-    {'name':9, 'text':'set', 'meta':10, 'corollas':15},
-    {'name':10, 'text':'out', 'meta':10, 'corollas':15},
-    {'name':11, 'text':'nov', 'meta':10, 'corollas':5},
-    {'name':12, 'text':'dez', 'meta':10, 'corollas':5},
-  ]
+  if ( active_indicadorID == 'todos') {
+    let metaMensal = metasFt.map( (el) => {
+      return el.meta
+    }).reduce((a, b) => a + b, 0) / 12
+    for (let m = 0; m < 12; m++) {
+      let realMensal = 0
+      if (m < meses) {
+        realMensal = realFt.filter( (el) => {
+          return el.mes == m + 1
+        }).map( (el) => {
+          return el.corollas
+        }).reduce((a, b) => a + b, 0)
+      }
+      let el = []
+      el['name'] = m + 1
+      el['text'] = mesText.find(el => el.name== m + 1).text
+      el['meta'] = metaMensal
+      el['corollas'] = realMensal
+      dados.push(el)
+    }
+  } else {
+    let metaMensal = metasFt.filter( (el) => {
+      return el.indicadorID == active_indicadorID
+    }).map( (el) => {
+      return el.meta
+    }).reduce((a, b) => a + b, 0) / 12
+    for (let m = 0; m < 12; m++) {
+      let realMensal = 0
+      if (m < meses) {
+        realMensal = realFt.filter( (el) => {
+          return (el.mes == m + 1) && (el.indicadorID == active_indicadorID)
+        }).map( (el) => {
+          return el.corollas
+        }).reduce((a, b) => a + b, 0)
+      }
+      let el = []
+      el['name'] = m + 1
+      el['text'] = mesText.find(el => el.name== m + 1).text
+      el['meta'] = metaMensal
+      el['corollas'] = realMensal
+      dados.push(el)
+    }
+  }
 
   const svg = d3.select('#grafico-mensal svg');
 
@@ -128,4 +181,25 @@ function exibir_grafico_mensal() {
         .filter(function(d) { return d.name != active_mes })
         .remove()
     })
+    .on('click', function() {
+      if (active_mes == d3.select(this).data()[0].name) {
+        active_mes = 'todos'
+        d3.selectAll('#grafico-mensal .bar')
+          .attr('opacity', 1)
+        
+        document.querySelector('#select-bx-mes').value = 'todos'
+        filtrar_mes()
+      } else {
+        active_mes = d3.select(this).data()[0].name
+        d3.selectAll('#grafico-mensal .bar')
+          .attr('opacity', 0.5)
+          .filter(function(d) { return d.name == active_mes; })
+          .attr('opacity', 1);
+        
+        document.querySelector('#select-bx-mes').value = d3.select(this).data()[0].name
+        filtrar_mes()
+      }
+    })
+
+  document.getElementById("loader").style.display = "none"
 }

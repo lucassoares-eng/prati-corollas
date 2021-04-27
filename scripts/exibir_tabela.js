@@ -254,8 +254,7 @@ function exibir_tabela() {
             sra.textContent = v.toFixed(2)
             totalReal[12] += v
             totalReal[13] += v
-        }
-        else{
+        }else{
             let v=0.00
             sra.textContent = v.toFixed(2)
         }

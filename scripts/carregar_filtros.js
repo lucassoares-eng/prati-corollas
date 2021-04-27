@@ -1,4 +1,5 @@
 function carregar_filtros(){
+    /*definir abertura de acordo com o nivel do proprietario*/
     if (nivel=='grupo') {
         abertura = 'diretorias'
     } else {
@@ -10,13 +11,15 @@ function carregar_filtros(){
             abertura = 'indicadores'
         }
     }
-    /*filtro diretoria*/
+    /*construir filtro diretoria*/
     let bx = document.querySelector('#select-bx-diretoria')
     if (nivel=='grupo') {
         let opt = document.createElement('option')
         opt.value = 'todos'
         opt.innerText = 'Diretoria (todos)'
         bx.appendChild(opt)
+        /*ordenar AZ*/
+        diretorias.sort(ordemCrescente("areaName"))
         for (let i in diretorias){
             let opt = document.createElement('option')
             opt.value = diretorias[i].areaID
@@ -29,13 +32,15 @@ function carregar_filtros(){
         opt.innerText = diretorias[0].areaName
         bx.appendChild(opt)
     }
-    /*filtro gerencia*/
+    /*construir filtro gerencia*/
     bx = document.querySelector('#select-bx-gerencia')
     if (nivel!='gerencia') {
         let opt = document.createElement('option')
         opt.value = 'todos'
         opt.innerText = 'Gerência (todos)'
         bx.appendChild(opt)
+        /*ordenar AZ*/
+        gerencias.sort(ordemCrescente("areaName"))
         for (let i in gerencias){
             let opt = document.createElement('option')
             opt.value = gerencias[i].areaID

@@ -1,12 +1,14 @@
 function pag_pareto_up() {
   pag_pareto ++
-  document.querySelector('.anterior').style.pointerEvents = "initial";
+  document.querySelector('.anterior').style.pointerEvents = "initial"
   exibir_pareto()
+  destacar_pareto()
 }
 
 function pag_pareto_down() {
   pag_pareto --
   exibir_pareto()
+  destacar_pareto()
 }
 
 function zerar_pag() {
@@ -14,7 +16,7 @@ function zerar_pag() {
 }
 
 function apagar_pareto() {
-  document.getElementById("loader").style.display = "initial";
+  document.getElementById("loader").style.display = "initial"
   let myNode = document.querySelector("svg");
   myNode.innerHTML = '';
 }
@@ -23,6 +25,10 @@ function destacar_pareto() {
   if (active_areaID == areaID) {
     d3.selectAll('#grafico-pareto .bar')
       .attr('opacity', 1)
+
+    /*ocultar valores*/
+    d3.selectAll('#grafico-pareto .value')
+      .remove()
   } else {
     d3.selectAll('#grafico-pareto .bar')
       .attr('opacity', 0.5)
@@ -50,6 +56,13 @@ function exibir_pareto(){
   let dados = []
   if (abertura != 'indicadores') {
     bars = eval(abertura)
+    /*filtrar gerências de acordo com a diretoria selecionada*/
+    if (abertura == 'gerencias' && document.querySelector('#select-bx-diretoria').value != 'todos') {
+      let d = document.querySelector('#select-bx-diretoria').value
+      bars = bars.filter ( (el) => {
+        return Math.round(el.areaID / 100) * 100 == d
+      })
+    }
     if (document.querySelector('#select-bx-mes').value == 'todos') {
       for (let i in bars) {
         let el = []
@@ -146,9 +159,9 @@ function exibir_pareto(){
     document.querySelector('.anterior').style.pointerEvents = "none";
   }
 
-  const svg = d3.select('svg');
+  const svg = d3.select('#grafico-pareto svg');
 
-  const margin = { top: 20, bottom: 50, left: 30, right: 0 };
+  const margin = { top: 20, bottom: 56, left: 30, right: 0 };
   const width = 550 - margin.left - margin.right;
   const height = 290 - margin.top - margin.bottom;
 
@@ -174,12 +187,13 @@ function exibir_pareto(){
   const makeYLines = () => d3.axisLeft()
     .scale(yScale)
 
+  /*txt x axis*/
   chart.append('g')
     .attr("class", "x axis")
     .attr('transform', `translate(0, ${height})`)
     .call(d3.axisBottom(xText))
   .selectAll(".tick text")
-    .call(wrap, xScale.bandwidth())
+    .call(wrap, xScale.bandwidth()+30)
 
   chart.append('g')
     .call(d3.axisLeft(yScale));
@@ -196,14 +210,16 @@ function exibir_pareto(){
     .enter()
     .append('g')
 
+    /*bar meta*/
     barGroups
     .append('rect')
     .attr('class', 'barMeta')
-    .attr('x', (g) => xScale(g.name))
+    .attr('x', (g) => xScale(g.name) -10)
     .attr('y', (g) => yScale(g.meta))
     .attr('height', (g) => height - yScale(g.meta))
     .attr('width', xScale.bandwidth())
-  
+
+    /*bar real*/
     barGroups
     .append('rect')
     .attr('class', 'bar')
@@ -212,54 +228,34 @@ function exibir_pareto(){
     .attr('height', (g) => height - yScale(g.corollas))
     .attr('width', xScale.bandwidth())
     .on('mouseenter', function () {
+      /*destacar barra selecionada*/
       d3.select(this)
         .transition()
         .duration(300)
         .attr('x', (a) => xScale(a.name) - 5)
         .attr('width', xScale.bandwidth() + 10)
       
-      let barName = d3.select(this).data()[0].name      
-      d3.selectAll('#grafico-pareto .barMeta')
-        .filter(function(d) { return d.name == barName; })
-        .transition()
-        .duration(300)
-        .attr('x', (a) => xScale(a.name) - 5)
-        .attr('width', xScale.bandwidth() + 10)
-      
+      /*exibir valores*/
       barGroups 
         .append('text')
         .attr('class', 'value')
         .attr('x', (a) => xScale(a.name) + xScale.bandwidth() / 2)
         .attr('y', (a) => yScale(a.corollas) + 12)
         .attr('text-anchor', 'middle')
-        .text((a) => `${(a.corollas).toFixed(1)}`)
-
-      barGroups 
-        .append('line')
-        .attr('class', 'line')
-        .attr('x1', (a) => xScale(a.name) +5)
-        .attr('y1', (a) => yScale(a.meta))
-        .attr('x2', (a) => xScale(a.name) + xScale.bandwidth() -5)
-        .attr('y2', (a) => yScale(a.meta))
-      
+        .text((a) => `${(a.corollas).toFixed(1)}`)      
     })
     .on('mouseleave', function () {
+      /*desfazer destacar barra selecionada*/
       d3.select(this)
         .transition()
         .duration(300)
         .attr('x', (a) => xScale(a.name))
         .attr('width', xScale.bandwidth())
-      
-      let barName = d3.select(this).data()[0].name      
-      d3.selectAll('#grafico-pareto .barMeta')
-        .filter(function(d) { return d.name == barName; })
-        .transition()
-        .duration(300)
-        .attr('x', (a) => xScale(a.name))
-        .attr('width', xScale.bandwidth())
 
-      chart.selectAll('.value').remove()
-      chart.selectAll('.line').remove()
+      /*ocultar valores*/
+      d3.selectAll('#grafico-pareto .value')
+        .filter(function(d) { return d.name != active_areaID && d.name != active_indicadorID; })
+        .remove()
     })
     .on('click', function () {
       if (abertura != 'indicadores') {

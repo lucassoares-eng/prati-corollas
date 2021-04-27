@@ -16,12 +16,12 @@ function filtrar_diretoria() {
         exibir_tabela()
         /* ocultar gerências de outras diretorias */
         for (let i = 1; i < cxd.length; i++) {
-            if ( Math.round(cxd[i].value / 10) * 10 != d) {
+            if ( Math.round(cxd[i].value / 100) * 100 != d) {
                 cxd[i].disabled = true
             }
         }
     }
-    if (abertura != 'indicadores') {
+    if (abertura == 'diretorias') {
         destacar_pareto()
     }else {
         exibir_pareto()
@@ -30,31 +30,28 @@ function filtrar_diretoria() {
 function filtrar_gerencia() {
     let cxd = document.querySelector('#select-bx-diretoria');
     let g = document.querySelector('#select-bx-gerencia').value;
-    if (nivel == 'grupo') {
+    if (nivel == 'grupo' && g != 'todos') {
         /* alterar diretoria de acordo com a gerência */
-        let d= Math.round(g / 10) * 10
+        let d= Math.round(g / 100) * 100
         cxd.value = d
     }
     apagar_tabela();
     if(g == 'todos') {
         active_areaID = areaID
-        cxd.value = 'todos'
-        /* exibir todas as gerências */
-        for (let i = 0; i < cxd.length; i++) {
-            cxd[i].disabled = false
-        }
         exibir_tabela()
     }else {
         active_areaID = parseInt(g)
         exibir_tabela()
     }
-    if (abertura != 'indicadores') {
+    if (abertura == 'gerencias') {
         destacar_pareto()
     }else {
         exibir_pareto()
     }
 }
 function filtrar_mes() {
+    active_mes = document.querySelector('#select-bx-mes').value
+    destacar_grafico_mensal()
     exibir_pareto()
 }
 function removeDuplicates (data) {
@@ -66,6 +63,17 @@ function removeDuplicates (data) {
 }
 function ordemDescrescente (property) {
     var sortOrder = -1;
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a,b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}
+function ordemCrescente (property) {
+    var sortOrder = 1;
     if(property[0] === "-") {
         sortOrder = -1;
         property = property.substr(1);

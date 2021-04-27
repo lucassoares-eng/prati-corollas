@@ -9,7 +9,7 @@
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <link rel="stylesheet" href="styles/main.css">
 </head>
-<body onload="carregar_filtros(); exibir_tabela(); exibir_pareto(); desativar_filtro_meses()" onresize="ajustar_tela()">
+<body onload="carregar_filtros(); exibir_tabela(); exibir_pareto(); exibir_grafico_mensal(); desativar_filtro_meses()" onresize="ajustar_tela()">
 <!--conteúdo da página-->
 <main>
     <header>
@@ -133,21 +133,23 @@
             <section class="bloco" id="bloco-pareto">
                 <div class="row">
                     <span>Dashboard</span>
-                    <nav class="icones">
-                        <label class="icone" id="icone-diretorias" title="Diretorias" onclick="zerar_pag(); change_abertura('diretorias')">
-                            <span>D</span>
-                        </label>
-                        <label class="icone" id="icone-gerencias" title="Gerências" onclick="zerar_pag(); change_abertura('gerencias')">
-                            <span>G</span>
-                        </label>
-                        <label for="rd-indicadores" class="icone" id="icone-indicadores" title="Indicadores" onclick="zerar_pag();  change_abertura('indicadores')">
-                            <span>I</span>
-                        </label>
-                    </nav>
                 </div>
                 <div class="graficos">
                     <div class="grafico">
-                        <div class="titulo">PARETO</div>
+                        <div class="titulo">
+                            <span>PARETO</span>
+                            <nav class="icones">
+                                <label class="icone" id="icone-diretorias" title="Diretorias" onclick="zerar_pag(); change_abertura('diretorias')">
+                                    <span>D</span>
+                                </label>
+                                <label class="icone" id="icone-gerencias" title="Gerências" onclick="zerar_pag(); change_abertura('gerencias')">
+                                    <span>G</span>
+                                </label>
+                                <label for="rd-indicadores" class="icone" id="icone-indicadores" title="Indicadores" onclick="zerar_pag();  change_abertura('indicadores')">
+                                    <span>I</span>
+                                </label>
+                            </nav>
+                        </div>
                         <div class="timeout">Desculpe, não foi possível carregar os dados!</div>
                         <div id="grafico-pareto">
                             <nav class="anterior" onclick="pag_pareto_down()"></nav>
@@ -160,7 +162,9 @@
                     </div>
                     <div class="grafico">
                         <div class="titulo">MENSAL</div>
-                        <div id="grafico-mensal"></div>
+                        <div id="grafico-mensal">
+                            <svg></svg>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -173,8 +177,8 @@
 </main>
 <script id="arvore">
     const diretorias = [
-        {"areaID": 200, "areaName": "diretoriaadsfadfadfasdfaadasd fasdfasdfasdfasdfasdfsf"},
-        {"areaID": 300, "areaName": "diretoria adadadfadfadffadfa asdasdfadsfasfasdf"},
+        {"areaID": 200, "areaName": "diretoria 1"},
+        {"areaID": 300, "areaName": "diretoria 2"},
     ]
     const gerencias = [
         {"areaID": 201, "areaName": "gerencia 11"},
@@ -251,6 +255,7 @@
 <script id="variaveis-globais">
     var active_areaID = areaID
     var active_indicadorID
+    var active_mes
     var meses = real.map((el) => {
             return el.mes
         }).reduce(function(a, b) {
@@ -263,6 +268,7 @@
     var selectedBar
 </script>
 <script src="scripts/grafico_pareto.js"></script>
+<script src="scripts/grafico_mensal.js"></script>
 <script src="scripts/carregar_filtros.js"></script>
 <script src="scripts/filtrar.js"></script>
 <script src="scripts/exibir_tabela.js"></script>

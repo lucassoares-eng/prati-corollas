@@ -4,15 +4,16 @@ import prettierfier
 from atualizar_arvore import get_arvore
 from atualizar_indicadores import get_indicadores
 import atualizar_dados as dados
+from tqdm import tqdm
 
 #solicitar versao:
 version = input(f'Qual versão deseja gerar (AAAAMM)? ')
 
 #carregar usuarios:
-dfUsers = read_csv(f'dados/users.csv', sep= ';')
+dfUsers = read_csv(f'../dados/users.csv', sep= ';')
 users = dfUsers['user'].to_list()
 
-for user in users:
+for user in tqdm(users):
 
     #parâmetros:
     area = dfUsers.loc[dfUsers.user == user, 'area'].item()
@@ -39,7 +40,7 @@ for user in users:
     real = dados.get_real(diretoria, gerencia)
 
     #abrir arquivo html:
-    with open('index.html', encoding='UTF-8') as html:
+    with open('../index.html', encoding='UTF-8') as html:
         soup = BeautifulSoup(html, 'html.parser')
 
     #atualizar proprietario:
@@ -87,5 +88,5 @@ for user in users:
     s = s.replace_with(new_tag)
 
     # salvar html:
-    with open(f'pages/corollas_{areaID}.{version}.html', "w", encoding='UTF-8') as file:
+    with open(f'../pages/corollas_{areaID}.{version}.html', "w", encoding='UTF-8') as file:
         file.write(soup.prettify(formatter=None))

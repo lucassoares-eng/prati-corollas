@@ -3,7 +3,7 @@ import json
 
 def get_arvore(diretoria, gerencia):  
     #carregar dados da árvore:
-    dfArvore = read_csv('dados/arvore.csv', sep= ';', encoding='latin 1')
+    dfArvore = read_csv('../dados/arvore.csv', sep= ';', encoding='latin 1')
 
     #filtrar areaID:
     if diretoria == 'todos':

@@ -39,8 +39,13 @@ function filtrar_gerencia() {
     apagar_tabela();
 
     if(g == 'todos') {
-        active_areaID = dirA
-        cxd.value = dirA
+        if (dirA > 0) {
+            active_areaID = dirA
+            cxd.value = active_areaID
+        } else{
+            active_areaID = areaID
+            cxd.value = 'todos'
+        }
         exibir_tabela()
     }else {
         active_areaID = parseInt(g)

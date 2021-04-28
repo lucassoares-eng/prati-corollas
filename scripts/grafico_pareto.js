@@ -145,7 +145,7 @@ function exibir_pareto(){
         let el = []
         el['name'] = bars[i].indicadorID
         el['text'] = indicadores.find(element => element.indicadorID === bars[i].indicadorID).indicadorName
-        el['meta'] = metasFt.find(element => element.indicadorID === bars[i].indicadorID).meta / 12 * meses
+        el['meta'] = metasFt.find(element => element.indicadorID === bars[i].indicadorID).meta / 12
         el['corollas'] = bars[i].corollas
 
         dados.push(el)

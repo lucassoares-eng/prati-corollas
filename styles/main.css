@@ -432,7 +432,7 @@ svg line {
     text-align: center;
 }
 .indicador-txt{
-    margin: 15px;
+    margin: 10px;
     padding: 5px;
     width: calc(100% - 50px);
     height: fit-content;
@@ -447,6 +447,7 @@ svg line {
     margin-bottom: 0;
     font-size: 10pt;
     line-height: 1.5;
+    text-align: justify;
 }
 .indicador-content {
     width: 100%;
@@ -458,12 +459,12 @@ svg line {
 #container-desligamentos {
     width: calc(100% - 30px);
     height: calc(100% - 30px);
-    margin: 20px;
+    margin: 15px;
     display: grid;
     grid-template-rows: 80px 80px 80px 80px;
-    grid-template-columns: 230px 380px 160px 160px 160px;
-    grid-column-gap: 20px;
-    grid-row-gap: 20px;
+    grid-template-columns: 250px 380px 170px 170px 170px;
+    grid-column-gap: 15px;
+    grid-row-gap: 15px;
 }
 #container-desligamentos #area1{
     grid-row: 1/5;

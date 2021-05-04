@@ -115,6 +115,7 @@ function exibir_tabela() {
     let span4 = document.createElement('span');
     span4.textContent = '2020'
     c24.appendChild(span4)
+    /*linha por indicador*/
     for (let i in metasFt) {
         /*linha*/
         let l1 = document.createElement('div');
@@ -123,11 +124,17 @@ function exibir_tabela() {
         l1.onmouseout = function() {out(this)}
         let p = document.querySelector('#tabela-home')
         p.appendChild(l1)
-        let c1 = document.createElement('div')
+        let c1 = document.createElement('nav')
         c1.className = 'row-name'
         l1.appendChild(c1)
-        let span1 = document.createElement('nav')
+        let span1 = document.createElement('label')
         span1.textContent = indicadores.find(element => element.indicadorID === metasFt[i].indicadorID).indicadorName
+        span1.htmlFor = 'rd-indicador' + metasFt[i].indicadorID
+        try {
+            if (document.querySelector('#'+span1.htmlFor)){
+                span1.className = 'link'
+            }
+        } catch {}
         c1.appendChild(span1)
         let c2 = document.createElement('div')
         c2.className = 'sub-container'

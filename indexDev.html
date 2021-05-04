@@ -7,6 +7,7 @@
     <title>Perdas em Corollas</title>
     <link rel="icon" type="image/png" href="images/favicon.webp"/>
     <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js"></script>
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body onload="carregar_filtros(); exibir_tabela(); exibir_pareto(); exibir_grafico_mensal(); desativar_filtro_meses()" onresize="ajustar_tela()">
@@ -74,6 +75,8 @@
         <input type="radio" id="rd-home" name="rd-grupo" checked/>
         <input type="radio" id="rd-pareto" name="rd-grupo"/>
         <input type="radio" id="rd-tasks" name="rd-grupo"/>
+        <input type="radio" id="rd-indicador1" name="rd-grupo" checked/>
+        <input type="radio" id="rd-indicador2" name="rd-grupo"/>
         <div id="loader"></div>
         <section class="sections">
             <section class="bloco" id="bloco-home">
@@ -136,16 +139,16 @@
                 </div>
                 <div class="graficos">
                     <div class="grafico">
-                        <div class="titulo">
+                        <div class="quadro-titulo">
                             <span>PARETO</span>
-                            <nav class="icones">
-                                <label class="icone" id="icone-diretorias" title="Diretorias" onclick="zerar_pag(); change_abertura('diretorias')">
+                            <nav class="quadro-icones">
+                                <label class="quadro-icone" id="icone-diretorias" title="Diretorias" onclick="zerar_pag(); change_abertura('diretorias')">
                                     <span>D</span>
                                 </label>
-                                <label class="icone" id="icone-gerencias" title="Gerências" onclick="zerar_pag(); change_abertura('gerencias')">
+                                <label class="quadro-icone" id="icone-gerencias" title="Gerências" onclick="zerar_pag(); change_abertura('gerencias')">
                                     <span>G</span>
                                 </label>
-                                <label for="rd-indicadores" class="icone" id="icone-indicadores" title="Indicadores" onclick="zerar_pag();  change_abertura('indicadores')">
+                                <label class="quadro-icone" id="icone-indicadores" title="Indicadores" onclick="zerar_pag();  change_abertura('indicadores')">
                                     <span>I</span>
                                 </label>
                             </nav>
@@ -161,7 +164,7 @@
                         <div class="subtitulo"></div>
                     </div>
                     <div class="grafico">
-                        <div class="titulo">MENSAL</div>
+                        <div class="quadro-titulo">MENSAL</div>
                         <div id="grafico-mensal">
                             <svg></svg>
                         </div>
@@ -169,6 +172,85 @@
                 </div>
             </section>
             <section class="bloco" id="bloco-tasks">
+            </section>
+            <section class="bloco" id="bloco-desligamentos">
+                <div class="indicador-txt">
+                    <span>Perda por Desligamentos</span>
+                    <p>texto...</p>
+                </div>
+                <div class="indicador-content">
+                    <div id="container-desligamentos">
+                        <div id="area1">
+                            <div class="quadro-titulo">
+                                <span>COROLLAS</span>
+                                <div class="quadro-icones">
+                                    <span class="quadro-icone" title="Diretorias">D</span>
+                                    <span class="quadro-icone" title="Gerências">G</span>
+                                </div>
+                            </div>
+                            <div class="quadro-content"></div>
+                        </div>
+                        <div id="area2">
+                            <div class="quadro-titulo">QUADRO</div>
+                            <div class="quadro-content"></div>
+                        </div>
+                        <div id="area3">
+                            <div class="quadro-titulo">DESLIGAMENTOS</div>
+                            <div class="quadro-content"></div>
+                        </div>
+                        <div id="area4">
+                            <div class="quadro-content"></div>
+                        </div>
+                        <div id="area5">
+                            <div class="quadro-titulo">CUSTO MÉDIO</div>
+                            <div class="quadro-content">
+                                <div class="destaque">R$ 4.500</div>
+                                <div class="quadro-footer"></div>
+                            </div>
+                        </div>
+                        <div id="area6">
+                            <div class="quadro-titulo">PERDA</div>
+                            <div class="quadro-content">
+                                <div class="destaque">R$ 0</div>
+                                <div class="quadro-footer"></div>
+                            </div>
+                        </div>
+                        <div id="area7">
+                            <div class="quadro-titulo">LIMITE</div>
+                            <div class="quadro-content">
+                                <div class="destaque">100</div>
+                                <div class="quadro-footer">Limite = 0,875% am</div>
+                            </div>
+                        </div>
+                        <div id="area8">
+                            <div class="quadro-titulo">REAL</div>
+                            <div class="quadro-content">
+                                <div class="destaque">50</div>
+                                <div class="quadro-footer">Limite = 0,500% am</div>
+                            </div>
+                        </div>
+                        <div id="area9">
+                            <div class="quadro-titulo">DIF.</div>
+                            <div class="quadro-content">
+                                <div class="destaque">-50</div>
+                                <div class="quadro-footer"></div>
+                            </div>
+                        </div>
+                        <div id="area10">
+                            <div class="quadro-titulo">COROLLAS</div>
+                            <div class="quadro-content">
+                                <div class="destaque">0,000</div>
+                                <div class="quadro-footer">Corolla = R$ 125.000</div>
+                            </div>
+                        </div>
+                        <div id="area11">
+                            <div class="quadro-titulo">COROLLAS MENSAL</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="bloco" id="bloco-folha_fat">
+                FOLHA / FAT
             </section>
         </section>
     </div>
@@ -248,6 +330,8 @@
         {"indicadorID": 4, "areaID": 300, "mes": 2, "perda":-1000000, "corollas": 0},
     ]
 </script>
+<script id="dados-desligamentos"></script>
+<script id="dados-folha_fat"></script>
 <script id="proprietario">
     const areaID = 100
     const nivel = 'grupo'

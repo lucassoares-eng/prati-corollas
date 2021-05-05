@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js"></script>
     <link rel="stylesheet" href="styles/main.css">
 </head>
-<body onload="carregar_filtros(); exibir_tabela(); exibir_pareto(); exibir_grafico_mensal(); desativar_filtro_meses()" onresize="ajustar_tela()">
+<body onload="carregar_filtros(); exibir_tabela(); exibir_pareto(); exibir_grafico_mensal(); exibir_desligamentos(); desativar_filtro_meses()" onresize="ajustar_tela()">
 <!--conteúdo da página-->
 <main>
     <header>
@@ -75,8 +75,8 @@
         <input type="radio" id="rd-home" name="rd-grupo" checked/>
         <input type="radio" id="rd-pareto" name="rd-grupo"/>
         <input type="radio" id="rd-tasks" name="rd-grupo"/>
-        <input type="radio" id="rd-indicador1" name="rd-grupo" checked/>
-        <input type="radio" id="rd-indicador2" name="rd-grupo"/>
+        <input type="radio" id="rd-indicador7" name="rd-grupo" checked/>
+        <input type="radio" id="rd-indicador23" name="rd-grupo"/>
         <div id="loader"></div>
         <section class="sections">
             <section class="bloco" id="bloco-home">
@@ -176,27 +176,33 @@
             <section class="bloco" id="bloco-desligamentos">
                 <div class="indicador-txt">
                     <span>Perda por Desligamentos</span>
-                    <p>O indicador de perda por desligamentos é calculado com base em três fatores: (1) headcount, (2) número de colaboradores desligados (demitidos + demissionários) e (3) limite aceitável de desligamentos. O limite aceitável de desligamentos é de 0,875% ao mês, ou seja, uma área com 115 colaboradores pode desligar até 1 colaborador por mês, ou 12 durante o ano todo. Até o limite aceitável não há perda. A perda passa a ser contabilizada quando a área extrapola o limite aceitável. O valor é padrão para cada um dos dois tipos de desligamentos possíveis, sendo R$ 2.500 para demissionários e R$ 5.000 para demitidos. Outro fator importante é que colaboradores em período de experiência não entram na conta, pois existe um indicador específico para eles.</p>
+                    <p>O indicador de perda por desligamentos é calculado com base em três fatores: (1) headcount, (2) número de colaboradores desligados (demitidos + demissionários) e (3) limite aceitável de desligamentos. O limite aceitável de desligamentos é de 0,875% ao mês, ou seja, uma área com 115 colaboradores pode desligar até 1 colaborador por mês, ou 12 durante o ano. Até o limite aceitável não há perda. A perda passa a ser contabilizada quando a área extrapola o limite aceitável. O valor é padrão para cada um dos dois tipos de desligamentos possíveis, sendo R$ 2.500 para demissionários e R$ 5.000 para demitidos. Outro fator importante é que colaboradores em período de experiência não entram na conta, pois existe um indicador específico para eles.</p>
                 </div>
                 <div class="indicador-content">
                     <div id="container-desligamentos">
                         <div id="area1">
                             <div class="quadro-titulo">
-                                <span>COROLLAS</span>
+                                <span>COROLLAS POR ÁREA</span>
                                 <div class="quadro-icones">
                                     <span class="quadro-icone" title="Diretorias">D</span>
                                     <span class="quadro-icone" title="Gerências">G</span>
                                 </div>
                             </div>
-                            <div class="quadro-content"></div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                            </div>
                         </div>
                         <div id="area2">
                             <div class="quadro-titulo">QUADRO</div>
-                            <div class="quadro-content"></div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                            </div>
                         </div>
                         <div id="area3">
                             <div class="quadro-titulo">DESLIGAMENTOS</div>
-                            <div class="quadro-content"></div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                            </div>
                         </div>
                         <div id="area4">
                             <div class="quadro-content"></div>
@@ -245,6 +251,9 @@
                         </div>
                         <div id="area11">
                             <div class="quadro-titulo">COROLLAS MENSAL</div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -271,8 +280,8 @@
 </script>
 <script id="indicadores">
     const indicadores = [
-        {"indicadorID": 1, "indicadorName": "indicador 1"},
-        {"indicadorID": 2, "indicadorName": "indicador 2"},
+        {"indicadorID": 7, "indicadorName": "indicador 7"},
+        {"indicadorID": 23, "indicadorName": "indicador 23"},
         {"indicadorID": 3, "indicadorName": "indicador 3"},
         {"indicadorID": 4, "indicadorName": "indicador 4"},
     ]
@@ -358,5 +367,6 @@
 <script src="scripts/filtrar.js"></script>
 <script src="scripts/exibir_tabela.js"></script>
 <script src="scripts/ajustes_tela.js"></script>
+<script src="scripts/desligamentos.js"></script>
 </body>
 </html>

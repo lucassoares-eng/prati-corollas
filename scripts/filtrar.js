@@ -31,6 +31,7 @@ function filtrar_diretoria() {
     }
 
     exibir_grafico_mensal()
+    exibir_desligamentos()
 }
 function filtrar_gerencia() {
     let cxd = document.querySelector('#select-bx-diretoria')
@@ -66,11 +67,13 @@ function filtrar_gerencia() {
     }
 
     exibir_grafico_mensal()
+    exibir_desligamentos()
 }
 function filtrar_mes() {
     active_mes = document.querySelector('#select-bx-mes').value
     destacar_grafico_mensal()
     exibir_pareto()
+    exibir_desligamentos()
 }
 function removeDuplicates (data) {
     let unique = data.reduce( function (a, b) {

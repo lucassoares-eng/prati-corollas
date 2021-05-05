@@ -67,10 +67,10 @@ header{
 #rd-tasks:checked ~ .sections{
     margin-left: calc(2*(-100vw + 60px));
 }
-#rd-indicador1:checked ~ .sections{
+#rd-indicador7:checked ~ .sections{
     margin-left: calc(3*(-100vw + 60px));
 }
-#rd-indicador2:checked ~ .sections{
+#rd-indicador23:checked ~ .sections{
     margin-left: calc(4*(-100vw + 60px));
 }
 footer{
@@ -524,7 +524,7 @@ svg line {
 .quadro-content {
     padding: 0px 5px 5px 5px;
     height: calc(100% - 30px);
-    width: 100%;
+    width: calc(100% - 10px);
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -184,8 +184,8 @@
                             <div class="quadro-titulo">
                                 <span>COROLLAS POR ÁREA</span>
                                 <div class="quadro-icones">
-                                    <span class="quadro-icone" title="Diretorias">D</span>
-                                    <span class="quadro-icone" title="Gerências">G</span>
+                                    <span class="quadro-icone" title="Diretorias" onclick="change_abertura('diretorias')">D</span>
+                                    <span class="quadro-icone" title="Gerências" onclick="change_abertura('gerencias')">G</span>
                                 </div>
                             </div>
                             <div class="quadro-content">
@@ -210,42 +210,42 @@
                         <div id="area5">
                             <div class="quadro-titulo">CUSTO MÉDIO</div>
                             <div class="quadro-content">
-                                <div class="destaque">R$ 4.500</div>
+                                <div class="destaque">R$ {{ custo_medio }}</div>
                                 <div class="quadro-footer"></div>
                             </div>
                         </div>
                         <div id="area6">
                             <div class="quadro-titulo">PERDA</div>
                             <div class="quadro-content">
-                                <div class="destaque">R$ 0</div>
+                                <div class="destaque">R$ {{ perda }}</div>
                                 <div class="quadro-footer"></div>
                             </div>
                         </div>
                         <div id="area7">
                             <div class="quadro-titulo">LIMITE</div>
                             <div class="quadro-content">
-                                <div class="destaque">100</div>
-                                <div class="quadro-footer">Limite = 0,875% am</div>
+                                <div class="destaque">{{ limite }}</div>
+                                <div class="quadro-footer">Limite = {{ limite_percent }} am</div>
                             </div>
                         </div>
                         <div id="area8">
                             <div class="quadro-titulo">REAL</div>
                             <div class="quadro-content">
-                                <div class="destaque">50</div>
-                                <div class="quadro-footer">Real = 0,500% am</div>
+                                <div class="destaque">{{ real }}</div>
+                                <div class="quadro-footer">Real = {{ real_percent }} am</div>
                             </div>
                         </div>
                         <div id="area9">
                             <div class="quadro-titulo">DIF.</div>
                             <div class="quadro-content">
-                                <div class="destaque">-50</div>
+                                <div class="destaque">{{ dif }}</div>
                                 <div class="quadro-footer"></div>
                             </div>
                         </div>
                         <div id="area10">
                             <div class="quadro-titulo">COROLLAS</div>
                             <div class="quadro-content">
-                                <div class="destaque">0,000</div>
+                                <div class="destaque">{{ corollas }}</div>
                                 <div class="quadro-footer">Corolla = R$ 125.000</div>
                             </div>
                         </div>

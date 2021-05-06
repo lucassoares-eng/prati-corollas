@@ -46,3 +46,109 @@ function desativar_filtro_meses(){
         cxd[i].disabled = true
     }
 }
+function wrap(text, width) {
+    text.each(function() {
+      var text = d3.select(this),
+          words = text.text().split(/\s+/).reverse(),
+          word,
+          line = [],
+          lineNumber = 0,
+          lineHeight = 1.1,
+          y = text.attr("y"),
+          dy = parseFloat(text.attr("dy")),
+          tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+      while (word = words.pop()) {
+        line.push(word);
+        tspan.text(line.join(" "));
+        if (tspan.node().getComputedTextLength() > width) {
+          line.pop();
+          tspan.text(line.join(" "));
+          line = [word];
+          tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+        }
+      }
+    });
+  }
+
+function wrap2(text, width) {
+    text.each(function() {
+        var text = d3.select(this),
+            textContent = text.text(),
+            tempWord = addBreakSpace(textContent).split(/\s+/),
+            x = text.attr('x'),
+            y = text.attr('y'),
+            dy = parseFloat(text.attr('dy') || 0),
+            tspan = text.text(null).append('tspan').attr('x', x).attr('y', y).attr('dy', dy + 'em');
+        for (var i = 0; i < tempWord.length; i++) {
+            tempWord[i] = calHyphen(tempWord[i]);
+        }
+        textContent = tempWord.join(" ");
+        var words = textContent.split(/\s+/).reverse(),
+            word,
+            line = [],
+            lineNumber = 0,
+            lineHeight = 1.1, // ems
+            spanContent,
+            breakChars = ['/', '&', '-'];
+        while (word = words.pop()) {
+            line.push(word);
+            tspan.text(line.join(' '));
+            if (tspan.node().getComputedTextLength() > width) {
+                line.pop();
+                spanContent = line.join(' ');
+                breakChars.forEach(function(char) {
+                    // Remove spaces trailing breakChars that were added above
+                    spanContent = spanContent.replace(char + ' ', char);
+                });
+                tspan.text(spanContent);
+                line = [word];
+                tspan = text.append('tspan').attr('x', x).attr('y', y + lineHeight * lineNumber).attr('dy', ++lineNumber * lineHeight + dy + 'em').text(word);
+            }
+        }
+        var emToPxRatio = parseInt(window.getComputedStyle(text._groups[0][0]).fontSize.slice(0,-2));
+        text.attr("transform", "translate(-" + (2) + ", -" + lineNumber/2 * lineHeight * emToPxRatio + ")");
+        function calHyphen(word) {
+            tspan.text(word);
+            if (tspan.node().getComputedTextLength() > width) {
+                var chars = word.split('');
+                var asword = "";
+                for (var i = 0; i < chars.length; i++) {
+                    asword += chars[i];
+                    tspan.text(asword);
+                    if (tspan.node().getComputedTextLength() > width) {
+                        if (chars[i - 1] !== "-") {
+                            word = word.slice(0, i - 1) + "- " + calHyphen(word.slice(i - 1));
+                        }
+                        i = chars.length;
+                    }
+                }
+            }
+            return word;
+        }
+    });
+}
+
+function addBreakSpace(inputString) {
+    var breakChars = ['/', '&', '-']
+    breakChars.forEach(function(char) {
+        // Add a space after each break char for thefunction to use to determine line breaks
+        inputString = inputString.replace(char, char + ' ');
+    });
+    return inputString;
+}
+
+function destacar_indicador_por_area() {
+    if (active_areaID == areaID || active_areaID == dirA) {
+        d3.selectAll('#container-desligamentos #area1 .bar')
+            .attr('opacity', 1)
+
+        /*ocultar valores*/
+        d3.selectAll('#container-desligamentos #area1 .value')
+            .remove()
+    } else {
+        d3.selectAll('#container-desligamentos #area1 .bar')
+            .attr('opacity', 0.5)
+            .filter(function(d) { return d.name == active_areaID; })
+            .attr('opacity', 1);
+    }
+}

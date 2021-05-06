@@ -37,21 +37,7 @@ function destacar_pareto() {
   }
 }
 
-function change_abertura(abertura_selected) {
-  abertura = abertura_selected
-  exibir_pareto()
-}
-
-function exibir_pareto(){
-  apagar_pareto()
-
-  var periodo
-  if (document.querySelector('#select-bx-mes').value == 'todos'){
-    periodo = 'acum'
-  } else{
-    periodo = 'mes' + document.querySelector('#select-bx-mes').value
-  }
-
+function dados_pareto(){
   let bars
   let dados = []
   if (abertura != 'indicadores') {
@@ -155,6 +141,14 @@ function exibir_pareto(){
 
   /*ordenar dados*/
   dados.sort(ordemDescrescente("corollas"))
+
+  return dados
+}
+
+function exibir_pareto(){
+  apagar_pareto()
+
+  dados = dados_pareto()
   
   const numBars = 6;
   let npg = Math.ceil(dados.length / numBars)
@@ -169,7 +163,7 @@ function exibir_pareto(){
     document.querySelector('.anterior').style.pointerEvents = "none";
   }
 
-  const svg = d3.select('#grafico-pareto svg');
+  const svg = d3.select('#grafico-pareto svg')
 
   const margin = { top: 20, bottom: 56, left: 30, right: 0 };
   const width = 550 - margin.left - margin.right;
@@ -252,7 +246,7 @@ function exibir_pareto(){
         .attr('x', (a) => xScale(a.name) + xScale.bandwidth() / 2)
         .attr('y', (a) => yScale(a.corollas) + 12)
         .attr('text-anchor', 'middle')
-        .text((a) => `${(a.corollas).toFixed(1)}`)      
+        .text((a) => `${(a.corollas).toFixed(1).replace(".",",")}`)
     })
     .on('mouseleave', function () {
       /*desfazer destacar barra selecionada*/
@@ -301,28 +295,4 @@ function exibir_pareto(){
     })
 
   document.getElementById("loader").style.display = "none";
-}
-
-function wrap(text, width) {
-  text.each(function() {
-    var text = d3.select(this),
-        words = text.text().split(/\s+/).reverse(),
-        word,
-        line = [],
-        lineNumber = 0,
-        lineHeight = 1.1,
-        y = text.attr("y"),
-        dy = parseFloat(text.attr("dy")),
-        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-    while (word = words.pop()) {
-      line.push(word);
-      tspan.text(line.join(" "));
-      if (tspan.node().getComputedTextLength() > width) {
-        line.pop();
-        tspan.text(line.join(" "));
-        line = [word];
-        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-      }
-    }
-  });
 }

@@ -26,12 +26,13 @@ function filtrar_diretoria() {
 
     if (abertura == 'diretorias') {
         destacar_pareto()
+        destacar_indicador_por_area()
     }else {
         exibir_pareto()
+        exibir_desligamentos()
     }
 
     exibir_grafico_mensal()
-    exibir_desligamentos()
 }
 function filtrar_gerencia() {
     let cxd = document.querySelector('#select-bx-diretoria')
@@ -62,18 +63,24 @@ function filtrar_gerencia() {
 
     if (abertura == 'gerencias') {
         destacar_pareto()
+        destacar_indicador_por_area()
     }else {
         exibir_pareto()
+        exibir_desligamentos()
     }
 
     exibir_grafico_mensal()
-    exibir_desligamentos()
 }
 function filtrar_mes() {
     active_mes = document.querySelector('#select-bx-mes').value
     destacar_grafico_mensal()
     exibir_pareto()
     exibir_desligamentos()
+}
+function change_abertura(abertura_selected) {
+    abertura = abertura_selected
+    exibir_pareto()
+    corollas_por_area()
 }
 function removeDuplicates (data) {
     let unique = data.reduce( function (a, b) {
@@ -103,4 +110,155 @@ function ordemCrescente (property) {
         var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
         return result * sortOrder;
     }
+}
+function dados_indicador_por_area(indicadorID){
+    let bars
+    let dados = []
+    let metasIndicador = metas.filter((el) => {
+        return el.indicadorID == indicadorID
+    })
+    let realIndicador = real.filter((el) => {
+        return el.indicadorID == indicadorID
+    })
+
+    bars = eval(abertura)
+
+    /*filtrar gerências de acordo com a diretoria selecionada*/
+    if (abertura == 'gerencias' && document.querySelector('#select-bx-diretoria').value != 'todos') {
+        let d = document.querySelector('#select-bx-diretoria').value
+        bars = bars.filter ( (el) => {
+            return Math.round(el.areaID / 100) * 100 == d
+        })
+    }
+
+    if (document.querySelector('#select-bx-mes').value == 'todos') {
+        for (let i in bars) {
+            let el = []
+            let metaAcum = metasIndicador.filter((el) => {
+                return el.areaID === bars[i].areaID
+            }).map((el) => {
+                return el.meta
+            }).reduce((a, b) => a + b, 0) / 12 * meses
+
+            let indicReal = removeDuplicates(real.filter((el) => {
+                return el.areaID === bars[i].areaID
+            }).map( (el) => {
+                return el.indicadorID
+            }))
+
+            let realAcum = 0
+            for (let j in indicReal) {
+                let elAcum = realIndicador.filter((el) => {
+                    return (el.areaID === bars[i].areaID) && (el.indicadorID == indicReal[j])
+                }).map((el) => {
+                    return el.perda
+                }).reduce((a, b) => a + b, 0)
+                if (elAcum > 0) {
+                    elAcum = elAcum / 125000
+                } else{
+                    elAcum = 0
+                }
+                realAcum += elAcum
+            }
+
+            el['name'] = bars[i].areaID
+            el['text'] = bars[i].areaName
+            el['meta'] = metaAcum
+            el['corollas'] = realAcum
+
+            dados.push(el)
+        }
+    } else {
+        for (let i in bars) {
+            let el = []
+            let meta = metas.filter((el) => {
+                return el.areaID === bars[i].areaID
+            }).map((el) => {
+                return el.meta
+            }).reduce((a, b) => a + b, 0) / 12
+
+            let r = real.filter((el) => {
+                return el.areaID === bars[i].areaID && el.mes == document.querySelector('#select-bx-mes').value
+            }).map((el) => {
+                return el.corollas
+            }).reduce((a, b) => a + b, 0)
+
+            el['name'] = bars[i].areaID
+            el['text'] = bars[i].areaName
+            el['meta'] = meta
+            el['corollas'] = r
+
+            dados.push(el)
+        }
+    }
+    return dados
+}
+function dados_indicador_mensal(indicadorID){
+    const mesText = [
+        {name:1, text:'jan'},
+        {name:2, text:'fev'},
+        {name:3, text:'mar'},
+        {name:4, text:'abr'},
+        {name:5, text:'mai'},
+        {name:6, text:'jun'},
+        {name:7, text:'jul'},
+        {name:8, text:'ago'},
+        {name:9, text:'set'},
+        {name:10, text:'out'},
+        {name:11, text:'nov'},
+        {name:12, text:'dez'},
+    ]
+
+    let dados = []
+    let metasFtIndicador = metasFt.filter((el) => {
+        return el.indicadorID == indicadorID
+    })
+    let realFtIndicador = realFt.filter((el) => {
+        return el.indicadorID == indicadorID
+    })
+    if ( active_indicadorID == 'todos') {
+        let metaMensal = metasFtIndicador.map( (el) => {
+        return el.meta
+        }).reduce((a, b) => a + b, 0) / 12
+        for (let m = 0; m < 12; m++) {
+        let realMensal = 0
+        if (m < meses) {
+            realMensal = realFtIndicador.filter( (el) => {
+            return el.mes == m + 1
+            }).map( (el) => {
+            return el.corollas
+            }).reduce((a, b) => a + b, 0)
+        }
+        let el = []
+        el['name'] = m + 1
+        el['text'] = mesText.find(el => el.name== m + 1).text
+        el['meta'] = metaMensal
+        el['corollas'] = realMensal
+        dados.push(el)
+        }
+    } else {
+        let metaMensal = metasFtIndicador.filter( (el) => {
+        return el.indicadorID == active_indicadorID
+        }).map( (el) => {
+        return el.meta
+        }).reduce((a, b) => a + b, 0) / 12
+        for (let m = 0; m < 12; m++) {
+        let realMensal = 0
+        if (m < meses) {
+            realMensal = realFtIndicador.filter( (el) => {
+            return (el.mes == m + 1) && (el.indicadorID == active_indicadorID)
+            }).map( (el) => {
+            return el.corollas
+            }).reduce((a, b) => a + b, 0)
+        }
+        let el = []
+        el['name'] = m + 1
+        el['text'] = mesText.find(el => el.name== m + 1).text
+        el['meta'] = metaMensal
+        el['corollas'] = realMensal
+        dados.push(el)
+        }
+    }
+
+    return dados
 }

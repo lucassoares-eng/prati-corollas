@@ -184,7 +184,7 @@ function exibir_tabela() {
             let sm = document.createElement('span')
             sm.className = 'span-valor'
             let v=metasFt[i].meta/12
-            sm.textContent = v.toFixed(2)
+            sm.textContent = v.toFixed(2).replace(".",",")
             cm.appendChild(sm)
             totalMeta[j] += v
         }
@@ -202,9 +202,9 @@ function exibir_tabela() {
                 } catch {
                     v = 0.00
                 }
-                sm.textContent = v.toFixed(2)
+                sm.textContent = v.toFixed(2).replace(".",",")
                 totalReal[j] += v
-                if(sm.textContent > metasFt[i].meta/12){
+                if(v > metasFt[i].meta/12){
                     sm.className += ' vermelho'
                 }else{
                     sm.className += ' verde'
@@ -220,7 +220,7 @@ function exibir_tabela() {
             let sm = document.createElement('span')
             sm.className = 'span-valor'
             let v=metasFt[i].ano_anterior/12
-            sm.textContent = v.toFixed(2)
+            sm.textContent = v.toFixed(2).replace(".",",")
             cm.appendChild(sm)
             totalAnoAnterior[j] += v
         }
@@ -231,7 +231,7 @@ function exibir_tabela() {
         let sma = document.createElement('div')
         sma.className = 'span-valor'
         let v=(metasFt[i].meta/12)*meses
-        sma.textContent = v.toFixed(2)
+        sma.textContent = v.toFixed(2).replace(".",",")
         cma.appendChild(sma)
         totalMeta[12] += v
         /*meta total*/
@@ -240,7 +240,7 @@ function exibir_tabela() {
         l2.appendChild(cmt)
         let smt = document.createElement('span')
         smt.className = 'span-valor'
-        smt.textContent = metasFt[i].meta.toFixed(2)
+        smt.textContent = metasFt[i].meta.toFixed(2).replace(".",",")
         cmt.appendChild(smt)
         totalMeta[13] += metasFt[i].meta
         /*real acum*/
@@ -249,23 +249,23 @@ function exibir_tabela() {
         l3.appendChild(cra)
         let sra = document.createElement('div')
         sra.className = 'span-valor'
+        let va = 0
         if(arr3.length>0){
-            let v = arr3.map((el) => {
+            va = arr3.map((el) => {
                 return el.perda
             }).reduce((a, b) => a + b, 0)
-            if (v > 0) {
-                v = v / 125000
+            if (va > 0) {
+                va = va / 125000
             } else{
-                v = 0
+                va = 0
             }
-            sra.textContent = v.toFixed(2)
-            totalReal[12] += v
-            totalReal[13] += v
+            sra.textContent = va.toFixed(2).replace(".",",")
+            totalReal[12] += va
+            totalReal[13] += va
         }else{
-            let v=0.00
-            sra.textContent = v.toFixed(2)
+            sra.textContent = va.toFixed(2).replace(".",",")
         }
-        if(sra.textContent>(metasFt[i].meta/12)*meses){
+        if(va > (metasFt[i].meta/12)*meses){
             sra.className += ' vermelho'
         }else{
             sra.className += ' verde'
@@ -277,10 +277,10 @@ function exibir_tabela() {
         l3.appendChild(crt)
         let srt = document.createElement('span')
         srt.className = 'span-valor'
-        srt.textContent = sra.textContent
-        if(srt.textContent>metasFt[i].meta){
+        srt.textContent = va.toFixed(2).replace(".",",")
+        if(va > (metasFt[i].meta)) {
             srt.className += ' vermelho'
-        }else{
+        } else {
             srt.className += ' verde'
         }
         crt.appendChild(srt)
@@ -291,7 +291,7 @@ function exibir_tabela() {
         let saaa = document.createElement('div')
         saaa.className = 'span-valor'
         v=(metasFt[i].ano_anterior/12)*meses
-        saaa.textContent = v.toFixed(2)
+        saaa.textContent = v.toFixed(2).replace(".",",")
         caaa.appendChild(saaa)
         totalAnoAnterior[12] += v
         /*ano anterior total*/
@@ -300,7 +300,7 @@ function exibir_tabela() {
         l4.appendChild(caa)
         let saa = document.createElement('span')
         saa.className = 'span-valor'
-        saa.textContent = metasFt[i].ano_anterior.toFixed(2)
+        saa.textContent = metasFt[i].ano_anterior.toFixed(2).replace(".",",")
         caa.appendChild(saa)
         totalAnoAnterior[13] += metasFt[i].ano_anterior
     }
@@ -311,7 +311,7 @@ function exibir_tabela() {
         l2.appendChild(cmt)
         let smt = document.createElement('span')
         smt.className = 'span-valor'
-        smt.textContent = totalMeta[i].toFixed(2)
+        smt.textContent = totalMeta[i].toFixed(2).replace(".",",")
         cmt.appendChild(smt)
         /*linha total real*/
         let crt = document.createElement('div')
@@ -320,7 +320,7 @@ function exibir_tabela() {
         let srt = document.createElement('span')
         srt.className = 'span-valor'
         if (i < meses | i >11){
-                srt.textContent = totalReal[i].toFixed(2)
+                srt.textContent = totalReal[i].toFixed(2).replace(".",",")
                 if(totalReal[i] > totalMeta[i]){
                     srt.className += ' vermelho'
                 }else{
@@ -334,7 +334,7 @@ function exibir_tabela() {
         l4.appendChild(caat)
         let saat = document.createElement('span')
         saat.className = 'span-valor'
-        saat.textContent = totalAnoAnterior[i].toFixed(2)
+        saat.textContent = totalAnoAnterior[i].toFixed(2).replace(".",",")
         caat.appendChild(saat)
     }
     ajustar_tela()

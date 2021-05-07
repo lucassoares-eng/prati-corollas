@@ -1,20 +1,4 @@
 
-function destacar_grafico_mensal() { 
-  if (active_mes == 'todos') {
-    d3.selectAll('#grafico-mensal .bar')
-      .attr('opacity', 1)
-
-    /*ocultar valores*/
-    d3.selectAll('#grafico-mensal .value')
-      .remove()
-  } else {
-    d3.selectAll('#grafico-mensal .bar')
-      .attr('opacity', 0.5)
-      .filter(function(d) { return d.name == active_mes; })
-      .attr('opacity', 1);
-  }
-}
-
 function apagar_grafico_mensal() {
   document.getElementById("loader").style.display = "initial"
   let myNode = document.querySelector("#grafico-mensal svg");
@@ -97,7 +81,7 @@ function exibir_grafico_mensal() {
   const xScale = d3.scaleBand()
     .range([0, width])
     .domain(dados.map((s) => s.name))
-    .padding(0.5)
+    .padding(0.4)
 
   const xText = d3.scaleBand()
     .range([0, width])
@@ -160,13 +144,8 @@ function exibir_grafico_mensal() {
         .attr('width', xScale.bandwidth() + 4)
       
       /*exibir valores*/
-      barGroups 
-        .append('text')
-        .attr('class', 'value')
-        .attr('x', (a) => xScale(a.name) + xScale.bandwidth() / 2)
-        .attr('y', (a) => yScale(a.corollas) + 12)
-        .attr('text-anchor', 'middle')
-        .text((a) => `${(a.corollas).toFixed(0)}`)
+      d3.selectAll('#grafico-mensal .value')
+        .attr('opacity', 1);
     })
     .on('mouseleave', function () {
       /*desfazer destacar barra selecionada*/
@@ -179,7 +158,7 @@ function exibir_grafico_mensal() {
       /*ocultar valores*/
       d3.selectAll('#grafico-mensal .value')
         .filter(function(d) { return d.name != active_mes })
-        .remove()
+        .attr('opacity', 0);
     })
     .on('click', function() {
       if (active_mes == d3.select(this).data()[0].name) {
@@ -200,6 +179,16 @@ function exibir_grafico_mensal() {
         filtrar_mes()
       }
     })
+    /*exibir valores*/
+    barGroups 
+    .append('text')
+    .attr('class', 'value')
+    .attr('x', (a) => xScale(a.name) + xScale.bandwidth() / 2)
+    .attr('y', (a) => yScale(a.corollas) + 12)
+    .attr('text-anchor', 'middle')
+    .text((a) => `${(a.corollas).toFixed(1).replace(".",",")}`)
+    .attr('opacity', 0);
 
+  destacar_grafico_mensal()
   document.getElementById("loader").style.display = "none"
 }

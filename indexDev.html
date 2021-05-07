@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js"></script>
     <link rel="stylesheet" href="styles/main.css">
 </head>
-<body onload="carregar_filtros(); exibir_tabela(); exibir_pareto(); exibir_grafico_mensal(); exibir_desligamentos(); desativar_filtro_meses()" onresize="ajustar_tela()">
+<body onload="carregar_filtros(); exibir_tabela(); exibir_pareto(); exibir_grafico_mensal(); exibir_desligamentos(); ativar_filtro_meses()" onresize="ajustar_tela()">
 <!--conteúdo da página-->
 <main>
     <header>
@@ -26,10 +26,10 @@
     <!--menu lateral-->
     <nav class="sidebar">
         <div class="container">
-            <label for="rd-home" class="icone" title="Página Inicial" onclick="desativar_filtro_meses()">
+            <label for="rd-home" class="icone" title="Página Inicial">
                 <img src="images/icone-home.webp" class="icone" alt="Home">
             </label>
-            <label for="rd-pareto" class="icone" title="Gráfico de pareto" onclick="ativar_filtro_meses()">
+            <label for="rd-pareto" class="icone" title="Gráfico de pareto">
                 <img src="images/icone-pareto.webp" class="icone" alt="pareto">
             </label>
             <!-- icone Plano de Ação:
@@ -50,18 +50,18 @@
                 </select>
                 <select class="select-bx" id="select-bx-mes" onchange="filtrar_mes()">
                     <option value="todos">Mês (todos)</option>
-                    <option value=1>Jan</option>
-                    <option value=2>Fev</option>
-                    <option value=3>Mar</option>
-                    <option value=4>Abr</option>
-                    <option value=5>Mai</option>
-                    <option value=6>Jun</option>
-                    <option value=7>Jul</option>
-                    <option value=8>Ago</option>
-                    <option value=9>Set</option>
-                    <option value=10>Out</option>
-                    <option value=11>Nov</option>
-                    <option value=12>Dez</option>
+                    <option value=1 disabled>Jan</option>
+                    <option value=2 disabled>Fev</option>
+                    <option value=3 disabled>Mar</option>
+                    <option value=4 disabled>Abr</option>
+                    <option value=5 disabled>Mai</option>
+                    <option value=6 disabled>Jun</option>
+                    <option value=7 disabled>Jul</option>
+                    <option value=8 disabled>Ago</option>
+                    <option value=9 disabled>Set</option>
+                    <option value=10 disabled>Out</option>
+                    <option value=11 disabled>Nov</option>
+                    <option value=12 disabled>Dez</option>
                 </select>
                 <select class="select-bx" id="select-bx-diretoria" name="" onchange="filtrar_diretoria()">
                 </select>
@@ -368,5 +368,7 @@
 <script src="scripts/exibir_tabela.js"></script>
 <script src="scripts/ajustes_tela.js"></script>
 <script src="scripts/desligamentos.js"></script>
+<script src="scripts/corollas_por_area.js"></script>
+<script src="scripts/corollas_mensal.js"></script>
 </body>
 </html>

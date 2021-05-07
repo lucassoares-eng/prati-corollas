@@ -137,18 +137,84 @@ function addBreakSpace(inputString) {
     return inputString;
 }
 
-function destacar_indicador_por_area() {
+function destacar_pareto() { 
     if (active_areaID == areaID || active_areaID == dirA) {
-        d3.selectAll('#container-desligamentos #area1 .bar')
+        d3.selectAll('#grafico-pareto .bar')
             .attr('opacity', 1)
-
+    
         /*ocultar valores*/
-        d3.selectAll('#container-desligamentos #area1 .value')
-            .remove()
+        d3.selectAll('#grafico-pareto .value')
+            .attr('opacity', 0);
     } else {
-        d3.selectAll('#container-desligamentos #area1 .bar')
+        d3.selectAll('#grafico-pareto .bar')
             .attr('opacity', 0.5)
             .filter(function(d) { return d.name == active_areaID; })
             .attr('opacity', 1);
+
+        /*exibir valor*/
+        d3.selectAll('#grafico-pareto .value')
+            .filter(function(d) { return d.name == active_areaID || d.name == active_indicadorID; })
+            .attr('opacity', 1);
+    }
+}
+
+function destacar_grafico_mensal() { 
+    if (active_mes == 'todos') {
+        d3.selectAll('#grafico-mensal .bar')
+            .attr('opacity', 1)
+    
+        /*ocultar valores*/
+        d3.selectAll('#grafico-mensal .value')
+            .attr('opacity', 0);
+    } else {
+        d3.selectAll('#grafico-mensal .bar')
+            .attr('opacity', 0.5)
+            .filter(function(d) { return d.name == active_mes; })
+            .attr('opacity', 1);
+        
+        /*exibir valore*/
+        d3.selectAll('#grafico-mensal .value')
+        .filter(function(d) { return d.name == active_mes })
+        .attr('opacity', 1);
+    }
+}
+
+function destacar_indicador_por_area() {
+    if (active_areaID == areaID || active_areaID == dirA) {
+        d3.selectAll('#area1 .bar')
+            .attr('opacity', 1)
+
+        /*ocultar valores*/
+        d3.selectAll('#area1 .value')
+            .attr('opacity', 0)
+    } else {
+        d3.selectAll('#area1 .bar')
+            .attr('opacity', 0.5)
+            .filter(function(d) { return d.name == active_areaID; })
+            .attr('opacity', 1);
+        /*exibir valor*/
+        d3.selectAll('#area1 .value')
+            .filter(function(d) { return d.name == active_areaID || d.name == active_indicadorID; })
+            .attr('opacity', 1)
+    }
+}
+
+function destacar_indicador_mensal() {
+    if (active_mes == 'todos') {
+        d3.selectAll('#area11 .bar')
+            .attr('opacity', 1)
+    
+        /*ocultar valores*/
+        d3.selectAll('#area11 .value')
+            .attr('opacity', 0)
+    } else {
+        d3.selectAll('#area11 .bar')
+            .attr('opacity', 0.5)
+            .filter(function(d) { return d.name == active_mes; })
+            .attr('opacity', 1);
+        /*exibir valor*/
+        d3.selectAll('#area11 .value')
+            .filter(function(d) { return d.name == active_mes })
+            .attr('opacity', 1)
     }
 }

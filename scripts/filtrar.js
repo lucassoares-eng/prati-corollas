@@ -24,15 +24,9 @@ function filtrar_diretoria() {
         }
     }
 
-    if (abertura == 'diretorias') {
-        destacar_pareto()
-        destacar_indicador_por_area()
-    }else {
-        exibir_pareto()
-        exibir_desligamentos()
-    }
-
+    exibir_pareto()
     exibir_grafico_mensal()
+    exibir_desligamentos()
 }
 function filtrar_gerencia() {
     let cxd = document.querySelector('#select-bx-diretoria')
@@ -61,26 +55,20 @@ function filtrar_gerencia() {
         cxd.value = d
     }
 
-    if (abertura == 'gerencias') {
-        destacar_pareto()
-        destacar_indicador_por_area()
-    }else {
-        exibir_pareto()
-        exibir_desligamentos()
-    }
-
+    exibir_pareto()
     exibir_grafico_mensal()
+    exibir_desligamentos()
 }
 function filtrar_mes() {
     active_mes = document.querySelector('#select-bx-mes').value
-    destacar_grafico_mensal()
     exibir_pareto()
+    exibir_grafico_mensal()
     exibir_desligamentos()
 }
 function change_abertura(abertura_selected) {
     abertura = abertura_selected
     exibir_pareto()
-    corollas_por_area()
+    exibir_desligamentos()
 }
 function removeDuplicates (data) {
     let unique = data.reduce( function (a, b) {

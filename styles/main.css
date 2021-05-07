@@ -536,6 +536,9 @@ svg line {
 .quadro-content .destaque{
     font-size: 20pt;
 }
+svg .value{
+    font-size: 9.5px;
+}
 .quadro-footer {
     width: 100%;
     font-size: 7pt;

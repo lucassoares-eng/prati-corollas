@@ -21,22 +21,6 @@ function apagar_pareto() {
   myNode.innerHTML = '';
 }
 
-function destacar_pareto() { 
-  if (active_areaID == areaID || active_areaID == dirA) {
-    d3.selectAll('#grafico-pareto .bar')
-      .attr('opacity', 1)
-
-    /*ocultar valores*/
-    d3.selectAll('#grafico-pareto .value')
-      .remove()
-  } else {
-    d3.selectAll('#grafico-pareto .bar')
-      .attr('opacity', 0.5)
-      .filter(function(d) { return d.name == active_areaID; })
-      .attr('opacity', 1);
-  }
-}
-
 function dados_pareto(){
   let bars
   let dados = []
@@ -240,13 +224,8 @@ function exibir_pareto(){
         .attr('width', xScale.bandwidth() + 10)
       
       /*exibir valores*/
-      barGroups 
-        .append('text')
-        .attr('class', 'value')
-        .attr('x', (a) => xScale(a.name) + xScale.bandwidth() / 2)
-        .attr('y', (a) => yScale(a.corollas) + 12)
-        .attr('text-anchor', 'middle')
-        .text((a) => `${(a.corollas).toFixed(1).replace(".",",")}`)
+      d3.selectAll('#grafico-pareto .value')
+        .attr('opacity', 1);
     })
     .on('mouseleave', function () {
       /*desfazer destacar barra selecionada*/
@@ -259,7 +238,7 @@ function exibir_pareto(){
       /*ocultar valores*/
       d3.selectAll('#grafico-pareto .value')
         .filter(function(d) { return d.name != active_areaID && d.name != active_indicadorID; })
-        .remove()
+        .attr('opacity', 0);
     })
     .on('click', function () {
       if (abertura != 'indicadores') {
@@ -293,6 +272,16 @@ function exibir_pareto(){
         exibir_grafico_mensal()
       }
     })
-
+    /*exibir valores*/
+    barGroups 
+    .append('text')
+    .attr('class', 'value')
+    .attr('x', (a) => xScale(a.name) + xScale.bandwidth() / 2)
+    .attr('y', (a) => yScale(a.corollas) + 12)
+    .attr('text-anchor', 'middle')
+    .text((a) => `${(a.corollas).toFixed(1).replace(".",",")}`)
+    .attr('opacity', 0);
+  
+  destacar_pareto()
   document.getElementById("loader").style.display = "none";
 }

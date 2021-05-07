@@ -14,14 +14,18 @@ function meta_vs_real(div, indicadorID) {
     var svg = d3.select(div)
         .attr("width", width)
         .attr("height", height)
-        
 
     velocimetro_meta_vs_real(div, width, data)
     bar_meta_vs_real(div, width, data)
 }
 
 function velocimetro_meta_vs_real(div, width, data) {
-    percent = (data[0].value / data[1].value) * 100
+    let percent
+    if (data[0].value > 0 && data[1].value > 0) {
+        percent = (data[0].value / data[1].value) * 100
+    } else{
+        percent = NaN
+    }
 
     var margin = {
         top: 20,
@@ -77,9 +81,9 @@ function velocimetro_meta_vs_real(div, width, data) {
         .style('text-anchor', 'middle')
         .style('font-size', '18px')
         .style('fill', percent<=maxValue? mainColor: secondColor)
-        .text(function(d){
+        .text(percent > 0? function(d){
             return parseFloat(d).toFixed(1).replace(".",",") + '%';
-        })
+        } : '- %')
         .attr('transform', 'translate(' + 3 + ',' + 2 + ')');
 }
 
@@ -105,11 +109,16 @@ function bar_meta_vs_real (div, width, data) {
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + 115 + ")");
 
+    var vMax = d3.max(data, function (d) {
+        return d.value;
+    })
+    if (vMax == 0) {
+        vMax = 1
+    }
+
     var x = d3.scaleLinear()
         .range([0, width])
-        .domain([0, d3.max(data, function (d) {
-            return d.value;
-        })]);
+        .domain([0, vMax]);
 
     var y = d3.scaleBand()
         .range([height, 0], .1)

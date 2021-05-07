@@ -28,6 +28,9 @@ function corollas_mensal(div, indicadorID) {
         .padding(0.4)
 
     let vMax = Math.max(d3.max(dados.slice(), function (d) { return d.meta; }), d3.max(dados.slice(), function (d) { return d.corollas; }))
+    if (vMax == 0) {
+        vMax = 1
+    }
 
     const yScale = d3.scaleLinear()
         .range([height, 0])

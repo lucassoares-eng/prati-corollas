@@ -103,11 +103,12 @@ function corollas_por_area(div, indicadorID) {
         })
     //append valores
     bars.append('text')
-    .attr('class', 'value')
-    .attr('y', (a) => y(a.name) + y.bandwidth() / 2 )
-    .attr('x', (a) => x(a.corollas) / 2 )
-    .attr('text-anchor', 'middle')
-    .text((a) => `${(a.corollas).toFixed(2).replace(".",",")}`)
-    .attr('opacity', 0)
+        .attr('class', 'value')
+        .attr('y', (a) => y(a.name) + y.bandwidth() / 2 )
+        .attr('x', (a) => x(a.corollas) / 2 )
+        .attr('text-anchor', 'middle')
+        .text((a) => `${(a.corollas).toFixed(2).replace(".",",")}`)
+        .attr('opacity', 0)
 
+    destacar_indicador_por_area()
 }

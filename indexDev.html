@@ -7,7 +7,6 @@
     <title>Perdas em Corollas</title>
     <link rel="icon" type="image/png" href="images/favicon.webp"/>
     <script src="https://d3js.org/d3.v6.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js"></script>
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body onload="carregar_filtros(); exibir_tabela(); exibir_pareto(); exibir_grafico_mensal(); exibir_desligamentos(); ativar_filtro_meses()" onresize="ajustar_tela()">
@@ -29,7 +28,7 @@
             <label for="rd-home" class="icone" title="Página Inicial">
                 <img src="images/icone-home.webp" class="icone" alt="Home">
             </label>
-            <label for="rd-pareto" class="icone" title="Gráfico de pareto">
+            <label for="rd-pareto" class="icone" title="Gráficos">
                 <img src="images/icone-pareto.webp" class="icone" alt="pareto">
             </label>
             <!-- icone Plano de Ação:
@@ -205,48 +204,42 @@
                             </div>
                         </div>
                         <div id="area4">
-                            <div class="quadro-content"></div>
+                            <div class="quadro-titulo">REALIZADO Vs META</div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                            </div>
                         </div>
                         <div id="area5">
                             <div class="quadro-titulo">CUSTO MÉDIO</div>
                             <div class="quadro-content">
-                                <div class="destaque">R$ {{ custo_medio }}</div>
-                                <div class="quadro-footer"></div>
+                                <svg></svg>
                             </div>
                         </div>
                         <div id="area6">
                             <div class="quadro-titulo">PERDA</div>
                             <div class="quadro-content">
-                                <div class="destaque">R$ {{ perda }}</div>
-                                <div class="quadro-footer"></div>
+                                <div class="destaque" id="perda"></div>
                             </div>
                         </div>
                         <div id="area7">
-                            <div class="quadro-titulo">LIMITE</div>
+                            <div class="quadro-titulo">Nº LIMITE</div>
                             <div class="quadro-content">
-                                <div class="destaque">{{ limite }}</div>
-                                <div class="quadro-footer">Limite = {{ limite_percent }} am</div>
-                            </div>
-                        </div>
-                        <div id="area8">
-                            <div class="quadro-titulo">REAL</div>
-                            <div class="quadro-content">
-                                <div class="destaque">{{ real }}</div>
-                                <div class="quadro-footer">Real = {{ real_percent }} am</div>
+                                <div class="destaque" id="limite"></div>
+                                <div class="quadro-footer">Limite = 0,875% am</div>
                             </div>
                         </div>
                         <div id="area9">
-                            <div class="quadro-titulo">DIF.</div>
+                            <div class="quadro-titulo">Nº REALIZADO</div>
                             <div class="quadro-content">
-                                <div class="destaque">{{ dif }}</div>
-                                <div class="quadro-footer"></div>
+                                <div class="destaque" id="real"></div>
+                                <div class="quadro-footer" id="real_percent"></div>
                             </div>
                         </div>
                         <div id="area10">
                             <div class="quadro-titulo">COROLLAS</div>
                             <div class="quadro-content">
-                                <div class="destaque">{{ corollas }}</div>
-                                <div class="quadro-footer">Corolla = R$ 125.000</div>
+                                <div class="destaque" id="corollas"></div>
+                                <div class="quadro-footer">1 Corolla = R$ 125.000</div>
                             </div>
                         </div>
                         <div id="area11">
@@ -370,5 +363,6 @@
 <script src="scripts/desligamentos.js"></script>
 <script src="scripts/corollas_por_area.js"></script>
 <script src="scripts/corollas_mensal.js"></script>
+<script src="scripts/meta_vs_real.js"></script>
 </body>
 </html>

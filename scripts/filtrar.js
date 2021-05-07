@@ -1,3 +1,15 @@
+function filtrar_metas() {
+    return metasFt = metas.filter((el) => {
+        return el.areaID === active_areaID
+    })
+}
+
+function filtrar_real() {
+    return realFt = real.filter((el) => {
+        return el.areaID === active_areaID
+    })
+}
+
 function filtrar_diretoria() {
     let d = document.querySelector('#select-bx-diretoria').value;
     /* alterar gerência para 'todos'*/
@@ -246,6 +258,62 @@ function dados_indicador_mensal(indicadorID){
         el['corollas'] = realMensal
         dados.push(el)
         }
+    }
+
+    return dados
+}
+
+function dados_meta_vs_real(indicadorID) {
+    let dados = []
+    let metasFtIndicador = metasFt.filter((el) => {
+        return el.indicadorID == indicadorID
+    })
+    let realFtIndicador = realFt.filter((el) => {
+        return el.indicadorID == indicadorID
+    })
+
+    if (document.querySelector('#select-bx-mes').value == 'todos') {
+        let real = []
+        let realAcum = 0
+        realAcum = realFtIndicador.map((el) => {
+            return el.perda
+        }).reduce((a, b) => a + b, 0)
+        if (realAcum > 0) {
+            realAcum /= 125000
+        }
+        real['name'] = 'R'
+        real['value'] = realAcum
+        dados.push(real)
+
+        let meta = []
+        let metaAcum = metasFtIndicador.map((el) => {
+            return el.meta
+        }).reduce((a, b) => a + b, 0) / 12 * meses
+        meta['name'] = 'M'
+        meta['value'] = metaAcum
+        dados.push(meta)
+    } else {
+        let real = []
+        let realAcum = 0
+        realAcum = realFtIndicador.filter((el) => {
+            return el.mes == document.querySelector('#select-bx-mes').value
+        }).map((el) => {
+            return el.perda
+        })
+        if (realAcum > 0) {
+            realAcum /= 125000
+        }
+        real['name'] = 'R'
+        real['value'] = realAcum
+        dados.push(real)
+
+        let meta = []
+        let metaAcum = metasFtIndicador.map((el) => {
+            return el.meta
+        }).reduce((a, b) => a + b, 0) / 12
+        meta['name'] = 'M'
+        meta['value'] = metaAcum
+        dados.push(meta)
     }
 
     return dados

@@ -490,7 +490,7 @@ svg line {
     background-color: white;
 }
 #container-desligamentos #area5{
-    grid-row: 3;
+    grid-row: 3/5;
     grid-column: 3;
     background-color: white;
 }
@@ -502,11 +502,6 @@ svg line {
 #container-desligamentos #area7{
     grid-row: 3;
     grid-column: 4;
-    background-color: white;
-}
-#container-desligamentos #area8{
-    grid-row: 4;
-    grid-column: 3;
     background-color: white;
 }
 #container-desligamentos #area9{
@@ -537,6 +532,9 @@ svg line {
     font-size: 20pt;
 }
 svg .value{
+    font-size: 9.5px;
+}
+svg .value2{
     font-size: 9.5px;
 }
 .quadro-footer {

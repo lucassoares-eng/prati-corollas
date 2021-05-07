@@ -48,8 +48,8 @@ function corollas_mensal(div, indicadorID) {
     chart.append('g')
         .attr('class', 'grid')
         .call(makeYLines()
-        .tickSize(-width, 0, 0)
-        .tickFormat('')
+            .tickSize(-width, 0, 0)
+            .tickFormat('')
         )
 
     const barGroups = chart.selectAll()
@@ -104,4 +104,6 @@ function corollas_mensal(div, indicadorID) {
         .attr('text-anchor', 'middle')
         .text((a) => `${(a.corollas).toFixed(2).replace(".",",")}`)
         .attr('opacity', 0);
+
+    destacar_indicador_mensal()
 }

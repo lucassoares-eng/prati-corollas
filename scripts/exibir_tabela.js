@@ -4,18 +4,6 @@ function apagar_tabela() {
     myNode.innerHTML = '';
 }
 
-function filtrar_metas() {
-    return metasFt = metas.filter((el) => {
-        return el.areaID === active_areaID
-    })
-}
-
-function filtrar_real() {
-    return realFt = real.filter((el) => {
-        return el.areaID === active_areaID
-    })
-}
-
 function exibir_tabela() {
 
     /*filtrar dados*/

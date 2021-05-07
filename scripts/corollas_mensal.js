@@ -20,7 +20,7 @@ function corollas_mensal(div, indicadorID) {
     const xScale = d3.scaleBand()
         .range([0, width])
         .domain(dados.map((s) => s.name))
-        .padding(0.1)
+        .padding(0.05)
 
     const xText = d3.scaleBand()
         .range([0, width])

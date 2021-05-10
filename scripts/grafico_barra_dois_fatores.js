@@ -1,12 +1,10 @@
-function corollas_mensal(div, indicadorID) {
+function grafico_barra_dois_fatores (div, dados) {
     apagar_grafico(div)
-
-    dados = dados_indicador_mensal(indicadorID)
 
     const svg = d3.select(div);
 
     const margin = { top: 10, bottom: 20, left: 30, right: 0 };
-    const width = 345 - margin.left - margin.right;
+    const width = 370 - margin.left - margin.right;
     const height = 145 - margin.top - margin.bottom;
 
     const chart = svg.append('g')
@@ -15,14 +13,13 @@ function corollas_mensal(div, indicadorID) {
     const xScale = d3.scaleBand()
         .range([0, width])
         .domain(dados.map((s) => s.name))
-        .padding(0.05)
+        .padding(0.6)
 
     const xText = d3.scaleBand()
         .range([0, width])
         .domain(dados.map((s) => s.text))
-        .padding(0.4)
 
-    let vMax = Math.max(d3.max(dados.slice(), function (d) { return d.meta; }), d3.max(dados.slice(), function (d) { return d.corollas; }))
+    let vMax = Math.max(d3.max(dados.slice(), function (d) { return d.value_1; }), d3.max(dados.slice(), function (d) { return d.value_2; })) * 2
     if (vMax == 0) {
         vMax = 1
     }
@@ -51,57 +48,60 @@ function corollas_mensal(div, indicadorID) {
         )
 
     const barGroups = chart.selectAll()
-        .data(dados)
+        .data(dados.slice(0, meses))
         .enter()
         .append('g')
 
-        /*bar real*/
+        /*bar fator 1*/
         barGroups
         .append('rect')
-        .attr('class', 'bar')
+        .attr('class', 'bar-demitidos')
+        .attr('fill', '#4695ff')
         .attr('x', (g) => xScale(g.name))
-        .attr('y', (g) => yScale(g.corollas))
-        .attr('height', (g) => height - yScale(g.corollas))
+        .attr('y', (g) => yScale(g.value_1))
+        .attr('height', (g) => height - yScale(g.value_1))
         .attr('width', xScale.bandwidth())
         .on('mouseenter', function () {
             /*exibir valores*/
-            d3.selectAll(div + ' .value')
+            d3.selectAll(div + ' .value2')
                 .attr('opacity', 1)
         })
         .on('mouseleave', function () {
             /*ocultar valores*/
-            d3.selectAll(div + ' .value')
+            d3.selectAll(div + ' .value2')
                 .filter(function(d) { return d.name != active_mes })
                 .attr('opacity', 0)
         })
-        .on('click', function() {
-            if (active_mes == d3.select(this).data()[0].name) {
-                active_mes = 'todos'
-                d3.selectAll(div + ' .bar')
-                    .attr('opacity', 1)
-                
-                document.querySelector('#select-bx-mes').value = 'todos'
-                filtrar_mes()
-            } else {
-                active_mes = d3.select(this).data()[0].name
-                d3.selectAll(div + ' .bar')
-                    .attr('opacity', 0.5)
-                    .filter(function(d) { return d.name == active_mes; })
-                    .attr('opacity', 1);
-                
-                document.querySelector('#select-bx-mes').value = d3.select(this).data()[0].name
-                filtrar_mes()
-            }
+
+        /*bar fator 2*/
+        barGroups
+        .append('rect')
+        .attr('class', 'bar-demissionarios')
+        .attr('fill', '#D3D3D3')
+        .attr('x', (g) => xScale(g.name))
+        .attr('y', (g) => yScale(g.value_2) + yScale(g.value_1) - height)
+        .attr('height', (g) => height - yScale(g.value_2))
+        .attr('width', xScale.bandwidth())
+        .on('mouseenter', function () {
+            /*exibir valores*/
+            d3.selectAll(div + ' .value2')
+                .attr('opacity', 1)
         })
+        .on('mouseleave', function () {
+            /*ocultar valores*/
+            d3.selectAll(div + ' .value2')
+                .filter(function(d) { return d.name != active_mes })
+                .attr('opacity', 0)
+        })
+
         /*exibir valores*/
         barGroups 
         .append('text')
-        .attr('class', 'value')
+        .attr('class', 'value2')
+        .attr('fill', '#6c757d')
         .attr('x', (a) => xScale(a.name) + xScale.bandwidth() / 2)
-        .attr('y', (a) => yScale(a.corollas) + 12)
+        .attr('y', (a) => yScale(a.value_1) + yScale(a.value_2) - height - 3)
         .attr('text-anchor', 'middle')
-        .text((a) => `${(a.corollas).toFixed(2).replace(".",",")}`)
+        .text((a) => `${(a.value_1 + a.value_2).toFixed(0)}`)
         .attr('opacity', 0);
-
-    destacar_indicador_mensal()
 }

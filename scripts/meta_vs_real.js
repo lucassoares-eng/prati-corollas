@@ -1,10 +1,5 @@
-function apagar_meta_vs_real(div) {
-    let myNode = document.querySelector(div);
-    myNode.innerHTML = '';
-}
-
 function meta_vs_real(div, indicadorID) {
-    apagar_meta_vs_real(div)
+    apagar_grafico(div)
 
     data = dados_meta_vs_real(indicadorID)
 

@@ -288,6 +288,22 @@ select option[disabled] {
     cursor: pointer;
     margin-left: 8px;
 }
+.quadro-legenda{
+    font-size: 10px;
+    font-weight: normal;
+}
+.icone-legenda1 {
+    background-color: #4695ff;
+    color: #4695ff;
+    margin-left: 5px;
+    margin-right: 1px;
+}
+.icone-legenda2 {
+    background-color: #D3D3D3;
+    color: #D3D3D3;
+    margin-left: 5px;
+    margin-right: 1px;
+}
 #bloco-pareto .graficos{
     width: calc(100% - 40px);
     height: calc(100% - 40px);
@@ -423,6 +439,9 @@ svg text {
 svg path {
     stroke: rgba(245, 245, 245, 0);
 }
+svg .chart-line {
+    stroke: #4695ff;
+}
 svg line {
     stroke: whitesmoke;
 }
@@ -529,7 +548,7 @@ svg line {
     place-content: center;
 }
 .quadro-content .destaque{
-    font-size: 20pt;
+    font-size: 19pt;
 }
 svg .value{
     font-size: 9.5px;

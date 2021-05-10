@@ -1,10 +1,5 @@
-function apagar_corollas_por_area(div) {
-    let myNode = document.querySelector(div);
-    myNode.innerHTML = '';
-}
-
 function corollas_por_area(div, indicadorID) {
-    apagar_corollas_por_area(div)
+    apagar_grafico(div)
 
     data = dados_indicador_por_area(indicadorID)
     /*ordenar dados*/

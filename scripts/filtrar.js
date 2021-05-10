@@ -318,3 +318,41 @@ function dados_meta_vs_real(indicadorID) {
 
     return dados
 }
+
+function dados_quadro() {
+    var quadro = [
+        {name:1, text:'jan', value: 10},
+        {name:2, text:'fev', value: 12},
+        {name:3, text:'mar', value: 15},
+        {name:4, text:'abr', value: 9},
+        {name:5, text:'mai', value: 12},
+        {name:6, text:'jun', value: 10},
+        {name:7, text:'jul', value: 14},
+        {name:8, text:'ago', value: 15},
+        {name:9, text:'set', value: 12},
+        {name:10, text:'out', value: 0},
+        {name:11, text:'nov', value: 0},
+        {name:12, text:'dez', value: 0},
+    ]
+
+    return quadro
+}
+
+function dados_demitidos_demissionarios() {
+    var quadro = [
+        {name:1, text:'jan', value_1: 3, value_2: 1},
+        {name:2, text:'fev', value_1: 3, value_2: 1},
+        {name:3, text:'mar', value_1: 3, value_2: 4},
+        {name:4, text:'abr', value_1: 3, value_2: 2},
+        {name:5, text:'mai', value_1: 0, value_2: 0},
+        {name:6, text:'jun', value_1: 0, value_2: 0},
+        {name:7, text:'jul', value_1: 0, value_2: 0},
+        {name:8, text:'ago', value_1: 0, value_2: 0},
+        {name:9, text:'set', value_1: 0, value_2: 0},
+        {name:10, text:'out', value_1: 0, value_2: 0},
+        {name:11, text:'nov', value_1: 0, value_2: 0},
+        {name:12, text:'dez', value_1: 0, value_2: 0},
+    ]
+
+    return quadro
+}

@@ -175,13 +175,13 @@
             <section class="bloco" id="bloco-desligamentos">
                 <div class="indicador-txt">
                     <span>Perda por Desligamentos</span>
-                    <p>O indicador de perda por desligamentos é calculado com base em três fatores: (1) headcount, (2) número de colaboradores desligados (demitidos + demissionários) e (3) limite aceitável de desligamentos. O limite aceitável de desligamentos é de 0,875% ao mês, ou seja, uma área com 115 colaboradores pode desligar até 1 colaborador por mês, ou 12 durante o ano. Até o limite aceitável não há perda. A perda passa a ser contabilizada quando a área extrapola o limite aceitável. O valor é padrão para cada um dos dois tipos de desligamentos possíveis, sendo R$ 2.500 para demissionários e R$ 5.000 para demitidos. Outro fator importante é que colaboradores em período de experiência não entram na conta, pois existe um indicador específico para eles.</p>
+                    <p>O indicador de perda por desligamentos é calculado com base em três fatores: (1) headcount, (2) número de colaboradores desligados (demitidos + demissionários) e (3) limite aceitável de desligamentos. O limite aceitável de desligamentos é de 0,875% ao mês, ou seja, uma área com 115 colaboradores pode desligar até 1 colaborador por mês, ou 12 durante o ano. Até o limite aceitável não há perda. A perda passa a ser contabilizada quando a área extrapola o limite aceitável. O valor é padrão para cada tipo de desligamento, sendo R$ 5.000 para demitidos e R$ 2.500 para demissionários. Outro fator importante é que colaboradores em período de experiência não entram na conta, pois existe um indicador específico para eles.</p>
                 </div>
                 <div class="indicador-content">
                     <div id="container-desligamentos">
                         <div id="area1">
                             <div class="quadro-titulo">
-                                <span>COROLLAS POR ÁREA</span>
+                                <span>COROLLAS (por área)</span>
                                 <div class="quadro-icones">
                                     <span class="quadro-icone" title="Diretorias" onclick="change_abertura('diretorias')">D</span>
                                     <span class="quadro-icone" title="Gerências" onclick="change_abertura('gerencias')">G</span>
@@ -192,19 +192,29 @@
                             </div>
                         </div>
                         <div id="area2">
-                            <div class="quadro-titulo">QUADRO</div>
+                            <div class="quadro-titulo">
+                                <span>HEADCOUNT</span>
+                            </div>
                             <div class="quadro-content">
                                 <svg></svg>
                             </div>
                         </div>
                         <div id="area3">
-                            <div class="quadro-titulo">DESLIGAMENTOS</div>
+                            <div class="quadro-titulo">
+                                <span>DESLIGAMENTOS</span>
+                                <div class="quadro-legenda">
+                                    <span class="icone-legenda1">D</span>
+                                    <span class="legenda">Demitidos</span>
+                                    <span class="icone-legenda2">D</span>
+                                    <span class="legenda">Demissionários</span>
+                                </div>
+                            </div>
                             <div class="quadro-content">
                                 <svg></svg>
                             </div>
                         </div>
                         <div id="area4">
-                            <div class="quadro-titulo">REALIZADO Vs META</div>
+                            <div class="quadro-titulo">COROLLAS (real Vs meta)</div>
                             <div class="quadro-content">
                                 <svg></svg>
                             </div>
@@ -213,6 +223,14 @@
                             <div class="quadro-titulo">CUSTO MÉDIO</div>
                             <div class="quadro-content">
                                 <svg></svg>
+                                <div class="destaque" id="custo_medio"></div>
+                                <div class="quadro-legenda">
+                                    <div style="height: 5px;"></div>
+                                    <span class="icone-legenda1">D</span>
+                                    <span class="legenda">Demitidos</span>
+                                    <span class="icone-legenda2">D</span>
+                                    <span class="legenda">Demissionários</span>
+                                </div>
                             </div>
                         </div>
                         <div id="area6">
@@ -243,7 +261,7 @@
                             </div>
                         </div>
                         <div id="area11">
-                            <div class="quadro-titulo">COROLLAS MENSAL</div>
+                            <div class="quadro-titulo">COROLLAS (mensal)</div>
                             <div class="quadro-content">
                                 <svg></svg>
                             </div>
@@ -354,6 +372,7 @@
     var pag_pareto = 0
     var selectedBar
 </script>
+<script src="scripts/app.js"></script>
 <script src="scripts/grafico_pareto.js"></script>
 <script src="scripts/grafico_mensal.js"></script>
 <script src="scripts/carregar_filtros.js"></script>
@@ -364,5 +383,8 @@
 <script src="scripts/corollas_por_area.js"></script>
 <script src="scripts/corollas_mensal.js"></script>
 <script src="scripts/meta_vs_real.js"></script>
+<script src="scripts/grafico_de_linha.js"></script>
+<script src="scripts/grafico_barra_dois_fatores.js"></script>
+<script src="scripts/gauge_dois_fatores.js"></script>
 </body>
 </html>

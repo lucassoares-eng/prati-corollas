@@ -356,3 +356,17 @@ function dados_demitidos_demissionarios() {
 
     return quadro
 }
+
+function desfazer_item_selecionado() {
+    active_indicadorID = 'todos'
+    
+    document.querySelector('.item-selecionado').style.opacity = "0"
+
+    if (abertura == 'indicadores') {
+        d3.selectAll('#grafico-pareto .bar')
+            .attr('opacity', 1)
+    }
+
+    exibir_grafico_mensal()
+    exibir_pareto()
+}

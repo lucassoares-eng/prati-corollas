@@ -5,7 +5,7 @@ function grafico_barra_dois_fatores (div, dados) {
 
     const margin = { top: 10, bottom: 20, left: 30, right: 0 };
     const width = 370 - margin.left - margin.right;
-    const height = 145 - margin.top - margin.bottom;
+    const height = 125 - margin.top - margin.bottom;
 
     const chart = svg.append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`)
@@ -69,7 +69,6 @@ function grafico_barra_dois_fatores (div, dados) {
         .on('mouseleave', function () {
             /*ocultar valores*/
             d3.selectAll(div + ' .value2')
-                .filter(function(d) { return d.name != active_mes })
                 .attr('opacity', 0)
         })
 
@@ -90,7 +89,6 @@ function grafico_barra_dois_fatores (div, dados) {
         .on('mouseleave', function () {
             /*ocultar valores*/
             d3.selectAll(div + ' .value2')
-                .filter(function(d) { return d.name != active_mes })
                 .attr('opacity', 0)
         })
 

@@ -138,17 +138,17 @@ function addBreakSpace(inputString) {
 }
 
 function destacar_pareto() { 
-    if (active_areaID == areaID || active_areaID == dirA) {
+    if ((active_areaID == areaID && abertura!= 'indicadores') || (active_areaID == dirA && abertura != 'diretorias') || (abertura == 'indicadores' && active_indicadorID == 'todos')) {
         d3.selectAll('#grafico-pareto .bar')
             .attr('opacity', 1)
-    
+
         /*ocultar valores*/
         d3.selectAll('#grafico-pareto .value')
             .attr('opacity', 0);
     } else {
         d3.selectAll('#grafico-pareto .bar')
             .attr('opacity', 0.5)
-            .filter(function(d) { return d.name == active_areaID; })
+            .filter(function(d) { return d.name == active_areaID || d.name == active_indicadorID; })
             .attr('opacity', 1);
 
         /*exibir valor*/
@@ -180,7 +180,7 @@ function destacar_grafico_mensal() {
 }
 
 function destacar_indicador_por_area() {
-    if (active_areaID == areaID || active_areaID == dirA) {
+    if (active_areaID == areaID || (active_areaID == dirA && abertura != 'diretorias')) {
         d3.selectAll('#area1 .bar')
             .attr('opacity', 1)
 

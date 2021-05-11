@@ -291,6 +291,10 @@ select option[disabled] {
 .quadro-legenda{
     font-size: 10px;
     font-weight: normal;
+    width: 100%;
+    display: flex;
+    place-content: center;
+    align-items: center;
 }
 .icone-legenda1 {
     background-color: #4695ff;
@@ -561,4 +565,23 @@ svg .value2{
     font-size: 7pt;
     padding-top: 10px;
     opacity: 0.75;
+}
+.item-selecionado {
+    background-color: #4695ff;
+    color: white;
+    height: 18px;
+    display: flex;
+    opacity: 0;
+    font-weight: normal;
+}
+#item-selecionado {
+    margin: 3px 10px 2px 5px;
+}
+#botao-fechar {
+    background-color: #3A3E41;
+    font-size: 9px;
+    margin-bottom: 5px;
+    width: 12px;
+    text-align: center;
+    cursor: pointer;
 }

@@ -74,7 +74,7 @@
         <input type="radio" id="rd-home" name="rd-grupo" checked/>
         <input type="radio" id="rd-pareto" name="rd-grupo"/>
         <input type="radio" id="rd-tasks" name="rd-grupo"/>
-        <input type="radio" id="rd-indicador7" name="rd-grupo" checked/>
+        <input type="radio" id="rd-indicador7" name="rd-grupo"/>
         <input type="radio" id="rd-indicador23" name="rd-grupo"/>
         <div id="loader"></div>
         <section class="sections">
@@ -139,7 +139,7 @@
                 <div class="graficos">
                     <div class="grafico">
                         <div class="quadro-titulo">
-                            <span>PARETO</span>
+                            <span>COROLLAS (pareto)</span>
                             <nav class="quadro-icones">
                                 <label class="quadro-icone" id="icone-diretorias" title="Diretorias" onclick="zerar_pag(); change_abertura('diretorias')">
                                     <span>D</span>
@@ -163,7 +163,13 @@
                         <div class="subtitulo"></div>
                     </div>
                     <div class="grafico">
-                        <div class="quadro-titulo">MENSAL</div>
+                        <div class="quadro-titulo">
+                            <span>COROLLAS (mensal)</span>
+                            <div class="item-selecionado">
+                                <span id="item-selecionado"></span>
+                                <span id="botao-fechar" onclick="desfazer_item_selecionado()">x</span>
+                            </div>
+                        </div>
                         <div id="grafico-mensal">
                             <svg></svg>
                         </div>
@@ -202,15 +208,15 @@
                         <div id="area3">
                             <div class="quadro-titulo">
                                 <span>DESLIGAMENTOS</span>
+                            </div>
+                            <div class="quadro-content">
+                                <svg></svg>
                                 <div class="quadro-legenda">
                                     <span class="icone-legenda1">D</span>
                                     <span class="legenda">Demitidos</span>
                                     <span class="icone-legenda2">D</span>
                                     <span class="legenda">Demissionários</span>
                                 </div>
-                            </div>
-                            <div class="quadro-content">
-                                <svg></svg>
                             </div>
                         </div>
                         <div id="area4">
@@ -224,12 +230,14 @@
                             <div class="quadro-content">
                                 <svg></svg>
                                 <div class="destaque" id="custo_medio"></div>
-                                <div class="quadro-legenda">
-                                    <div style="height: 5px;"></div>
-                                    <span class="icone-legenda1">D</span>
-                                    <span class="legenda">Demitidos</span>
-                                    <span class="icone-legenda2">D</span>
-                                    <span class="legenda">Demissionários</span>
+                                <div class="quadro-footer">
+                                    <div class="quadro-legenda">
+                                        <div style="height: 5px;"></div>
+                                        <span class="icone-legenda1">D</span>
+                                        <span class="legenda">Demitidos</span>
+                                        <span class="icone-legenda2">D</span>
+                                        <span class="legenda">Demissionários</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

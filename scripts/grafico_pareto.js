@@ -2,13 +2,11 @@ function pag_pareto_up() {
   pag_pareto ++
   document.querySelector('.anterior').style.pointerEvents = "initial"
   exibir_pareto()
-  destacar_pareto()
 }
 
 function pag_pareto_down() {
   pag_pareto --
   exibir_pareto()
-  destacar_pareto()
 }
 
 function zerar_pag() {
@@ -26,17 +24,28 @@ function dados_pareto(){
   let dados = []
   if (abertura != 'indicadores') {
     bars = eval(abertura)
-    /*filtrar gerências de acordo com a diretoria selecionada*/
+    //filtrar gerências de acordo com a diretoria selecionada
     if (abertura == 'gerencias' && document.querySelector('#select-bx-diretoria').value != 'todos') {
       let d = document.querySelector('#select-bx-diretoria').value
       bars = bars.filter ( (el) => {
         return Math.round(el.areaID / 100) * 100 == d
       })
     }
+    var metasFtPareto = metas
+    var realFtPareto = real
+    //filtrar indicador selecionado
+    if (active_indicadorID != 'todos') {
+      metasFtPareto = metas.filter( el => {
+        return el.indicadorID == active_indicadorID
+      })
+      realFtPareto = real.filter ( el => {
+        return el.indicadorID == active_indicadorID
+      })
+    }
     if (document.querySelector('#select-bx-mes').value == 'todos') {
       for (let i in bars) {
         let el = []
-        let metaAcum = metas.filter((el) => {
+        let metaAcum = metasFtPareto.filter((el) => {
           return el.areaID === bars[i].areaID
         }).map((el) => {
           return el.meta
@@ -50,7 +59,7 @@ function dados_pareto(){
 
         let realAcum = 0
         for (let j in indicReal) {
-          let elAcum = real.filter((el) => {
+          let elAcum = realFtPareto.filter((el) => {
             return (el.areaID === bars[i].areaID) && (el.indicadorID == indicReal[j])
           }).map((el) => {
             return el.perda
@@ -73,13 +82,13 @@ function dados_pareto(){
     } else {
       for (let i in bars) {
         let el = []
-        let meta = metas.filter((el) => {
+        let meta = metasFtPareto.filter((el) => {
           return el.areaID === bars[i].areaID
         }).map((el) => {
           return el.meta
         }).reduce((a, b) => a + b, 0) / 12
 
-        let r = real.filter((el) => {
+        let r = realFtPareto.filter((el) => {
           return el.areaID === bars[i].areaID && el.mes == document.querySelector('#select-bx-mes').value
         }).map((el) => {
           return el.corollas
@@ -123,7 +132,7 @@ function dados_pareto(){
     }
   }
 
-  /*ordenar dados*/
+  //ordenar dados
   dados.sort(ordemDescrescente("corollas"))
 
   return dados
@@ -151,7 +160,7 @@ function exibir_pareto(){
 
   const margin = { top: 20, bottom: 56, left: 30, right: 0 };
   const width = 550 - margin.left - margin.right;
-  const height = 290 - margin.top - margin.bottom;
+  const height = 280 - margin.top - margin.bottom;
 
   const chart = svg.append('g')
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
@@ -167,7 +176,9 @@ function exibir_pareto(){
     .padding(0.4)
 
   let vMax = Math.max(d3.max(dados.slice(pag_pareto * numBars,numBars + (pag_pareto * numBars)), function (d) { return d.meta; }), d3.max(dados.slice(pag_pareto * numBars,numBars + (pag_pareto * numBars)), function (d) { return d.corollas; }))
-  
+
+  if( vMax == 0 ) { vMax = 1 }
+
   const yScale = d3.scaleLinear()
     .range([height, 0])
     .domain([0, vMax])
@@ -260,10 +271,13 @@ function exibir_pareto(){
       }else {
         if (active_indicadorID == d3.select(this).data()[0].name) {
           active_indicadorID = 'todos'
+          document.querySelector('.item-selecionado').style.opacity = "0"
           d3.selectAll('#grafico-pareto .bar')
             .attr('opacity', 1)
         } else {
           active_indicadorID = d3.select(this).data()[0].name
+          document.querySelector('#item-selecionado').innerText = indicadores.find(element => element.indicadorID === active_indicadorID).indicadorName
+          document.querySelector('.item-selecionado').style.opacity = "1"
           d3.selectAll('#grafico-pareto .bar')
             .attr('opacity', 0.5)
             .filter(function(d) { return d.name == active_indicadorID; })

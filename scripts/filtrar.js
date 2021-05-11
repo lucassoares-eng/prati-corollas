@@ -340,10 +340,10 @@ function dados_quadro() {
 
 function dados_demitidos_demissionarios() {
     var quadro = [
-        {name:1, text:'jan', value_1: 3, value_2: 1},
-        {name:2, text:'fev', value_1: 3, value_2: 1},
-        {name:3, text:'mar', value_1: 3, value_2: 4},
-        {name:4, text:'abr', value_1: 3, value_2: 2},
+        {name:1, text:'jan', value_1: 1, value_2: 1},
+        {name:2, text:'fev', value_1: 1, value_2: 1},
+        {name:3, text:'mar', value_1: 1, value_2: 4},
+        {name:4, text:'abr', value_1: 1, value_2: 2},
         {name:5, text:'mai', value_1: 0, value_2: 0},
         {name:6, text:'jun', value_1: 0, value_2: 0},
         {name:7, text:'jul', value_1: 0, value_2: 0},

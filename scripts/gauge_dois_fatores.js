@@ -58,10 +58,15 @@ function gauge_dois_fatores(div, dados) {
         .attr('d', arc)
         .style('fill', mainColor);
 
+    var percent = value_1 / (value_1 + value_2)
+    if ( percent > 0.5) {
+        percent = 1
+    }
+
     // add text
     svg.append('text')
         .attr('class', 'value2')
-        .attr('y', -40 + 80 * (value_1 / (value_1 + value_2)) * 2 )
+        .attr('y', -40 + (80 * percent))
         .attr('x', 55 )
         .attr('text-anchor', 'middle')
         .attr('font-size', '9.5px')
@@ -69,7 +74,7 @@ function gauge_dois_fatores(div, dados) {
         .attr("fill", "#6c757d")
         .attr('opacity', 1)
         .append('svg:tspan')
-        .attr('y', -30 + 80 * (value_1 / (value_1 + value_2)) * 2 )
+        .attr('y', -30 + (80 * percent))
         .attr('x', 58 )
         .text((value_1/ (value_1 + value_2) * 100).toFixed(0) + '%')
         .attr("fill", "#6c757d")

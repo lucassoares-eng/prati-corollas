@@ -171,13 +171,13 @@ function dados_indicador_por_area(indicadorID){
     } else {
         for (let i in bars) {
             let el = []
-            let meta = metas.filter((el) => {
+            let meta = metasIndicador.filter((el) => {
                 return el.areaID === bars[i].areaID
             }).map((el) => {
                 return el.meta
             }).reduce((a, b) => a + b, 0) / 12
 
-            let r = real.filter((el) => {
+            let r = realIndicador.filter((el) => {
                 return el.areaID === bars[i].areaID && el.mes == document.querySelector('#select-bx-mes').value
             }).map((el) => {
                 return el.corollas

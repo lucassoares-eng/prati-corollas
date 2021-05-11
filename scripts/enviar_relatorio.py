@@ -1,6 +1,5 @@
 from pandas import read_csv
 from bs4 import BeautifulSoup
-import prettierfier
 from atualizar_arvore import get_arvore
 from atualizar_indicadores import get_indicadores
 import atualizar_dados as dados

@@ -1,6 +1,5 @@
 from pandas import read_csv, DataFrame
 from os import listdir
-import json
 
 def get_metas(diretoria, gerencia):
     #carregar dados de meta:

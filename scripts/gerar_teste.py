@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
-import prettierfier
 from atualizar_arvore import get_arvore
 from atualizar_indicadores import get_indicadores
+from atualizar_desligamentos import get_desligamentos
 import atualizar_dados as dados
 
 #parâmetros
@@ -17,6 +17,9 @@ indicadores = get_indicadores()
 #carregar dados
 metas = dados.get_metas(diretoria, gerencia)
 real = dados.get_real(diretoria, gerencia)
+
+#carregar desligamentos
+desligamentos = get_desligamentos(diretoria, gerencia)
 
 #abrir arquivo html
 with open('../indexDev.html', encoding='UTF-8') as html:

@@ -1,5 +1,4 @@
-from pandas import read_csv, DataFrame
-import json
+from pandas import read_csv
 
 def get_arvore(diretoria, gerencia):  
     #carregar dados da árvore:

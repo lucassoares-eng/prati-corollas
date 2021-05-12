@@ -1,10 +1,8 @@
-function grafico_de_linha(div) {
+function grafico_de_linha(div, dados) {
     apagar_grafico(div)
 
-    dados = dados_quadro()
-
     // set the dimensions and margins of the graph
-    var margin = {top: 20, right: 10, bottom: 20, left: 30},
+    var margin = {top: 20, right: 10, bottom: 20, left: 40},
     width = 370 - margin.left - margin.right,
     height = 145 - margin.top - margin.bottom
 
@@ -36,12 +34,16 @@ function grafico_de_linha(div) {
         .scale(y)
 
     /*y axis*/
-        chart.append('g')
-        .call(d3.axisLeft(y));
+    chart.append('g')
+        .call(d3.axisLeft(y)
+            .ticks(5)
+            .tickFormat(x => `${x.toLocaleString('pt-BR')}`)
+        )
 
     chart.append('g')
         .attr('class', 'grid')
         .call(makeYLines()
+            .ticks(5)
             .tickSize(-width, 0, 0)
             .tickFormat('')
         )
@@ -144,6 +146,6 @@ function grafico_de_linha(div) {
             .attr('x', (a) => x(a.name) + x.bandwidth() / 2)
             .attr('y', (a) => y(a.value) - 7)
             .attr('text-anchor', 'middle')
-            .text((a) => `${(a.value).toFixed(0)}`)
+            .text((a) => `${(a.value).toLocaleString('pt-BR')}`)
             .attr('opacity', 0);
 }

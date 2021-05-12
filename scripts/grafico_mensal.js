@@ -106,11 +106,15 @@ function exibir_grafico_mensal() {
     .call(d3.axisBottom(xText))
   
   chart.append('g')
-    .call(d3.axisLeft(yScale));
+    .call(d3.axisLeft(yScale)
+      .ticks(5)
+      .tickFormat(x => `${x.toLocaleString('pt-BR')}`)
+    )
 
   chart.append('g')
     .attr('class', 'grid')
     .call(makeYLines()
+      .ticks(5)
       .tickSize(-width, 0, 0)
       .tickFormat('')
     )

@@ -193,21 +193,8 @@ function dados_indicador_por_area(indicadorID){
     }
     return dados
 }
+
 function dados_indicador_mensal(indicadorID){
-    const mesText = [
-        {name:1, text:'jan'},
-        {name:2, text:'fev'},
-        {name:3, text:'mar'},
-        {name:4, text:'abr'},
-        {name:5, text:'mai'},
-        {name:6, text:'jun'},
-        {name:7, text:'jul'},
-        {name:8, text:'ago'},
-        {name:9, text:'set'},
-        {name:10, text:'out'},
-        {name:11, text:'nov'},
-        {name:12, text:'dez'},
-    ]
 
     let dados = []
     let metasFtIndicador = metasFt.filter((el) => {
@@ -274,12 +261,13 @@ function dados_meta_vs_real(indicadorID) {
 
     if (document.querySelector('#select-bx-mes').value == 'todos') {
         let real = []
-        let realAcum = 0
-        realAcum = realFtIndicador.map((el) => {
+        let realAcum = realFtIndicador.map((el) => {
             return el.perda
         }).reduce((a, b) => a + b, 0)
         if (realAcum > 0) {
             realAcum /= 125000
+        } else {
+            realAcum = 0
         }
         real['name'] = 'R'
         real['value'] = realAcum
@@ -294,14 +282,15 @@ function dados_meta_vs_real(indicadorID) {
         dados.push(meta)
     } else {
         let real = []
-        let realAcum = 0
-        realAcum = realFtIndicador.filter((el) => {
+        let realAcum = realFtIndicador.filter((el) => {
             return el.mes == document.querySelector('#select-bx-mes').value
         }).map((el) => {
             return el.perda
         })
         if (realAcum > 0) {
             realAcum /= 125000
+        } else {
+            realAcum = 0
         }
         real['name'] = 'R'
         real['value'] = realAcum
@@ -320,41 +309,47 @@ function dados_meta_vs_real(indicadorID) {
 }
 
 function dados_quadro() {
-    var quadro = [
-        {name:1, text:'jan', value: 10},
-        {name:2, text:'fev', value: 12},
-        {name:3, text:'mar', value: 15},
-        {name:4, text:'abr', value: 9},
-        {name:5, text:'mai', value: 12},
-        {name:6, text:'jun', value: 10},
-        {name:7, text:'jul', value: 14},
-        {name:8, text:'ago', value: 15},
-        {name:9, text:'set', value: 12},
-        {name:10, text:'out', value: 0},
-        {name:11, text:'nov', value: 0},
-        {name:12, text:'dez', value: 0},
-    ]
+
+    var quadroFt = desligamentos.filter( el => {
+        return el.areaID == active_areaID
+    })
+
+    let quadro = []
+    for ( i in mesText) {
+        let el = []
+        el['name'] = parseInt(i) + 1
+        el['text'] = mesText[i].text
+        el['value'] = 0
+        if ( i < quadroFt.length ) {
+            el['value'] = quadroFt[i].quadro
+        }
+        quadro.push(el)
+    }
 
     return quadro
 }
 
 function dados_demitidos_demissionarios() {
-    var quadro = [
-        {name:1, text:'jan', value_1: 1, value_2: 1},
-        {name:2, text:'fev', value_1: 1, value_2: 1},
-        {name:3, text:'mar', value_1: 1, value_2: 4},
-        {name:4, text:'abr', value_1: 1, value_2: 2},
-        {name:5, text:'mai', value_1: 0, value_2: 0},
-        {name:6, text:'jun', value_1: 0, value_2: 0},
-        {name:7, text:'jul', value_1: 0, value_2: 0},
-        {name:8, text:'ago', value_1: 0, value_2: 0},
-        {name:9, text:'set', value_1: 0, value_2: 0},
-        {name:10, text:'out', value_1: 0, value_2: 0},
-        {name:11, text:'nov', value_1: 0, value_2: 0},
-        {name:12, text:'dez', value_1: 0, value_2: 0},
-    ]
 
-    return quadro
+    var desligamentosFt = desligamentos.filter( el => {
+        return el.areaID == active_areaID
+    })
+
+    let demitidos_demissionarios = []
+    for ( i in mesText) {
+        let el = []
+        el['name'] = parseInt(i) + 1
+        el['text'] = mesText[i].text
+        el['value_1'] = 0
+        el['value_2'] = 0
+        if ( i < desligamentosFt.length ) {
+            el['value_1'] = desligamentosFt[i].demitidos
+            el['value_2'] = desligamentosFt[i].demissionarios
+        }
+        demitidos_demissionarios.push(el)
+    }
+
+    return demitidos_demissionarios
 }
 
 function desfazer_item_selecionado() {

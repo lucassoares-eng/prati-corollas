@@ -58,6 +58,17 @@ new_tag.string = const
 #substituir tag
 s = s.replace_with(new_tag)
 
+#atualizar tag desligamentos
+#selecionar tag
+s = soup.find('script', {'id':"dados-desligamentos"})
+#criar nova tag
+new_tag = soup.new_tag('script', id="dados-desligamentos")
+#definir conteúdo da nova tag
+const = 'const desligamentos = ' + desligamentos
+new_tag.string = const
+#substituir tag
+s = s.replace_with(new_tag)
+
 #salvar html
 with open("../teste.html", "w", encoding='UTF-8') as file:
     file.write(soup.prettify(formatter=None))

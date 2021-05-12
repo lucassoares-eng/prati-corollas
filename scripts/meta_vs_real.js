@@ -19,7 +19,7 @@ function velocimetro_meta_vs_real(div, width, data) {
     if (data[0].value > 0 && data[1].value > 0) {
         percent = (data[0].value / data[1].value) * 100
     } else{
-        percent = NaN
+        percent = 0
     }
 
     var margin = {

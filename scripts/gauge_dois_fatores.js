@@ -1,6 +1,12 @@
 function gauge_dois_fatores(div, dados) {
     apagar_grafico(div)
 
+    if (document.querySelector('#select-bx-mes').value != 'todos') {
+        dados = dados.filter( el => {
+            return el.name == document.querySelector('#select-bx-mes').value
+        })
+    }
+
     let value_1 = dados.map( el => {
         return el.value_1
     }).reduce((a, b) => a + b, 0)

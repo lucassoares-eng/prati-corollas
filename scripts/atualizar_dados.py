@@ -1,5 +1,4 @@
-from pandas import read_csv, DataFrame
-from os import listdir
+from pandas import read_csv, DataFrame, ExcelFile
 
 def get_metas(diretoria, gerencia):
     #carregar dados de meta:
@@ -32,17 +31,13 @@ def get_metas(diretoria, gerencia):
 
 def get_real(diretoria, gerencia):
     # carregar lista de meses:
-    arquivos = listdir('../dados')
-    meses = []
-    for a in arquivos:
-        if 'real_' in a:
-            meses.append(a)
-    meses.sort()
+    xl = ExcelFile('M:\PERDAS_COROLLAS\COROLLAS 2021\RELATORIOS_BASE\gerencias.xlsx')
+    meses = xl.sheet_names
 
     # carregar dados real:
     dfReal = DataFrame()
     for mes in meses:
-        dfTemp = read_csv(f'../dados/{mes}', sep=';', dtype='str')
+        dfTemp = xl.parse(sheet_name= mes, sep=';', dtype='str')
         dfTemp['mes'] = int(mes[5:7])
         dfReal = dfReal.append(dfTemp)
     # excluir linhas vazias:

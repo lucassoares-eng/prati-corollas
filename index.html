@@ -5,17 +5,17 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Perdas em Corollas</title>
-    <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/lucassoares-eng/prati-corollas@main/images/favicon.webp"/>
+    <link rel="icon" type="image/png" href="images/favicon.webp"/>
     <script src="https://d3js.org/d3.v6.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lucassoares-eng/prati-corollas@main/styles/main_001.min.css">
+    <link rel="stylesheet" href="styles/main.css">
 </head>
-<body onload="carregar_filtros(); exibir_tabela(); exibir_pareto(); exibir_grafico_mensal(); desativar_filtro_meses()" onresize="ajustar_tela()">
+<body onload="carregar_filtros(); exibir_tabela(); exibir_pareto(); exibir_grafico_mensal(); exibir_desligamentos(); ativar_filtro_meses()" onresize="ajustar_tela()">
 <!--conteúdo da página-->
 <main>
     <header>
         <div class="row">
             <div class="container">
-                <img alt="Prati-Donaduzzi" class="logo" src="https://cdn.jsdelivr.net/gh/lucassoares-eng/prati-corollas@main/images/logo-prati.webp"/>
+                <img alt="Prati-Donaduzzi" class="logo" src="images/logo-prati.webp"/>
             <div class="barra">
             </div>
                 <h1>Perdas em Corollas</h1>
@@ -25,15 +25,15 @@
     <!--menu lateral-->
     <nav class="sidebar">
         <div class="container">
-            <label for="rd-home" class="icone" title="Página Inicial" onclick="desativar_filtro_meses()">
-                <img src="https://cdn.jsdelivr.net/gh/lucassoares-eng/prati-corollas@main/images/icone-home.webp" class="icone" alt="Home">
+            <label for="rd-home" class="icone" title="Página Inicial">
+                <img src="images/icone-home.webp" class="icone" alt="Home">
             </label>
-            <label for="rd-pareto" class="icone" title="Gráfico de pareto" onclick="ativar_filtro_meses()">
-                <img src="https://cdn.jsdelivr.net/gh/lucassoares-eng/prati-corollas@main/images/icone-pareto.webp" class="icone" alt="pareto">
+            <label for="rd-pareto" class="icone" title="Gráficos">
+                <img src="images/icone-pareto.webp" class="icone" alt="pareto">
             </label>
             <!-- icone Plano de Ação:
             <label for="rd-tasks" class="icone" title="Plano de Ação" onclick="desativar_filtro_meses()">
-                <img src="https://raw.githubusercontent.com/lucassoares-eng/prati-corollas/main/images/icone-tasks.webp" class="icone" alt="Ações">
+                <img src="images/icone-tasks.webp" class="icone" alt="Ações">
             </label>
             -->
         </div>
@@ -49,18 +49,18 @@
                 </select>
                 <select class="select-bx" id="select-bx-mes" onchange="filtrar_mes()">
                     <option value="todos">Mês (todos)</option>
-                    <option value=1>Jan</option>
-                    <option value=2>Fev</option>
-                    <option value=3>Mar</option>
-                    <option value=4>Abr</option>
-                    <option value=5>Mai</option>
-                    <option value=6>Jun</option>
-                    <option value=7>Jul</option>
-                    <option value=8>Ago</option>
-                    <option value=9>Set</option>
-                    <option value=10>Out</option>
-                    <option value=11>Nov</option>
-                    <option value=12>Dez</option>
+                    <option value=1 disabled>Jan</option>
+                    <option value=2 disabled>Fev</option>
+                    <option value=3 disabled>Mar</option>
+                    <option value=4 disabled>Abr</option>
+                    <option value=5 disabled>Mai</option>
+                    <option value=6 disabled>Jun</option>
+                    <option value=7 disabled>Jul</option>
+                    <option value=8 disabled>Ago</option>
+                    <option value=9 disabled>Set</option>
+                    <option value=10 disabled>Out</option>
+                    <option value=11 disabled>Nov</option>
+                    <option value=12 disabled>Dez</option>
                 </select>
                 <select class="select-bx" id="select-bx-diretoria" name="" onchange="filtrar_diretoria()">
                 </select>
@@ -74,6 +74,7 @@
         <input type="radio" id="rd-home" name="rd-grupo" checked/>
         <input type="radio" id="rd-pareto" name="rd-grupo"/>
         <input type="radio" id="rd-tasks" name="rd-grupo"/>
+        <input type="radio" id="rd-indicador7" name="rd-grupo"/>
         <div id="loader"></div>
         <section class="sections">
             <section class="bloco" id="bloco-home">
@@ -136,16 +137,16 @@
                 </div>
                 <div class="graficos">
                     <div class="grafico">
-                        <div class="titulo">
-                            <span>PARETO</span>
-                            <nav class="icones">
-                                <label class="icone" id="icone-diretorias" title="Diretorias" onclick="zerar_pag(); change_abertura('diretorias')">
+                        <div class="quadro-titulo">
+                            <span>COROLLAS (pareto)</span>
+                            <nav class="quadro-icones">
+                                <label class="quadro-icone" id="icone-diretorias" title="Diretorias" onclick="zerar_pag(); change_abertura('diretorias')">
                                     <span>D</span>
                                 </label>
-                                <label class="icone" id="icone-gerencias" title="Gerências" onclick="zerar_pag(); change_abertura('gerencias')">
+                                <label class="quadro-icone" id="icone-gerencias" title="Gerências" onclick="zerar_pag(); change_abertura('gerencias')">
                                     <span>G</span>
                                 </label>
-                                <label for="rd-indicadores" class="icone" id="icone-indicadores" title="Indicadores" onclick="zerar_pag();  change_abertura('indicadores')">
+                                <label class="quadro-icone" id="icone-indicadores" title="Indicadores" onclick="zerar_pag();  change_abertura('indicadores')">
                                     <span>I</span>
                                 </label>
                             </nav>
@@ -161,7 +162,13 @@
                         <div class="subtitulo"></div>
                     </div>
                     <div class="grafico">
-                        <div class="titulo">MENSAL</div>
+                        <div class="quadro-titulo">
+                            <span>COROLLAS (mensal)</span>
+                            <div class="item-selecionado">
+                                <span id="item-selecionado"></span>
+                                <span id="botao-fechar" onclick="desfazer_item_selecionado()">x</span>
+                            </div>
+                        </div>
                         <div id="grafico-mensal">
                             <svg></svg>
                         </div>
@@ -169,6 +176,198 @@
                 </div>
             </section>
             <section class="bloco" id="bloco-tasks">
+            </section>
+            <section class="bloco" id="bloco-desligamentos">
+                <div class="indicador-txt">
+                    <span>Perda por Desligamentos</span>
+                    <p id="texto-desligamentos"></p>
+                </div>
+                <div class="indicador-content">
+                    <div id="container-desligamentos">
+                        <div id="area1">
+                            <div class="quadro-titulo">
+                                <span>COROLLAS (por área)</span>
+                                <div class="quadro-icones">
+                                    <span class="quadro-icone" title="Diretorias" onclick="change_abertura('diretorias')">D</span>
+                                    <span class="quadro-icone" title="Gerências" onclick="change_abertura('gerencias')">G</span>
+                                </div>
+                            </div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                            </div>
+                        </div>
+                        <div id="area2">
+                            <div class="quadro-titulo">
+                                <span>HEADCOUNT</span>
+                            </div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                            </div>
+                        </div>
+                        <div id="area3">
+                            <div class="quadro-titulo">
+                                <span>DESLIGAMENTOS</span>
+                            </div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                                <div class="quadro-legenda">
+                                    <span class="icone-legenda1">D</span>
+                                    <span class="legenda">Demitidos</span>
+                                    <span class="icone-legenda2">D</span>
+                                    <span class="legenda">Demissionários</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="area4">
+                            <div class="quadro-titulo">COROLLAS (real Vs meta)</div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                            </div>
+                        </div>
+                        <div id="area5">
+                            <div class="quadro-titulo">CUSTO MÉDIO</div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                                <div class="destaque" id="custo_medio"></div>
+                                <div style="height: 10px; width: 100%;"></div>
+                                <div class="quadro-legenda">
+                                    <span class="icone-legenda1">D</span>
+                                    <span class="legenda">Demitidos</span>
+                                    <span class="icone-legenda2">D</span>
+                                    <span class="legenda">Demissionários</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="area6">
+                            <div class="quadro-titulo">PERDA</div>
+                            <div class="quadro-content">
+                                <div class="destaque" id="perda"></div>
+                            </div>
+                        </div>
+                        <div id="area7">
+                            <div class="quadro-titulo">Nº LIMITE</div>
+                            <div class="quadro-content">
+                                <div class="destaque" id="limite"></div>
+                                <div class="quadro-footer" id="limite_percent"></div>
+                            </div>
+                        </div>
+                        <div id="area9">
+                            <div class="quadro-titulo">Nº REALIZADO</div>
+                            <div class="quadro-content">
+                                <div class="destaque" id="real"></div>
+                                <div class="quadro-footer" id="real_percent"></div>
+                            </div>
+                        </div>
+                        <div id="area10">
+                            <div class="quadro-titulo">COROLLAS</div>
+                            <div class="quadro-content">
+                                <div class="destaque" id="corollas"></div>
+                                <div class="quadro-footer">1 Corolla = R$ 125.000</div>
+                            </div>
+                        </div>
+                        <div id="area11">
+                            <div class="quadro-titulo">COROLLAS (mensal)</div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="bloco" id="bloco-folha_fat">
+                <div class="indicador-txt">
+                    <span>Folha / Faturamento</span>
+                    <p id="texto-desligamentos">O indicador de Folha/Faturamento é medido...</p>
+                </div>
+                <div class="indicador-content">
+                    <div id="container-desligamentos">
+                        <div id="area1">
+                            <div class="quadro-titulo">
+                                <span>COROLLAS (por área)</span>
+                                <div class="quadro-icones">
+                                    <span class="quadro-icone" title="Diretorias" onclick="change_abertura('diretorias')">D</span>
+                                    <span class="quadro-icone" title="Gerências" onclick="change_abertura('gerencias')">G</span>
+                                </div>
+                            </div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                            </div>
+                        </div>
+                        <div id="area2">
+                            <div class="quadro-titulo">
+                                <span>FATURAMENTO</span>
+                            </div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                                <div class="quadro-legenda">
+                                    <span class="icone-legenda3">M</span>
+                                    <span class="legenda">Meta</span>
+                                    <span class="icone-legenda1">R</span>
+                                    <span class="legenda">Realizado</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="area3">
+                            <div class="quadro-titulo">
+                                <span>FOLHA</span>
+                            </div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                                <div class="quadro-legenda">
+                                    <span class="icone-legenda3">M</span>
+                                    <span class="legenda">Meta</span>
+                                    <span class="icone-legenda1">R</span>
+                                    <span class="legenda">Realizado</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="area4">
+                            <div class="quadro-titulo">% FOLHA / FATURAMENTO</div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                            </div>
+                        </div>
+                        <div id="area5">
+                            <div class="quadro-titulo">CRESCIMENTO DA FOLHA (mesmo período ano anterior)</div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                            </div>
+                        </div>
+                        <div id="area6">
+                            <div class="quadro-titulo">PERDA</div>
+                            <div class="quadro-content">
+                                <div class="destaque" id="perda"></div>
+                            </div>
+                        </div>
+                        <div id="area7">
+                            <div class="quadro-titulo">META FOLHA</div>
+                            <div class="quadro-content">
+                                <div class="destaque" id="limite"></div>
+                                <div class="quadro-footer" id="limite_percent"></div>
+                            </div>
+                        </div>
+                        <div id="area9">
+                            <div class="quadro-titulo">FOLHA REALIZADA</div>
+                            <div class="quadro-content">
+                                <div class="destaque" id="real"></div>
+                                <div class="quadro-footer" id="real_percent"></div>
+                            </div>
+                        </div>
+                        <div id="area10">
+                            <div class="quadro-titulo">COROLLAS</div>
+                            <div class="quadro-content">
+                                <div class="destaque" id="corollas"></div>
+                                <div class="quadro-footer">1 Corolla = R$ 125.000</div>
+                            </div>
+                        </div>
+                        <div id="area11">
+                            <div class="quadro-titulo">COROLLAS (mensal)</div>
+                            <div class="quadro-content">
+                                <svg></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
         </section>
     </div>
@@ -189,65 +388,67 @@
 </script>
 <script id="indicadores">
     const indicadores = [
-        {"indicadorID": 1, "indicadorName": "indicador 1"},
-        {"indicadorID": 2, "indicadorName": "indicador 2"},
+        {"indicadorID": 7, "indicadorName": "indicador 7"},
+        {"indicadorID": 23, "indicadorName": "indicador 23"},
         {"indicadorID": 3, "indicadorName": "indicador 3"},
         {"indicadorID": 4, "indicadorName": "indicador 4"},
     ]
 </script>
 <script id="dados">
     const metas = [
-        {"indicadorID": 1, "areaID": 100, "ano_anterior": 24, "meta": 12},
-        {"indicadorID": 2, "areaID": 100, "ano_anterior": 36, "meta": 24},
+        {"indicadorID": 7, "areaID": 100, "ano_anterior": 24, "meta": 12},
+        {"indicadorID": 23, "areaID": 100, "ano_anterior": 36, "meta": 24},
         {"indicadorID": 3, "areaID": 100, "ano_anterior": 48, "meta": 36},
-        {"indicadorID": 1, "areaID": 200, "ano_anterior": 240, "meta": 12},
-        {"indicadorID": 2, "areaID": 200, "ano_anterior": 360, "meta": 24},
+        {"indicadorID": 7, "areaID": 200, "ano_anterior": 240, "meta": 12},
+        {"indicadorID": 23, "areaID": 200, "ano_anterior": 360, "meta": 24},
         {"indicadorID": 3, "areaID": 200, "ano_anterior": 480, "meta": 36},
         {"indicadorID": 4, "areaID": 200, "ano_anterior": 600, "meta": 48},
-        {"indicadorID": 1, "areaID": 201, "ano_anterior": 240, "meta": 12},
-        {"indicadorID": 2, "areaID": 201, "ano_anterior": 360, "meta": 240},
+        {"indicadorID": 7, "areaID": 201, "ano_anterior": 240, "meta": 12},
+        {"indicadorID": 23, "areaID": 201, "ano_anterior": 360, "meta": 240},
         {"indicadorID": 3, "areaID": 201, "ano_anterior": 480, "meta": 360},
         {"indicadorID": 4, "areaID": 201, "ano_anterior": 600, "meta": 480},
-        {"indicadorID": 1, "areaID": 300, "ano_anterior": 240, "meta": 120},
-        {"indicadorID": 2, "areaID": 300, "ano_anterior": 360, "meta": 240},
+        {"indicadorID": 7, "areaID": 300, "ano_anterior": 240, "meta": 120},
+        {"indicadorID": 23, "areaID": 300, "ano_anterior": 360, "meta": 240},
         {"indicadorID": 3, "areaID": 300, "ano_anterior": 480, "meta": 36},
         {"indicadorID": 4, "areaID": 300, "ano_anterior": 600, "meta": 48},
     ]
     const real = [
-        {"indicadorID": 1, "areaID": 100, "mes": 1, "perda":125000, "corollas": 1},
-        {"indicadorID": 2, "areaID": 100, "mes": 1, "perda":250000, "corollas": 2},
+        {"indicadorID": 7, "areaID": 100, "mes": 1, "perda":125000, "corollas": 1},
+        {"indicadorID": 23, "areaID": 100, "mes": 1, "perda":250000, "corollas": 2},
         {"indicadorID": 3, "areaID": 100, "mes": 1, "perda":375000, "corollas": 3},
         {"indicadorID": 4, "areaID": 100, "mes": 1, "perda":500000, "corollas": 4},
-        {"indicadorID": 1, "areaID": 100, "mes": 2, "perda":0, "corollas": 0},
-        {"indicadorID": 2, "areaID": 100, "mes": 2, "perda":125000, "corollas": 1},
+        {"indicadorID": 7, "areaID": 100, "mes": 2, "perda":0, "corollas": 0},
+        {"indicadorID": 23, "areaID": 100, "mes": 2, "perda":125000, "corollas": 1},
         {"indicadorID": 3, "areaID": 100, "mes": 2, "perda":-500000, "corollas": 0},
         {"indicadorID": 4, "areaID": 100, "mes": 2, "perda":-250000, "corollas": 0},
-        {"indicadorID": 1, "areaID": 200, "mes": 1, "perda":625000, "corollas": 5},
-        {"indicadorID": 2, "areaID": 200, "mes": 1, "perda":750000, "corollas": 6},
+        {"indicadorID": 7, "areaID": 200, "mes": 1, "perda":625000, "corollas": 5},
+        {"indicadorID": 23, "areaID": 200, "mes": 1, "perda":750000, "corollas": 6},
         {"indicadorID": 3, "areaID": 200, "mes": 1, "perda":875000, "corollas": 7},
         {"indicadorID": 4, "areaID": 200, "mes": 1, "perda":1000000, "corollas": 8},
-        {"indicadorID": 1, "areaID": 200, "mes": 2, "perda":625000, "corollas": 5},
-        {"indicadorID": 2, "areaID": 200, "mes": 2, "perda":750000, "corollas": 6},
+        {"indicadorID": 7, "areaID": 200, "mes": 2, "perda":625000, "corollas": 5},
+        {"indicadorID": 23, "areaID": 200, "mes": 2, "perda":750000, "corollas": 6},
         {"indicadorID": 3, "areaID": 200, "mes": 2, "perda":875000, "corollas": 7},
         {"indicadorID": 4, "areaID": 200, "mes": 2, "perda":1000000, "corollas": 8},
-        {"indicadorID": 1, "areaID": 201, "mes": 1, "perda":125000, "corollas": 5},
-        {"indicadorID": 2, "areaID": 201, "mes": 1, "perda":125000, "corollas": 6},
+        {"indicadorID": 7, "areaID": 201, "mes": 1, "perda":125000, "corollas": 5},
+        {"indicadorID": 23, "areaID": 201, "mes": 1, "perda":125000, "corollas": 6},
         {"indicadorID": 3, "areaID": 201, "mes": 1, "perda":125000, "corollas": 7},
         {"indicadorID": 4, "areaID": 201, "mes": 1, "perda":125000, "corollas": 8},
-        {"indicadorID": 1, "areaID": 201, "mes": 2, "perda":125000, "corollas": 5},
-        {"indicadorID": 2, "areaID": 201, "mes": 2, "perda":125000, "corollas": 6},
+        {"indicadorID": 7, "areaID": 201, "mes": 2, "perda":125000, "corollas": 5},
+        {"indicadorID": 23, "areaID": 201, "mes": 2, "perda":125000, "corollas": 6},
         {"indicadorID": 3, "areaID": 201, "mes": 2, "perda":125000, "corollas": 7},
         {"indicadorID": 4, "areaID": 201, "mes": 2, "perda":125000, "corollas": 8},
-        {"indicadorID": 1, "areaID": 300, "mes": 1, "perda":625000, "corollas": 5},
-        {"indicadorID": 2, "areaID": 300, "mes": 1, "perda":750000, "corollas": 6},
+        {"indicadorID": 7, "areaID": 300, "mes": 1, "perda":625000, "corollas": 5},
+        {"indicadorID": 23, "areaID": 300, "mes": 1, "perda":750000, "corollas": 6},
         {"indicadorID": 3, "areaID": 300, "mes": 1, "perda":875000, "corollas": 7},
         {"indicadorID": 4, "areaID": 300, "mes": 1, "perda":1000000, "corollas": 8},
-        {"indicadorID": 1, "areaID": 300, "mes": 2, "perda":625000, "corollas": 5},
-        {"indicadorID": 2, "areaID": 300, "mes": 2, "perda":750000, "corollas": 6},
+        {"indicadorID": 7, "areaID": 300, "mes": 2, "perda":625000, "corollas": 5},
+        {"indicadorID": 23, "areaID": 300, "mes": 2, "perda":750000, "corollas": 6},
         {"indicadorID": 3, "areaID": 300, "mes": 2, "perda":875000, "corollas": 7},
         {"indicadorID": 4, "areaID": 300, "mes": 2, "perda":-1000000, "corollas": 0},
     ]
 </script>
+<script id="dados-desligamentos"></script>
+<script id="dados-folha_fat"></script>
 <script id="proprietario">
     const areaID = 100
     const nivel = 'grupo'
@@ -255,7 +456,7 @@
 <script id="variaveis-globais">
     var active_areaID = areaID
     var active_indicadorID = 'todos'
-    var dirA = areaID
+    var dirA
     var active_mes = 'todos'
     var meses = real.map((el) => {
             return el.mes
@@ -268,11 +469,19 @@
     var pag_pareto = 0
     var selectedBar
 </script>
-<script src="https://cdn.jsdelivr.net/gh/lucassoares-eng/prati-corollas@main/scripts/grafico_pareto_002.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/lucassoares-eng/prati-corollas@main/scripts/grafico_mensal_001.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/lucassoares-eng/prati-corollas@main/scripts/carregar_filtros_001.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/lucassoares-eng/prati-corollas@main/scripts/filtrar_001.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/lucassoares-eng/prati-corollas@main/scripts/exibir_tabela_001.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/lucassoares-eng/prati-corollas@main/scripts/ajustes_tela_001.min.js"></script>
+<script src="scripts/app.js"></script>
+<script src="scripts/grafico_pareto.js"></script>
+<script src="scripts/grafico_mensal.js"></script>
+<script src="scripts/carregar_filtros.js"></script>
+<script src="scripts/filtrar.js"></script>
+<script src="scripts/exibir_tabela.js"></script>
+<script src="scripts/ajustes_tela.js"></script>
+<script src="scripts/desligamentos.js"></script>
+<script src="scripts/corollas_por_area.js"></script>
+<script src="scripts/corollas_mensal.js"></script>
+<script src="scripts/meta_vs_real.js"></script>
+<script src="scripts/grafico_de_linha.js"></script>
+<script src="scripts/grafico_barra_dois_fatores.js"></script>
+<script src="scripts/gauge_dois_fatores.js"></script>
 </body>
 </html>

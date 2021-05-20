@@ -73,17 +73,6 @@ new_tag.string = const
 #substituir tag
 s = s.replace_with(new_tag)
 
-#atualizar tag folha_fat
-#selecionar tag
-s = soup.find('script', {'id':"dados-folha_fat"})
-#criar nova tag
-new_tag = soup.new_tag('script', id="dados-folha_fat")
-#definir conteúdo da nova tag
-const = 'const folha_fat = ' + folha_fat
-new_tag.string = const
-#substituir tag
-s = s.replace_with(new_tag)
-
 #salvar html
 with open("../teste.html", "w", encoding='UTF-8') as file:
     file.write(soup.prettify(formatter=None))

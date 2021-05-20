@@ -2,10 +2,8 @@ from pandas import read_csv, DataFrame, ExcelFile
 
 def get_metas(diretoria, gerencia):
     #carregar dados de meta:
-    dfMetas = read_csv('../dados/metas.csv', sep= ';', dtype= 'str')
-    dfMetas.perda = dfMetas.perda.replace({',': '.'}, regex= True).astype('float')
-    dfMetas.corollas = dfMetas.corollas.replace({',': '.'}, regex= True).astype('float')
-    dfMetas.meta = dfMetas.meta.replace({',': '.'}, regex= True).astype('float')
+    xl = ExcelFile('M:\PERDAS_COROLLAS\COROLLAS 2021\RELATORIOS_BASE\metas_2021.xlsx')
+    dfMetas = xl.parse(sheet_name= 'metas_2021', skiprows=1, header=0, usecols=[0,1,2,3,4,5], names= ['indicador', 'diretoria', 'gerencia', 'perda', 'corollas', 'meta'])
     dfMetas = dfMetas.rename(columns={'corollas':'ano_anterior'})
     #incluir area
     dfMetas.loc[dfMetas.gerencia != '_TOTAL', 'area'] = dfMetas.diretoria + '_' + dfMetas.gerencia

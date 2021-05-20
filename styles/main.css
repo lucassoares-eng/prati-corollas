@@ -315,6 +315,15 @@ select option[disabled] {
     width: 10px;
     height: 10px;
 }
+.icone-legenda3 {
+    background-color: #F1416C;
+    color: #F1416C;
+    margin-left: 5px;
+    margin-right: 1px;
+    width: 10px;
+    height: 10px;
+}
+
 #bloco-pareto .graficos{
     width: calc(100% - 40px);
     height: calc(100% - 40px);

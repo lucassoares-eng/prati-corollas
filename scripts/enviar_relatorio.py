@@ -2,6 +2,7 @@ from pandas import read_csv
 from bs4 import BeautifulSoup
 from atualizar_arvore import get_arvore
 from atualizar_indicadores import get_indicadores
+from atualizar_desligamentos import get_desligamentos
 import atualizar_dados as dados
 from tqdm import tqdm
 
@@ -37,6 +38,9 @@ for user in tqdm(users):
     #carregar dados:
     metas = dados.get_metas(diretoria, gerencia)
     real = dados.get_real(diretoria, gerencia)
+
+    #carregar desligamentos
+    desligamentos = get_desligamentos(diretoria, gerencia)
 
     #abrir arquivo html:
     with open('../index.html', encoding='UTF-8') as html:
@@ -84,6 +88,17 @@ for user in tqdm(users):
     const = 'const metas = ' + metas + '\n   const real = ' + real
     new_tag.string = const
     # substituir tag:
+    s = s.replace_with(new_tag)
+
+    #atualizar tag desligamentos
+    #selecionar tag
+    s = soup.find('script', {'id':"dados-desligamentos"})
+    #criar nova tag
+    new_tag = soup.new_tag('script', id="dados-desligamentos")
+    #definir conteúdo da nova tag
+    const = 'const desligamentos = ' + desligamentos
+    new_tag.string = const
+    #substituir tag
     s = s.replace_with(new_tag)
 
     # salvar html:

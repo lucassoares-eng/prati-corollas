@@ -14,6 +14,7 @@ def get_desligamentos(diretoria, gerencia):
             dfSheet.loc[dfSheet.gerencia == '_TOTAL', 'area'] = dfSheet.diretoria
             df = df.append(dfSheet)
 
+    """ para o grupo, os desligamento < 90 dias estão sendo somados direto na planilha Desligamentos.xlsx
     if diretoria == 'todos':
         #desligamentos menor 90 dias
         for sheet in xl.sheet_names:
@@ -22,6 +23,7 @@ def get_desligamentos(diretoria, gerencia):
                 #somar
                 df.loc[(df.diretoria == '_GRUPO') & (df.mes == int(sheet[:2])), 'demitidos'] += dfSheet.demitidos.item()
                 df.loc[(df.diretoria == '_GRUPO') & (df.mes == int(sheet[:2])), 'demissionarios'] += dfSheet.demissionarios.item()
+    """
 
     #carregar dados da arvore:
     dfArvore = read_csv('../dados/arvore.csv', sep= ';', encoding='latin 1', usecols=[0, 1], dtype={0: 'Int64'})

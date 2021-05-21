@@ -121,7 +121,11 @@ function dados_indicador_por_area(indicadorID){
         return el.indicadorID == indicadorID
     })
 
-    bars = eval(abertura)
+    if (abertura != 'indicadores') {
+        bars = eval(abertura)
+    } else {
+        bars = eval('gerencias')
+    }
 
     /*filtrar gerências de acordo com a diretoria selecionada*/
     if (abertura == 'gerencias' && document.querySelector('#select-bx-diretoria').value != 'todos') {

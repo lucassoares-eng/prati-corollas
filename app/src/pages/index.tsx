@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Layout from '../components/Layout'
+import Login from '../components/login'
 
 const IndexPage = () => (
   <Layout title="Home | Next.js + TypeScript Example">
@@ -9,6 +10,7 @@ const IndexPage = () => (
         <a>About</a>
       </Link>
     </p>
+    <Login/>
   </Layout>
 )
 

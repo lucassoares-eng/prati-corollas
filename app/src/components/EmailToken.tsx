@@ -6,6 +6,7 @@ type Props = {
   firstName: string,
   lastName: string,
   link: string,
+  subject: string,
 }
 
 const buttonStyle = {
@@ -26,8 +27,8 @@ const linkStyle = {
   padding: "5px",
 }
 
-const EmailToken: Email<Props> = ({ firstName, lastName, link }) => ({
-  subject: `Seu link para o Relatório de Corollas`,
+const EmailToken: Email<Props> = ({ firstName, lastName, link, subject }) => ({
+  subject: subject,
   body: (
     <EmailLayout title={`Olá ${firstName} ${lastName}!`}>
       <div>

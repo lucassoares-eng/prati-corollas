@@ -31,6 +31,7 @@ const EnviarEmail = (req: LoginRequest, res: NextApiResponse) => {
 				firstName: 'Usuário',
 				lastName: 'Sobrenome',
 				link: `${process.env.HOST}/user?token=${token}`,
+				subject: "Seu link para o Relatório de Corollas"
 			},
 			{
 				to: query.email,

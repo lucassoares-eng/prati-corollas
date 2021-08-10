@@ -1,15 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { Mailer } from 'nodemailer-react'
+import { generate } from '../../utils/Token'
+import { transporter } from '../../utils/Mailer'
 
-import { generate } from '../../utils/Token';
-import { transporter } from '../../utils/Mailer';
-import { EmailTemplate } from '../../components/EmailTemplate';
+import EmailToken from '../../components/EmailToken'
 
 interface LoginRequest extends NextApiRequest {
 	query: {
 		email?: string
 	}
 }
-
 
 const EnviarEmail = (req: LoginRequest, res: NextApiResponse) => {
   const { query } = req;
@@ -19,20 +19,30 @@ const EnviarEmail = (req: LoginRequest, res: NextApiResponse) => {
 	}
 	const token = generate(query.email)
 
-	const mailOptions = {
-		from: 'MagicLinkTutorial App',
-		html: EmailTemplate( { username: 'Lucas Soares', link: `${process.env.HOST}/token=${token}`}),
-		subject: 'Invitation',
-		to: query.email
+	const emailsList = {
+		pass: EmailToken,
 	}
 
-	return transporter.sendMail(mailOptions, error => {
-		if (error) {
-			console.log(error)
-			return res.status(510).json({ statusCode: 510, message: 'cannot send email' })
-		}
+	const mailer = Mailer(transporter, emailsList)
+
+	try { 
+		mailer.send(
+			'pass', {
+				firstName: 'Usuário',
+				lastName: 'Sobrenome',
+				brand: 'Linkvalue',
+				newAccount: true,
+				password: token,
+			}, 
+			{
+				to: query.email,
+				attachments: [],
+			}
+		)
 		return res.status(200).json({ message: 'email has been sent' })
-	})
+	} catch {
+		return res.status(510).json({ statusCode: 510, message: 'cannot send email' })
+	}
 }
 
 export default EnviarEmail

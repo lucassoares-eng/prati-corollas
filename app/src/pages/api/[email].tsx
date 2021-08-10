@@ -30,10 +30,8 @@ const EnviarEmail = (req: LoginRequest, res: NextApiResponse) => {
 			'pass', {
 				firstName: 'Usuário',
 				lastName: 'Sobrenome',
-				brand: 'Linkvalue',
-				newAccount: true,
-				password: token,
-			}, 
+				link: `${process.env.HOST}/user?token=${token}`,
+			},
 			{
 				to: query.email,
 				attachments: [],

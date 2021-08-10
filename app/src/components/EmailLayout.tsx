@@ -6,6 +6,7 @@ const bodyStyle = {
   padding: 0,
   WebkitTextSizeAdjust: '100%',
   MsTextSizeAdjust: '100%',
+  fontFamily: 'Arial'
 }
 
 type Props = { title: string }
@@ -18,13 +19,34 @@ const EmailLayout: React.FC<Props> = ({ title, children }) => (
     <title>{title}</title>
   </head>
   <body style={bodyStyle}>
-    <h1>{title}</h1>
+    <h3>{title}</h3>
     <div>
       {children}
-      <p>
-        Regards,
-        Lucas Soares.
-      </p>
+      <br></br>
+      <div style= {{fontSize:"14px", lineHeight:"16px"}}>
+        Atenciosamente
+        <br></br>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <img src='http://www.pratidonaduzzi.com.br/images/assinatura.jpg'></img>
+              </td>
+              <td style= {{paddingTop:"1px", fontFamily:"Arial", fontSize:"12px", lineHeight:"16px"}}>
+                <strong>Lucas de Jesus Soares</strong>
+                <br></br>
+                Assessor
+                <br></br>
+                Presidência
+                <br></br>
+                +55 (45) 2103-1420
+                <br></br>
+                www.pratidonaduzzi.com.br 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </body>
   </html>

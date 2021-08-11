@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Mailer } from 'nodemailer-react'
-import { generate } from '../../utils/Token'
-import { transporter } from '../../utils/Mailer'
+import { generate } from '../../../utils/Token'
+import { transporter } from '../../../utils/Mailer'
 
-import EmailToken from '../../components/EmailToken'
+import EmailToken from '../../../components/EmailToken'
 
 interface LoginRequest extends NextApiRequest {
 	query: {
@@ -30,7 +30,7 @@ const EnviarEmail = (req: LoginRequest, res: NextApiResponse) => {
 			'pass', {
 				firstName: 'Usuário',
 				lastName: 'Sobrenome',
-				link: `${process.env.HOST}/user?token=${token}`,
+				link: `${process.env.HOST}/api/auth/${token}`,
 				subject: "Seu link para o Relatório de Corollas"
 			},
 			{

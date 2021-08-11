@@ -10,21 +10,17 @@ type Props = {
 }
 
 const buttonStyle = {
-  backgroundColor: '#4299e1',
-  width: "80px",
-  height: "35px",
-  display: "flex",
-  justifyContent: "center",
-  alignItens: "center",
-  paddingTop: "6px",
-  paddingLeft: "12px",
   marginLeft: "30px",
+  marginTop: "30px",
+  padding: '15px',
 }
 
 const linkStyle = {
+  backgroundColor: '#4299e1',
+  padding: '10px',
   color: '#ffffff',
   fontSize: "13pt",
-  padding: "5px",
+  textDecoration: 'none'
 }
 
 const EmailToken: Email<Props> = ({ firstName, lastName, link, subject }) => ({
@@ -34,7 +30,9 @@ const EmailToken: Email<Props> = ({ firstName, lastName, link, subject }) => ({
       <div>
         <h3>Clique no botão abaixo para acessar o Relatório de Corollas:</h3>
         <div style={buttonStyle}>
-          <a href={link} style={linkStyle}>Acessar</a>
+          <a href={link} style={linkStyle}>
+            <span style={{fontWeight: 'bolder'}}>Acessar</span>
+          </a>
         </div>
         <p style={{marginTop: "40px", marginBottom: "14px", color: '#6b6b6b'}}>Alternativamente você também pode copiar e colar o link abaixo no seu navegador:</p>
         <p style={{marginBottom: "14px", fontSize: '10pt'}}>{ link }</p>

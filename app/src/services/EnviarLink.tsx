@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Mailer } from 'nodemailer-react'
-import { generate } from '../../../utils/Token'
-import { transporter } from '../../../utils/Mailer'
 
-import EmailToken from '../../../components/EmailToken'
+import { generate } from '../utils/Token'
+import { transporter } from '../utils/Mailer'
+
+import EmailToken from '../components/EmailToken'
 
 interface LoginRequest extends NextApiRequest {
 	query: {
@@ -11,11 +12,11 @@ interface LoginRequest extends NextApiRequest {
 	}
 }
 
-const EnviarEmail = (req: LoginRequest, res: NextApiResponse) => {
+const EnviarLink = (req: LoginRequest, res: NextApiResponse) => {
   const { query } = req;
 
 	if (!query) {
-		return res.status(505).json({ statusCode: 505, message: 'email is required' })
+		return res.status(400).json({ statusCode: 400, message: 'email is required' })
 	}
 	const token = generate(query.email)
 
@@ -40,8 +41,8 @@ const EnviarEmail = (req: LoginRequest, res: NextApiResponse) => {
 		)
 		return res.status(200).json({ message: 'email has been sent' })
 	} catch {
-		return res.status(510).json({ statusCode: 510, message: 'cannot send email' })
+		return res.status(400).json({ statusCode: 400, message: 'cannot send email' })
 	}
 }
 
-export default EnviarEmail
+export default EnviarLink

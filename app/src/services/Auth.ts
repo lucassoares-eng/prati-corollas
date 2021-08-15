@@ -1,32 +1,44 @@
 import jwt from 'jsonwebtoken'
 
-type Props = {
+type SignInRequestData = {
 	token: string
-  decoded: string | jwt.JwtPayload
-  isValidated: boolean
-  msg: string
 }
 
-export const isValidated = ({ token, decoded, isValidated = false, msg }: Props) => {
+export async function signInRequest(data: SignInRequestData) {
 
+  let decoded: string | jwt.JwtPayload 
   try {
-    decoded = jwt.verify(token, process.env.JWT_SECRET!)
+    decoded = jwt.verify(data.token, process.env.JWT_SECRET!)
   } catch {
-    msg = 'cannot verify jwt'
-    return [isValidated, msg]
+    return {
+      status: 400,
+      msg: 'cannot verify jwt'
+    }
   }
 
   if (!decoded.hasOwnProperty('email') || !decoded.hasOwnProperty('expiration')){
-    msg = 'invalid jwt token'
-    return [isValidated, msg]
+    return {
+      status: 400,
+      msg: 'invalid jwt token'
+    }
   }
 
   const { email, expiration } = (decoded as { email: string, expiration: Date})
   if (expiration < new Date()) {
-    msg = 'token has expired'
-    return [isValidated, msg]
+    return {
+      status: 400,
+      msg: 'token has expired'
+    }
   }
 
-  msg = 'user validated'
-  return [isValidated = true, msg]
+  //verificar se o email está cadastrado e retornar informações do usuário (nome, área, etc)
+
+  return {
+    status: 200,
+    user: {
+      name: 'Fulano',
+      email: email,
+      areaID: 1
+    }
+  }
 }

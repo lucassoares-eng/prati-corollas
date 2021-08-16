@@ -18,7 +18,7 @@ export async function signInRequest(data: SignInRequestData) {
 
   if (!decoded.hasOwnProperty('email') || !decoded.hasOwnProperty('expiration')){
     return {
-      status: 400,
+      status: 401,
       msg: 'invalid jwt token'
     }
   }
@@ -26,7 +26,7 @@ export async function signInRequest(data: SignInRequestData) {
   const { email, expiration } = (decoded as { email: string, expiration: Date})
   if (expiration < new Date()) {
     return {
-      status: 400,
+      status: 402,
       msg: 'token has expired'
     }
   }

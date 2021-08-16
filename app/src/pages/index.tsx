@@ -1,12 +1,29 @@
 import { LockClosedIcon } from '@heroicons/react/solid'
 import Image from 'next/image'
 import { useForm } from 'react-hook-form'
+import Router from 'next/router'
+
+type HandleSingInType = {
+	email: string
+}
 
 export default function Login() {
   const { register, handleSubmit } = useForm()
 
-  function handleSignIn(data) {
-    console.log(data)
+  async function handleSignIn({ email }: HandleSingInType) {
+    const res = await fetch(`/api/contact/${email}`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+      }
+    }).then((res) => {
+      if (res.status === 200) {
+        console.log('redirect to success page')
+      } else {
+        console.log('show error')
+      }
+    })
   }
 
   return (

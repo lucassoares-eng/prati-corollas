@@ -4,11 +4,11 @@ type SignInRequestData = {
 	token: string
 }
 
-export async function signInRequest(data: SignInRequestData) {
+export async function signInRequest({ token }: SignInRequestData) {
 
   let decoded: string | jwt.JwtPayload 
   try {
-    decoded = jwt.verify(data.token, process.env.JWT_SECRET!)
+    decoded = jwt.verify(token, process.env.JWT_SECRET!)
   } catch {
     return {
       status: 400,

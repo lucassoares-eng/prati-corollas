@@ -19,6 +19,9 @@ async function EnviarLink (req: LoginRequest, res: NextApiResponse) {
 	if (!query.email) {
 		return res.status(400).json({ statusCode: 400, msg: 'Email is required' })
 	}
+
+	//verificar se o email está cadastrado na base
+
 	const token = generate(query.email)
 
 	const emailsList = {

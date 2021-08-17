@@ -29,15 +29,7 @@ export function AuthProvider({ children }) {
 	const isAuthenticated = !!user
 
 	async function signIn({ token }: SignInData) {
-		const { status, user } = await signInRequest({ 
-			token 
-		})
-
-		//se a função signInRequest retornar status 200 continuar, senão retornar erro
-
-		setCookie(undefined, 'corollas.token', token, {
-			maxAge: 60 * 60 * 1, // 1 hour
-		})
+		const { user } = await signInRequest({ token })
 
 		setUser(user)
 

@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-type SignInRequestData = {
+export type SignInRequestData = {
 	token: string
 }
 

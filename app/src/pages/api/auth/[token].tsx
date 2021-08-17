@@ -1,15 +1,24 @@
 import { NextApiRequest, NextApiResponse  } from 'next'
-import { useContext } from 'react'
-import { AuthContext, SignInData } from '../../../contexts/AuthContext';
+import { setCookie } from 'nookies'
+import { signInRequest } from '../../../services/Auth';
 
 interface signInRequestInterface extends NextApiRequest {
-	query: SignInData
+	query: {
+		token?: string
+	}
 }
 
-export default async function signInRequest(req: signInRequestInterface, res: NextApiResponse) {
-	//const { signIn } = useContext(AuthContext)
+export default async function signInRedirect(req: signInRequestInterface, res: NextApiResponse) {
 	const { query } = req
-	console.log(query)
-	//await signIn(query)
-	return (<h1>Validando acesso</h1>)
+	const token = query.token
+	const { status, user } = await signInRequest({ token })
+	if (status === 200) {
+		setCookie({ res }, 'corollas.token', token, {
+			maxAge: 60 * 60 * 1, // 1 hour
+			path: '/dashboard'
+		})
+		return res.redirect('/dashboard')
+	} else {
+		return res.status(400).json({ statusCode: 400, msg: 'Acesso negado' })
+	}
 }

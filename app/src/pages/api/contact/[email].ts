@@ -35,7 +35,7 @@ async function EnviarLink (req: LoginRequest, res: NextApiResponse) {
 			'pass', {
 				firstName: 'Usuário',
 				lastName: 'Sobrenome',
-				link: `${process.env.HOST}/auth/${token}`,
+				link: `${process.env.HOST}/api/auth/${token}`,
 				subject: "Seu link para o Relatório de Corollas"
 			},
 			{

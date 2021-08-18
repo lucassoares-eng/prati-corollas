@@ -31,14 +31,10 @@ export async function signInRequest({ token }: SignInRequestData) {
     }
   }
 
-  //verificar se o email está cadastrado e retornar informações do usuário (nome, área, etc)
+  //verificar se o email está cadastrado e retornar userID
 
   return {
     status: 200,
-    user: {
-      name: 'Fulano',
-      email: email,
-      areaID: 1
-    }
+    userID: 1
   }
 }

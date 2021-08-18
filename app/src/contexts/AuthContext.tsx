@@ -1,9 +1,6 @@
-import { createContext } from "react";
-import { setCookie } from 'nookies'
+import { createContext, useEffect } from "react";
 import { useState } from "react";
-import Router from 'next/router'
-
-import { signInRequest } from "../services/Auth";
+import { parseCookies } from 'nookies'
 
 type User = {
 	name: string,
@@ -14,11 +11,6 @@ type User = {
 type AuthContextType = {
 	isAuthenticated: boolean,
 	user: User
-	signIn: (data: SignInData) => Promise<void>
-}
-
-export type SignInData = {
-	token: string
 }
 
 export const AuthContext = createContext({} as AuthContextType)
@@ -28,16 +20,16 @@ export function AuthProvider({ children }) {
 
 	const isAuthenticated = !!user
 
-	async function signIn({ token }: SignInData) {
-		const { user } = await signInRequest({ token })
+	useEffect(() => {
+		const { 'corollas.userID': token } = parseCookies()
 
-		setUser(user)
-
-		Router.push('/dashboard')
-	}
-
+		if (token) {
+			console.log(token)
+		}
+	}, [])
+ 
   return (
-		<AuthContext.Provider value={{ user, isAuthenticated, signIn }}>
+		<AuthContext.Provider value={{ user, isAuthenticated }}>
 			{children}
 		</AuthContext.Provider>
 	)

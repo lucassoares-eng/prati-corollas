@@ -3,8 +3,7 @@ import { useState } from "react";
 import { parseCookies } from 'nookies'
 
 type User = {
-	name: string,
-  email: string,
+	userID: number,
   areaID: number
 }
 
@@ -21,10 +20,16 @@ export function AuthProvider({ children }) {
 	const isAuthenticated = !!user
 
 	useEffect(() => {
-		const { 'corollas.userID': token } = parseCookies()
+		const { 'corollas.token': token } = parseCookies()
 
 		if (token) {
-			console.log(token)
+			const { 'corollas.userID': userID } = parseCookies()
+			const { 'corollas.areaID': areaID } = parseCookies()
+			const user = {
+				userID: parseInt(userID),
+				areaID: parseInt(areaID)
+			}
+			setUser(user)
 		}
 	}, [])
  

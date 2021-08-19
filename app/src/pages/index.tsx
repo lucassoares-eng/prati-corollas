@@ -1,7 +1,8 @@
 import { LockClosedIcon } from '@heroicons/react/solid'
 import Image from 'next/image'
 import { useForm } from 'react-hook-form'
-import Router from 'next/router'
+import { GetServerSideProps } from 'next';
+import { parseCookies } from 'nookies';
 
 type HandleSingInType = {
 	email: string
@@ -69,4 +70,22 @@ export default function Login() {
       </div>
     </div>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async(ctx) => {
+	const { 'corollas.token': token } = parseCookies(ctx)
+
+	if (token) {
+    const { 'corollas.areaID': areaID } = parseCookies(ctx)
+		return {
+			redirect: {
+				destination: `/dashboard/${areaID}`,
+				permanent: false
+			}
+		}
+	}
+
+	return {
+		props: {}
+	}
 }

@@ -20,7 +20,16 @@ async function EnviarLink (req: LoginRequest, res: NextApiResponse) {
 		return res.status(400).json({ statusCode: 400, msg: 'Email is required' })
 	}
 
-	//verificar se o email está cadastrado na base
+  const user = await fetch(`${process.env.URL_API_CC}/corollas-user?email=${query.email}`)
+	if (user.status != 200) {
+		return res.status(401).json({ statusCode: 401, msg: 'email validation failed' })
+	}
+	try {
+		const data = await user.json()
+		const {userID} = data[0]
+	} catch {
+		return res.status(402).json({ statusCode: 402, msg: 'user not found' })
+	}
 
 	const token = generate(query.email)
 

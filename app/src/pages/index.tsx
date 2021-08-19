@@ -22,7 +22,7 @@ export default function Login() {
       if (res.status === 200) {
         console.log('redirect to success page')
       } else {
-        console.log('show error')
+        console.log(res.status)
       }
     })
   }

@@ -33,6 +33,12 @@ export default function Login() {
         <div>
           <div className="mx-auto h-auto w-auto flex items-center justify-center" >
             <Image src="/logo_prati_roxo.png" alt="logo" width="120" height="120" />
+            <div className="h-70px w-0.5 bg-roxo_prati"></div>
+            <div className="flex-column ml-1 text-roxo_prati font-bold text-left text-xl ">
+              <h2 className="-mb-2">Perdas</h2>
+              <h2 >em</h2>
+              <h2 className="-mt-2">Corollas</h2>
+            </div>
           </div>
           <h2 className="mt-4 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
         </div>

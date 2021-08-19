@@ -11,7 +11,7 @@ interface signInRequestInterface extends NextApiRequest {
 export default async function signIn(req: signInRequestInterface, res: NextApiResponse) {
 	const { query } = req
 	const token = query.token
-	const { status, user } = await signInRequest({ token })
+	const { status, msg, user } = await signInRequest({ token })
 	if (status === 200) {
 		setCookie({ res }, 'corollas.token', token, {
 			maxAge: 60 * 60 * 1, // 1 hour
@@ -27,6 +27,6 @@ export default async function signIn(req: signInRequestInterface, res: NextApiRe
 		})
 		return res.redirect(`/dashboard/${user.areaID}`)
 	} else {
-		return res.status(400).json({ statusCode: 400, msg: 'Acesso negado' })
+		return res.status(status).json({ statusCode: status, msg: msg })
 	}
 }

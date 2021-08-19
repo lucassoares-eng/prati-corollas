@@ -2,20 +2,20 @@ import { createContext, useEffect } from "react";
 import { useState } from "react";
 import { parseCookies } from 'nookies'
 
-type User = {
+export type UserType = {
 	userID: number,
   areaID: number
 }
 
 type AuthContextType = {
 	isAuthenticated: boolean,
-	user: User
+	user: UserType
 }
 
 export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthProvider({ children }) {
-	const [user, setUser] = useState<User | null>(null)
+	const [user, setUser] = useState<UserType | null>(null)
 
 	const isAuthenticated = !!user
 

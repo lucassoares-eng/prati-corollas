@@ -31,13 +31,28 @@ export async function signInRequest({ token }: SignInRequestData) {
     }
   }
 
-  //verificar se o email está cadastrado e retornar userID e areaID
-
-  return {
-    status: 200,
-    user: {
-      userID: 1,
-      areaID: 1
+  try {
+    const res = await fetch(`${process.env.URL_API_CC}/corollas-user?email=${email}`)
+    if (res.status === 200) {
+      const data = await res.json()
+      const {userID, areaID} = data[0]
+      return {
+        status: 200,
+        user: {
+          userID: userID,
+          areaID: areaID
+        }
+      }
+    } else {
+      return {
+        status: 403,
+        msg: 'user validation failed'
+      }
+    }
+  } catch (error) {
+    return {
+      status: 403,
+      msg: 'user validation failed'
     }
   }
 }

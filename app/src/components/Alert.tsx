@@ -1,4 +1,5 @@
 import React from "react";
+import { ExclamationCircleIcon } from "@heroicons/react/outline"
 
 export default function Alert ({ showAlert, color, msg }) {
   return (
@@ -11,8 +12,9 @@ export default function Alert ({ showAlert, color, msg }) {
             "-500"
           }
         >
-          <span className="text-xl inline-block mr-5 align-middle">
+          <span className="text-xl inline-block mr-3 align-middle">
             <i className="fas fa-bell" />
+            <ExclamationCircleIcon className="h-6 w-6" aria-hidden="true" />
           </span>
           <span className="inline-block align-middle mr-8">
             { msg }

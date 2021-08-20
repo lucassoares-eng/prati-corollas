@@ -32,7 +32,7 @@ export async function signInRequest({ token }: SignInRequestData) {
   }
 
   try {
-    const res = await fetch(`${process.env.URL_API_CC}/corollas-user?email=${email}`)
+    const res = await fetch(`${process.env.URL_API_CC}corollas-user?email=${email}`)
     if (res.status === 200) {
       const data = await res.json()
       const {userID, areaID} = data[0]

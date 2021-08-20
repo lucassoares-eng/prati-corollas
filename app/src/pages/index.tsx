@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { useForm } from 'react-hook-form'
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
+import Success from '../components/success';
 
 type HandleSingInType = {
 	email: string
@@ -20,9 +21,13 @@ export default function Login() {
       }
     }).then((res) => {
       if (res.status === 200) {
-        console.log('redirect to success page')
+        return(
+          <Success></Success>
+        )
+      } else if (res.status === 402) {
+        console.log('user not found')
       } else {
-        console.log(res.status)
+        console.log('Sorry, something went wrong')
       }
     })
   }

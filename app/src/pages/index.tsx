@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
 import { useState } from 'react'
+import Alert from '../components/Alert';
 
 type HandleSingInType = {
 	email: string
@@ -13,6 +14,8 @@ type HandleSingInType = {
 export default function Login() {
   const { register, handleSubmit } = useForm()
   const [success, setSuccess] = useState(false)
+  const [userFail, setUserFail] = useState(false)
+  const [contactError, setContactError] = useState(false)
 
   async function handleSignIn({ email }: HandleSingInType) {
     const res = await fetch(`/api/contact/${email}`, {
@@ -27,8 +30,10 @@ export default function Login() {
         setSuccess(true)
       } else if (res.status === 402) {
         console.log('user not found')
+        setUserFail(true)
       } else {
         console.log('Sorry, something went wrong')
+        setContactError(true)
       }
     })
   }
@@ -89,6 +94,20 @@ export default function Login() {
           <h3 className="mt-1 text-center text-xl text-gray-900">An email has been sent with a link</h3>
         </div>
       </div>
+      <>
+        {userFail? (
+          <div className={`alert position: fixed top-4`}>
+            <Alert showAlert = { setUserFail } color='red' msg='Usuário não cadastrado'></Alert>
+          </div>
+        ): null}
+      </>
+      <>
+        {contactError? (
+          <div className={`alert position: fixed top-4`}>
+            <Alert showAlert = { setContactError } color='red' msg='Desculpe, serviço indisponível'></Alert>
+          </div>
+        ): null}
+      </>
     </div>
   )
 }

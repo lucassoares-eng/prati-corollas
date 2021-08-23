@@ -26,7 +26,7 @@ async function EnviarLink (req: LoginRequest, res: NextApiResponse) {
 	}
 	try {
 		const data = await user.json()
-		const {userID} = data[0]
+		const { userID } = data[0]
 	} catch {
 		return res.status(402).json({ statusCode: 402, msg: 'user not found' })
 	}
@@ -38,12 +38,13 @@ async function EnviarLink (req: LoginRequest, res: NextApiResponse) {
 	}
 
 	const mailer = Mailer(transporter, emailsList)
+	const str = query.email.split('.')[0]
+	const firstName = str.charAt(0).toUpperCase() + str.slice(1)
 
 	try { 
 		mailer.send(
 			'pass', {
-				firstName: 'Usuário',
-				lastName: 'Sobrenome',
+				firstName: firstName,
 				link: `${process.env.HOST}/api/auth/${token}`,
 				subject: "Seu link para o Relatório de Corollas"
 			},

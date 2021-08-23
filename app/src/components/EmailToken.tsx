@@ -4,7 +4,6 @@ import { Email } from '../utils/Mailer';
 
 type Props = {
   firstName: string,
-  lastName: string,
   link: string,
   subject: string,
 }
@@ -21,10 +20,10 @@ const linkStyle = {
   textDecoration: 'none'
 }
 
-const EmailToken: Email<Props> = ({ firstName, lastName, link, subject }) => ({
+const EmailToken: Email<Props> = ({ firstName, link, subject }) => ({
   subject: subject,
   body: (
-    <EmailLayout title={`Olá ${firstName} ${lastName}!`}>
+    <EmailLayout title={`Olá ${firstName}!`}>
       <div>
         <h3>Clique no botão abaixo para acessar o Relatório de Corollas:</h3>
         <div style={buttonStyle}>

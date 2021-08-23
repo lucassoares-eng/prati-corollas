@@ -7,7 +7,7 @@ export const generate = (email: string) => {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: 120 // 2min
+        expiresIn: 60 * 60 * 24 * 5 // 5days
       }
     ) 
 }

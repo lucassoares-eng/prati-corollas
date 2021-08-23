@@ -1,6 +1,6 @@
 import { createContext, useEffect } from "react";
 import { useState } from "react";
-import { parseCookies } from 'nookies'
+import { parseCookies, setCookie } from 'nookies'
 
 export type UserType = {
 	userID: number,
@@ -30,6 +30,20 @@ export function AuthProvider({ children }) {
 				areaID: parseInt(areaID)
 			}
 			setUser(user)
+
+			//refresh cookies
+			setCookie(undefined, 'corollas.token', token, {
+				maxAge: 60 * 60 * 1, // 1 hour
+				path: '/'
+			})
+			setCookie(undefined, 'corollas.userID', userID, {
+				maxAge: 60 * 60 * 1, // 1 hour
+				path: '/'
+			})
+			setCookie(undefined, 'corollas.areaID', areaID, {
+				maxAge: 60 * 60 * 1, // 1 hour
+				path: '/'
+			})
 		}
 	}, [])
  

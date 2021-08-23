@@ -1,7 +1,13 @@
 import jwt from 'jsonwebtoken'
 
 export const generate = (email: string) => {
-    const date = new Date()
-    date.setHours(date.getHours() + 1)
-    return jwt.sign({ email, expiration: date }, process.env.JWT_SECRET!)
+    return jwt.sign(
+      {
+        email: email
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: 120 // 2min
+      }
+    ) 
 }

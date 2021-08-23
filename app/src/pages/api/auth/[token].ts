@@ -26,7 +26,8 @@ export default async function signIn(req: signInRequestInterface, res: NextApiRe
 			path: '/'
 		})
 		return res.redirect(`/dashboard/${user.areaID}`)
-	} else {
-		return res.status(status).json({ statusCode: status, msg: msg })
+	} else if (status === 402) {
+		return res.redirect(`/?expired=true`)
 	}
+	return res.status(status).json({ statusCode: status, msg: msg })
 }

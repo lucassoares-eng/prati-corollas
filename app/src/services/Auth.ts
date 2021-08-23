@@ -6,31 +6,30 @@ export type SignInRequestData = {
 
 export async function signInRequest({ token }: SignInRequestData) {
 
-  let decoded: string | jwt.JwtPayload 
+  let decoded: string | jwt.JwtPayload
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET!)
   } catch {
+    if('TokenExpiredError') {
+      return {
+        status: 402,
+        msg: 'token has expired'
+      }
+    }
     return {
       status: 400,
-      msg: 'cannot verify jwt'
+      msg: 'cannot verify jwt',
     }
   }
 
-  if (!decoded.hasOwnProperty('email') || !decoded.hasOwnProperty('expiration')){
+  if (!decoded.hasOwnProperty('email')){
     return {
       status: 401,
       msg: 'invalid jwt token'
     }
   }
 
-  const { email, expiration } = (decoded as { email: string, expiration: Date})
-  if (expiration < new Date()) {
-    return {
-      status: 402,
-      msg: 'token has expired'
-    }
-  }
-
+  const { email } = (decoded as { email: string })
   try {
     const res = await fetch(`${process.env.URL_API_CC}corollas-user?email=${email}`)
     if (res.status === 200) {

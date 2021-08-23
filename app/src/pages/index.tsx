@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import Alert from '../components/Alert';
 
 type HandleSingInType = {
@@ -17,7 +18,12 @@ export default function Login() {
   const [userFail, setUserFail] = useState(false)
   const [contactError, setContactError] = useState(false)
 
+  const router = useRouter()
+  const { expired } = router.query
+  const [linkExpired, setLinkExpired] = useState(Boolean(expired))
+
   async function handleSignIn({ email }: HandleSingInType) {
+    setLinkExpired(false)
     const res = await fetch(`/api/contact/${email}`, {
       method: 'POST',
       headers: {
@@ -26,13 +32,10 @@ export default function Login() {
       }
     }).then((res) => {
       if (res.status === 200) {
-        console.log('success')
         setSuccess(true)
       } else if (res.status === 402) {
-        console.log('user not found')
         setUserFail(true)
       } else {
-        console.log('Sorry, something went wrong')
         setContactError(true)
       }
     })
@@ -94,6 +97,13 @@ export default function Login() {
           <h3 className="mt-1 text-center text-xl text-gray-900">An email has been sent with a link</h3>
         </div>
       </div>
+      <>
+        {linkExpired? (
+          <div className={`alert position: fixed top-4`}>
+            <Alert showAlert = { setLinkExpired } color='red' msg='Seu link expirou, faça login novamente'></Alert>
+          </div>
+        ): null}
+      </>
       <>
         {userFail? (
           <div className={`alert position: fixed top-4`}>

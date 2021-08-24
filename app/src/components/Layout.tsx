@@ -1,8 +1,10 @@
 import React, { Fragment, ReactNode } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
-import { destroyCookie } from 'nookies';
-import router from 'next/router';
+import { MenuIcon, XIcon } from '@heroicons/react/outline'
+import { destroyCookie } from 'nookies'
+import { UserCircleIcon } from '@heroicons/react/solid'
+import router from 'next/router'
+import Image from 'next/image'
 
 type Props = {
   children?: ReactNode,
@@ -22,16 +24,16 @@ const user = {
   imageUrl:
     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }
-const navigation = [
+
+const navigation: navigationType[] = [
   { name: 'Dashboard', href: '#', current: true },
   { name: 'Team', href: '#', current: false },
   { name: 'Projects', href: '#', current: false },
   { name: 'Calendar', href: '#', current: false },
   { name: 'Reports', href: '#', current: false },
 ]
-const userNavigation : navigationType[] = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
+
+const userNavigation: navigationType[] = [
   { name: 'Sign out', onclick: SignOut },
 ]
 
@@ -55,18 +57,21 @@ function SignOut() {
 export default function Layout( { children, title } : Props ) {
   return (
     <div>
-      <Disclosure as="nav" className="bg-gray-800">
+      <Disclosure as="nav" className="bg-roxo_prati">
         {({ open }) => (
           <>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex items-center justify-between h-16">
                 <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <img
-                      className="h-8 w-8"
-                      src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
-                      alt="Workflow"
-                    />
+                  <div className="flex items-center">
+                    <div className="flex items-center">
+                      <Image src="/logo_prati_branco.svg" alt="Prati-Donaduzzi" width="110" height="38"/>
+                    </div>
+                    <div className="w-0.5 h-12 ml-4 mr-3 bg-white"></div>
+                    <div className="text-white text-lg font-medium">
+                      <h2 className="-mb-2">Perdas em</h2>
+                      <h2 className="-mt-2">Corollas</h2>
+                    </div>
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
@@ -76,8 +81,8 @@ export default function Layout( { children, title } : Props ) {
                           href={item.href}
                           className={classNames(
                             item.current
-                              ? 'bg-gray-900 text-white'
-                              : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                              ? 'bg-amarelo_prati text-roxo_prati font-medium'
+                              : 'text-white hover:bg-white hover:text-roxo_prati',
                             'px-3 py-2 rounded-md text-sm font-medium'
                           )}
                           aria-current={item.current ? 'page' : undefined}
@@ -90,20 +95,12 @@ export default function Layout( { children, title } : Props ) {
                 </div>
                 <div className="hidden md:block">
                   <div className="ml-4 flex items-center md:ml-6">
-                    <button
-                      type="button"
-                      className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                    >
-                      <span className="sr-only">View notifications</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
-
                     {/* Profile dropdown */}
                     <Menu as="div" className="ml-3 relative">
                       <div>
-                        <Menu.Button className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        <Menu.Button className="max-w-xs bg-white rounded-full flex items-center text-sm focus:outline-none focus:ring-2">
                           <span className="sr-only">Open user menu</span>
-                          <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                          <UserCircleIcon  className="h-7 w-7 text-roxo_prati" aria-hidden="true"/>
                         </Menu.Button>
                       </div>
                       <Transition
@@ -176,13 +173,6 @@ export default function Layout( { children, title } : Props ) {
                     <div className="text-base font-medium leading-none text-white">{user.name}</div>
                     <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
                   </div>
-                  <button
-                    type="button"
-                    className="ml-auto bg-gray-800 flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                  >
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
                 </div>
                 <div className="mt-3 px-2 space-y-1">
                   {userNavigation.map((item) => (

@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        roxo_prati: '#5C2472'
+        roxo_prati: '#5C2472',
+        amarelo_prati: '#F3CC23',
       },
       spacing: {
         '70px': '70px'

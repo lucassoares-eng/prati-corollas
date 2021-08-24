@@ -9,7 +9,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html lang="pt-BR">
         <Head>
           <meta charSet="utf-8" />
           <link rel="shortcut icon" href="/favicon.webp" />

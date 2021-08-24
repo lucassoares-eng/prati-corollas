@@ -1,11 +1,19 @@
 import React, { Fragment, ReactNode } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
-import { Head } from 'next/document'
+import { destroyCookie } from 'nookies';
+import router from 'next/router';
 
 type Props = {
   children?: ReactNode,
   title: string
+}
+
+type navigationType = {
+  name: string,
+  href?: string,
+  current?: boolean,
+  onclick?: VoidFunction
 }
 
 const user = {
@@ -21,14 +29,27 @@ const navigation = [
   { name: 'Calendar', href: '#', current: false },
   { name: 'Reports', href: '#', current: false },
 ]
-const userNavigation = [
+const userNavigation : navigationType[] = [
   { name: 'Your Profile', href: '#' },
   { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
+  { name: 'Sign out', onclick: SignOut },
 ]
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
+}
+
+function SignOut() {
+  destroyCookie(null, 'corollas.token', {
+    path: '/'
+  })
+  destroyCookie(null, 'corollas.userID', {
+    path: '/'
+  })
+  destroyCookie(null, 'corollas.areaID', {
+    path: '/'
+  })
+  router.push('/')
 }
 
 export default function Layout( { children, title } : Props ) {
@@ -99,7 +120,8 @@ export default function Layout( { children, title } : Props ) {
                             <Menu.Item key={item.name}>
                               {({ active }) => (
                                 <a
-                                  href={item.href}
+                                  href={item?.href}
+                                  onClick={item.onclick}
                                   className={classNames(
                                     active ? 'bg-gray-100' : '',
                                     'block px-4 py-2 text-sm text-gray-700'
@@ -167,6 +189,7 @@ export default function Layout( { children, title } : Props ) {
                     <a
                       key={item.name}
                       href={item.href}
+                      onClick={item.onclick}
                       className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
                     >
                       {item.name}

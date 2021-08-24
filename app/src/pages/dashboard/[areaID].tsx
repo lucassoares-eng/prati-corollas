@@ -1,13 +1,14 @@
 import { parseCookies } from 'nookies';
 import { GetServerSideProps } from 'next';
+import Layout from '../../components/Layout';
 
 
 export default function Dashboard() {
 
 	return(
-		<div>
-			<h1>Dashboard</h1>
-		</div>
+		<Layout title='Dashboard'>
+
+		</Layout>
 	)
 }
 

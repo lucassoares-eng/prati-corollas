@@ -21,8 +21,6 @@ type navigationType = {
 const user = {
   name: 'Tom Cook',
   email: 'tom@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }
 
 const navigation: navigationType[] = [
@@ -81,7 +79,7 @@ export default function Layout( { children, title } : Props ) {
                           href={item.href}
                           className={classNames(
                             item.current
-                              ? 'bg-amarelo_prati text-roxo_prati font-medium'
+                              ? 'bg-gray-800 text-white font-medium'
                               : 'text-white hover:bg-white hover:text-roxo_prati',
                             'px-3 py-2 rounded-md text-sm font-medium'
                           )}
@@ -155,7 +153,7 @@ export default function Layout( { children, title } : Props ) {
                     key={item.name}
                     href={item.href}
                     className={classNames(
-                      item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                      item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-white hover:text-roxo_prati',
                       'block px-3 py-2 rounded-md text-base font-medium'
                     )}
                     aria-current={item.current ? 'page' : undefined}
@@ -166,8 +164,8 @@ export default function Layout( { children, title } : Props ) {
               </div>
               <div className="pt-4 pb-3 border-t border-gray-700">
                 <div className="flex items-center px-5">
-                  <div className="flex-shrink-0">
-                    <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                  <div className="flex-shrink-0 bg-white rounded-full">
+                    <UserCircleIcon  className="h-7 w-7 text-roxo_prati" aria-hidden="true"/>
                   </div>
                   <div className="ml-3">
                     <div className="text-base font-medium leading-none text-white">{user.name}</div>

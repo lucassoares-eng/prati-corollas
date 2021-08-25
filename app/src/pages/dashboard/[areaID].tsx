@@ -1,30 +1,37 @@
 import { parseCookies } from 'nookies';
-import { GetServerSideProps } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import Layout from '../../components/Layout';
+import Router from 'next/router';
+import { useEffect } from 'react';
 
 
 export default function Dashboard() {
 
+	useEffect(() => {
+		const { 'corollas.token': token } = parseCookies()
+		if (!token) {
+			Router.push('/')
+		}
+	})
+
 	return(
 		<Layout title='Dashboard'>
-
+			
 		</Layout>
 	)
 }
 
-export const getServerSideProps: GetServerSideProps = async(ctx) => {
-	const { 'corollas.token': token } = parseCookies(ctx)
-
-	if (!token) {
-		return {
-			redirect: {
-				destination: '/',
-				permanent: false
-			}
-		}
-	}
-
+export const getStaticPaths: GetStaticPaths = async () => {
 	return {
-		props: {}
+    paths: [
+			{ params: { areaID: '1' } }
+		],
+    fallback: false
+  }
+}
+
+export const getStaticProps: GetStaticProps = async () => {
+	return {
+		props:{}
 	}
 }

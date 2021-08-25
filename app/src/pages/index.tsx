@@ -91,7 +91,7 @@ export default function Login() {
         </div>
         <div className={`front ${success? 'visible' : 'invisible'} position: absolute top-0 w-full h-full flex flex-col items-center justify-center`}>
           <div className= "animate-bounce">
-          <MailOpenIcon className="h-14 w-14 text-indigo-500" aria-hidden="true" />
+          <MailOpenIcon className="h-14 w-14 text-roxo_prati" aria-hidden="true" />
           </div>
           <h2 className="mt-4 text-center text-3xl font-bold text-gray-900">Confirm your e-mail</h2>
           <h3 className="mt-1 text-center text-xl text-gray-900">An email has been sent with a link</h3>

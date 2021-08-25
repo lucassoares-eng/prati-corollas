@@ -6,14 +6,6 @@ import { useEffect } from 'react';
 
 
 export default function Dashboard() {
-
-	useEffect(() => {
-		const { 'corollas.token': token } = parseCookies()
-		if (!token) {
-			Router.push('/')
-		}
-	})
-
 	return(
 		<Layout title='Dashboard'>
 			

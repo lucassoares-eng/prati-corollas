@@ -1,7 +1,7 @@
-import React, { Fragment, ReactNode, useContext } from 'react'
+import React, { Fragment, ReactNode, useContext, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
-import { destroyCookie } from 'nookies'
+import { destroyCookie, parseCookies } from 'nookies'
 import { UserCircleIcon } from '@heroicons/react/solid'
 import router from 'next/router'
 import Image from 'next/image'
@@ -43,6 +43,14 @@ function SignOut() {
 }
 
 export default function Layout( { children, title } : Props ) {
+
+  useEffect(() => {
+    const { 'corollas.token': token } = parseCookies()
+    if (!token) {
+      router.push('/')
+    }
+  })
+
   const { user } = useContext(AuthContext)
   return (
     <div>

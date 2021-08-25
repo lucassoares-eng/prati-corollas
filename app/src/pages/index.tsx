@@ -128,14 +128,16 @@ export const getServerSideProps: GetServerSideProps = async(ctx) => {
 
 	if (token) {
     let decoded: string | jwt.JwtPayload
-    decoded = jwt.verify(token, process.env.JWT_SECRET!)
-    const { areaID } = (decoded as { areaID: string })
-		return {
-			redirect: {
-				destination: `/dashboard/${areaID}`,
-				permanent: false
-			}
-		}
+    try{
+      decoded = jwt.verify(token, process.env.JWT_SECRET!)
+      const { areaID } = (decoded as { areaID: string })
+      return {
+        redirect: {
+          destination: `/dashboard/${areaID}`,
+          permanent: false
+        }
+      }
+    } catch {}
 	}
 
 	return {

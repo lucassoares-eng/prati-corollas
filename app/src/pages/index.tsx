@@ -24,6 +24,8 @@ export default function Login() {
   const [linkExpired, setLinkExpired] = useState(Boolean(expired))
 
   async function handleSignIn({ email }: HandleSingInType) {
+    setUserFail(false)
+    setContactError(false)
     setLinkExpired(false)
     const res = await fetch(`/api/contact/${email}`, {
       method: 'POST',

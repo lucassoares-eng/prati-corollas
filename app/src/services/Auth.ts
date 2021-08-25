@@ -34,11 +34,13 @@ export async function signInRequest({ token }: SignInRequestData) {
     const res = await fetch(`${process.env.URL_API_CC}corollas-user?email=${email}`)
     if (res.status === 200) {
       const data = await res.json()
-      const {userID, areaID} = data[0]
+      const {userID, user, areaID} = data[0]
       return {
         status: 200,
         user: {
           userID: userID,
+          user: user,
+          email: email,
           areaID: areaID
         }
       }
@@ -53,5 +55,18 @@ export async function signInRequest({ token }: SignInRequestData) {
       status: 403,
       msg: 'user validation failed'
     }
+  }
+}
+
+export async function recoverUserInformation({ token }: SignInRequestData) {
+  const res = await fetch(`/api/user/${token}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+  const data = await res.json()
+  return {
+    user: data
   }
 }

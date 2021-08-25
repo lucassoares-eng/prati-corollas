@@ -1,10 +1,14 @@
 import { createContext, useEffect } from "react";
 import { useState } from "react";
 import { parseCookies, setCookie } from 'nookies'
+import { api } from "../services/api";
+import { recoverUserInformation } from "../services/Auth";
 
 export type UserType = {
 	userID: number,
-  areaID: number
+	user: string,
+	email: string,
+  areaID: number,
 }
 
 type AuthContextType = {
@@ -23,24 +27,10 @@ export function AuthProvider({ children }) {
 		const { 'corollas.token': token } = parseCookies()
 
 		if (token) {
-			const { 'corollas.userID': userID } = parseCookies()
-			const { 'corollas.areaID': areaID } = parseCookies()
-			const user = {
-				userID: parseInt(userID),
-				areaID: parseInt(areaID)
-			}
-			setUser(user)
+			recoverUserInformation({ token }).then(response => setUser(response.user))
 
 			//refresh cookies
 			setCookie(undefined, 'corollas.token', token, {
-				maxAge: 60 * 60 * 1, // 1 hour
-				path: '/'
-			})
-			setCookie(undefined, 'corollas.userID', userID, {
-				maxAge: 60 * 60 * 1, // 1 hour
-				path: '/'
-			})
-			setCookie(undefined, 'corollas.areaID', areaID, {
 				maxAge: 60 * 60 * 1, // 1 hour
 				path: '/'
 			})

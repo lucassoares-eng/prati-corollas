@@ -17,14 +17,6 @@ export default async function signIn(req: signInRequestInterface, res: NextApiRe
 			maxAge: 60 * 60 * 1, // 1 hour
 			path: '/'
 		})
-		setCookie({ res }, 'corollas.userID', user.userID.toString(), {
-			maxAge: 60 * 60 * 1, // 1 hour
-			path: '/'
-		})
-		setCookie({ res }, 'corollas.areaID', user.areaID.toString(), {
-			maxAge: 60 * 60 * 1, // 1 hour
-			path: '/'
-		})
 		return res.redirect(`/dashboard/${user.areaID}`)
 	} else if (status === 402) {
 		return res.redirect(`/?expired=true`)

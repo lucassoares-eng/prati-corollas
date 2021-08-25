@@ -1,7 +1,6 @@
 import { createContext, useEffect } from "react";
 import { useState } from "react";
 import { parseCookies, setCookie } from 'nookies'
-import { api } from "../services/api";
 import { recoverUserInformation } from "../services/Auth";
 
 export type UserType = {
@@ -35,6 +34,7 @@ export function AuthProvider({ children }) {
 				path: '/'
 			})
 		}
+
 	}, [])
  
   return (

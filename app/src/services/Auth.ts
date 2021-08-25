@@ -22,7 +22,7 @@ export async function signInRequest({ token }: SignInRequestData) {
     }
   }
 
-  if (!decoded.hasOwnProperty('email')){
+  if (!decoded.hasOwnProperty('email') || !decoded.hasOwnProperty('areaID')){
     return {
       status: 401,
       msg: 'invalid jwt token'

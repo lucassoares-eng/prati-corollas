@@ -7,6 +7,7 @@ import { parseCookies } from 'nookies'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Alert from '../components/Alert';
+import jwt from 'jsonwebtoken'
 
 type HandleSingInType = {
 	email: string
@@ -126,7 +127,9 @@ export const getServerSideProps: GetServerSideProps = async(ctx) => {
 	const { 'corollas.token': token } = parseCookies(ctx)
 
 	if (token) {
-    const { 'corollas.areaID': areaID } = parseCookies(ctx)
+    let decoded: string | jwt.JwtPayload
+    decoded = jwt.verify(token, process.env.JWT_SECRET!)
+    const { areaID } = (decoded as { areaID: string })
 		return {
 			redirect: {
 				destination: `/dashboard/${areaID}`,

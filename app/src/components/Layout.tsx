@@ -1,10 +1,11 @@
-import React, { Fragment, ReactNode } from 'react'
+import React, { Fragment, ReactNode, useContext } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
 import { destroyCookie } from 'nookies'
 import { UserCircleIcon } from '@heroicons/react/solid'
 import router from 'next/router'
 import Image from 'next/image'
+import { AuthContext } from '../contexts/AuthContext';
 
 type Props = {
   children?: ReactNode,
@@ -16,11 +17,6 @@ type navigationType = {
   href?: string,
   current?: boolean,
   onclick?: VoidFunction
-}
-
-const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
 }
 
 const navigation: navigationType[] = [
@@ -43,16 +39,11 @@ function SignOut() {
   destroyCookie(null, 'corollas.token', {
     path: '/'
   })
-  destroyCookie(null, 'corollas.userID', {
-    path: '/'
-  })
-  destroyCookie(null, 'corollas.areaID', {
-    path: '/'
-  })
   router.push('/')
 }
 
 export default function Layout( { children, title } : Props ) {
+  const { user } = useContext(AuthContext)
   return (
     <div>
       <Disclosure as="nav" className="bg-roxo_prati">
@@ -168,8 +159,8 @@ export default function Layout( { children, title } : Props ) {
                     <UserCircleIcon  className="h-7 w-7 text-roxo_prati" aria-hidden="true"/>
                   </div>
                   <div className="ml-3">
-                    <div className="text-base font-medium leading-none text-white">{user.name}</div>
-                    <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
+                    <div className="text-base font-medium leading-none text-white">{user?.user}</div>
+                    <div className="text-sm font-medium leading-none text-gray-400">{user?.email}</div>
                   </div>
                 </div>
                 <div className="mt-3 px-2 space-y-1">

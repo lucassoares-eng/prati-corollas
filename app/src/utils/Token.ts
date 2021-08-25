@@ -1,9 +1,10 @@
 import jwt from 'jsonwebtoken'
 
-export const generate = (email: string) => {
+export const generate = (email: string, areaID: number) => {
     return jwt.sign(
       {
-        email: email
+        email: email,
+        areaID: areaID
       },
       process.env.JWT_SECRET,
       {

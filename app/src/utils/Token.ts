@@ -8,7 +8,7 @@ export const generate = (email: string, areaID: number) => {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: 60 * 60 * 24 * 5 // 5days
+        expiresIn: 60 * 60 * 24 * 2 // 2days
       }
     ) 
 }

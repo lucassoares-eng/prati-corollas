@@ -26,12 +26,14 @@ export function AuthProvider({ children }) {
 		const { 'corollas.token': token } = parseCookies()
 
 		if (token) {
-			recoverUserInformation({ token }).then(response => setUser(response.user))
-
-			//refresh cookies
-			setCookie(undefined, 'corollas.token', token, {
-				maxAge: 60 * 60 * 1, // 1 hour
-				path: '/'
+			recoverUserInformation({ token }).then(response => {
+				const { user, newToken } = response
+				setUser(user)
+				//refresh cookies
+				setCookie(undefined, 'corollas.token', newToken, {
+					maxAge: 60 * 60 * 1, // 1 hour
+					path: '/'
+				})
 			})
 		}
 

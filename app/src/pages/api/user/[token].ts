@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse  } from 'next'
 import { signInRequest } from '../../../services/Auth'
 import jwt from 'jsonwebtoken'
+import { generate } from '../../../utils/Token';
 
 interface signInRequestInterface extends NextApiRequest {
 	query: {
@@ -8,7 +9,7 @@ interface signInRequestInterface extends NextApiRequest {
 	}
 }
 
-export default async function signIn(req: signInRequestInterface, res: NextApiResponse) {
+export default async function userInformation(req: signInRequestInterface, res: NextApiResponse) {
 	const auth = req.headers.authorization
 	if (!auth || !auth.startsWith('Bearer ')) {
 		return res.status(403).json({ statusCode: 403, msg: 'Forbidden' })
@@ -24,8 +25,13 @@ export default async function signIn(req: signInRequestInterface, res: NextApiRe
 
 	const token = req.query.token
 	const { status, msg, user } = await signInRequest({ token })
+	const { email, areaID } = user
+	const newToken = generate(email, areaID)
 	if (status === 200) {
-		return res.status(200).json(user)
+		return res.status(200).json({
+			user: user,
+			newToken: newToken
+		})
 	}
 	return res.status(status).json({ statusCode: status, msg: msg })
 }

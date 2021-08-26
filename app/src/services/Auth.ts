@@ -66,7 +66,5 @@ export async function recoverUserInformation({ token }: SignInRequestData) {
     }
   })
   const data = await res.json()
-  return {
-    user: data
-  }
+  return data
 }

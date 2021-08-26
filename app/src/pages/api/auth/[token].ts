@@ -21,5 +21,5 @@ export default async function signIn(req: signInRequestInterface, res: NextApiRe
 	} else if (status === 402) {
 		return res.redirect(`/?expired=true`)
 	}
-	return res.status(status).json({ statusCode: status, msg: msg })
+	return res.redirect(`/?error=true`)
 }

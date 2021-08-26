@@ -20,13 +20,16 @@ export default function Login() {
   const [contactError, setContactError] = useState(false)
 
   const router = useRouter()
-  const { expired } = router.query
+  const { expired, error } = router.query
+
   const [linkExpired, setLinkExpired] = useState(Boolean(expired))
+  const [linkError, setLinkError] = useState(Boolean(error))
 
   async function handleSignIn({ email }: HandleSingInType) {
     setUserFail(false)
     setContactError(false)
     setLinkExpired(false)
+    setLinkError(false)
     const res = await fetch(`/api/contact/${email}`, {
       method: 'POST',
       headers: {
@@ -104,6 +107,13 @@ export default function Login() {
         {linkExpired? (
           <div className={`alert position: fixed top-4`}>
             <Alert showAlert = { setLinkExpired } color='red' msg='Seu link expirou, faça login novamente'></Alert>
+          </div>
+        ): null}
+      </>
+      <>
+        {linkError? (
+          <div className={`alert position: fixed top-4`}>
+            <Alert showAlert = { setLinkError } color='red' msg='Link inválido, faça login novamente'></Alert>
           </div>
         ): null}
       </>

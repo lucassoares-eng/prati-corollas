@@ -206,7 +206,11 @@ export default function Layout( { children, title } : Props ) {
             </div>
           </main>
         </div>
-      ): null}
+      ): (
+        <div className="h-screen w-screen flex justify-center items-center">
+          <div className="animate-spin rounded-full h-28 w-28 border-b-4 border-roxo_prati"></div>
+        </div>
+      )}
     </>
   )
 }

@@ -17,7 +17,7 @@ export default async function signIn(req: signInRequestInterface, res: NextApiRe
 			maxAge: 60 * 60 * 1, // 1 hour
 			path: '/'
 		})
-		return res.redirect(`/dashboard/${user.areaID}`)
+		return res.redirect(`/dashboard/${user.areaID}/2021`)
 	} else if (status === 402) {
 		return res.redirect(`/?expired=true`)
 	}

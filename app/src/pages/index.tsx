@@ -145,7 +145,7 @@ export const getServerSideProps: GetServerSideProps = async(ctx) => {
       const { areaID } = (decoded as { areaID: string })
       return {
         redirect: {
-          destination: `/dashboard/${areaID}`,
+          destination: `/dashboard/${areaID}/2021`,
           permanent: false
         }
       }

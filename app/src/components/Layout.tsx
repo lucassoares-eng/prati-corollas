@@ -6,10 +6,13 @@ import { UserCircleIcon } from '@heroicons/react/solid'
 import router from 'next/router'
 import Image from 'next/image'
 import { AuthContext } from '../contexts/AuthContext';
+import Dropdown from './Dropdown'
 
 type Props = {
   children?: ReactNode,
-  title: string
+  title: string,
+  diretoriaFilter: boolean,
+  gerenciaFilter: boolean,
 }
 
 type navigationType = {
@@ -42,7 +45,7 @@ function SignOut() {
   router.push('/')
 }
 
-export default function Layout( { children, title } : Props ) {
+export default function Layout( { children, title, diretoriaFilter, gerenciaFilter } : Props ) {
 
   useEffect(() => {
     const { 'corollas.token': token } = parseCookies()
@@ -192,13 +195,38 @@ export default function Layout( { children, title } : Props ) {
           </Disclosure>
 
           <header className="bg-white shadow">
-            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
               <h1 className="text-3xl font-bold text-gray-900">{ title }</h1>
             </div>
           </header>
           <main>
-            <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-              <div className="px-4 py-6 sm:px-0">
+            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-2">
+              <div className="px-4 sm:px-0">
+                <Dropdown title='ano' options = {
+                  [
+                    {name: '2021', value: '2021'},
+                    {name: '2020', value: '2020'},
+                  ]
+                }/>
+                { diretoriaFilter? (
+                  <Dropdown title='diretoria' options = {
+                    [
+                      {name: 'Comercial', value: '1'},
+                      {name: 'Engenharia', value: '2'},
+                    ]
+                  }/>
+                ): null}
+                { gerenciaFilter? (
+                  <Dropdown title='gerência' options = {
+                    [
+                      {name: 'Analítico I', value: '3'},
+                      {name: 'Farmacotécnico', value: '4'},
+                      {name: 'Projetos de Engenharia', value: '5'},
+                    ]
+                  }/>
+                ): null}
+              </div>
+              <div className="px-4 py-4 sm:px-0">
                 <div className="border-4 border-dashed border-gray-200 rounded-lg h-96">
                   {children}
                 </div>

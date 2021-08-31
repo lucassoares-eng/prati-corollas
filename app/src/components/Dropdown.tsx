@@ -13,10 +13,11 @@ function classNames(...classes: string[]) {
 type dropdownType = {
 	title: string,
   value: string | string[],
+  superior?: number,
 	options: optionType []
 }
 
-export default function Dropdown({title, value, options}: dropdownType) {
+export default function Dropdown({title, value, superior, options}: dropdownType) {
 	const router = useRouter()
   const { areaID, ano } = router.query
 
@@ -51,6 +52,11 @@ export default function Dropdown({title, value, options}: dropdownType) {
                         url = {
                           pathname: router.pathname,
                           query: { areaID: areaID, ano: item.ID},
+                        }
+                      } else if (superior) {
+                        url = {
+                          pathname: router.pathname,
+                          query: { areaID: superior, ano: ano},
                         }
                       } else {
                         url = {

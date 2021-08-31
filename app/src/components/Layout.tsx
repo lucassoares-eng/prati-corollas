@@ -11,9 +11,6 @@ import Dropdown from './Dropdown'
 type Props = {
   children?: ReactNode,
   title: string,
-  diretoriaFilter: boolean,
-  gerenciaFilter: boolean,
-  nivel: string,
   anos: optionType[],
   diretorias: optionType [],
   gerencias: optionType []
@@ -55,7 +52,7 @@ function SignOut() {
   router.push('/')
 }
 
-export default function Layout( { children, title, diretoriaFilter, gerenciaFilter, nivel, anos, diretorias, gerencias } : Props ) {
+export default function Layout( { children, title, anos, diretorias, gerencias } : Props ) {
 
   useEffect(() => {
     const { 'corollas.token': token } = parseCookies()
@@ -73,16 +70,18 @@ export default function Layout( { children, title, diretoriaFilter, gerenciaFilt
   let superior : number
 
   if (areaID == '1') {
-    diretoria = 'todos'
-    gerencia = 'todos'
+    diretoria = '-todos-'
+    gerencia = '-todos-'
   } else {
     try {
-      diretoria = diretorias.find( el => el.ID == parseInt(areaID[0])).name
-      gerencia = 'todos'
+      diretoria = diretorias.find(el => el.ID == parseInt(areaID[0])).name
+      gerencia = '-todos-'
+      gerencias = gerencias.filter(el => el.superior == parseInt(areaID[0]) || el.superior == -1)
     } catch {
       gerencia = gerencias.find( el => el.ID == parseInt(areaID[0])).name
       superior = gerencias.find( el => el.ID == parseInt(areaID[0])).superior
       diretoria = diretorias.find( el => el.ID == superior).name
+      gerencias = gerencias.filter(el => el.superior == superior || el.superior == -1)
     }
   }
 
@@ -234,12 +233,8 @@ export default function Layout( { children, title, diretoriaFilter, gerenciaFilt
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
               <div className="px-4 sm:px-0">
                 <Dropdown title='ano' value= { ano } options = { anos }/>
-                { diretoriaFilter? (
-                  <Dropdown title='diretoria' value= { diretoria } options = { diretorias }/>
-                ): null}
-                { gerenciaFilter? (
-                  <Dropdown title='gerência' value= { gerencia } options = { gerencias }/>
-                ): null}
+                <Dropdown title='diretoria' value= { diretoria } options = { diretorias }/>
+                <Dropdown title='gerência' value= { gerencia } superior= { superior } options = { gerencias }/>
               </div>
               <div className="px-4 py-4 sm:px-0">
                 <div className="border-4 border-dashed border-gray-200 rounded-lg h-96">

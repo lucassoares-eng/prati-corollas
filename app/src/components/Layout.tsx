@@ -3,7 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
 import { destroyCookie, parseCookies } from 'nookies'
 import { UserCircleIcon } from '@heroicons/react/solid'
-import router from 'next/router'
+import router, { useRouter } from 'next/router'
 import Image from 'next/image'
 import { AuthContext } from '../contexts/AuthContext';
 import Dropdown from './Dropdown'
@@ -12,7 +12,7 @@ type Props = {
   children?: ReactNode,
   title: string,
   diretoriaFilter: boolean,
-  gerenciaFilter: boolean,
+  gerenciaFilter: boolean
 }
 
 type navigationType = {
@@ -20,6 +20,11 @@ type navigationType = {
   href?: string,
   current?: boolean,
   onclick?: VoidFunction
+}
+
+export type areasType = {
+  areaID: number,
+  area: string,
 }
 
 const navigation: navigationType[] = [
@@ -55,6 +60,8 @@ export default function Layout( { children, title, diretoriaFilter, gerenciaFilt
   })
 
   const { user, isAuthenticated } = useContext(AuthContext)
+  const router = useRouter()
+  const { areaID, ano } = router.query
   return (
     <>
       {isAuthenticated? (
@@ -200,16 +207,16 @@ export default function Layout( { children, title, diretoriaFilter, gerenciaFilt
             </div>
           </header>
           <main>
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-2">
+            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
               <div className="px-4 sm:px-0">
-                <Dropdown title='ano' options = {
+                <Dropdown title='ano' value= { ano } options = {
                   [
                     {name: '2021', value: '2021'},
                     {name: '2020', value: '2020'},
                   ]
                 }/>
                 { diretoriaFilter? (
-                  <Dropdown title='diretoria' options = {
+                  <Dropdown title='diretoria' value= 'diretoria' options = {
                     [
                       {name: 'Comercial', value: '1'},
                       {name: 'Engenharia', value: '2'},
@@ -217,7 +224,7 @@ export default function Layout( { children, title, diretoriaFilter, gerenciaFilt
                   }/>
                 ): null}
                 { gerenciaFilter? (
-                  <Dropdown title='gerência' options = {
+                  <Dropdown title='gerência' value= 'gerencia' options = {
                     [
                       {name: 'Analítico I', value: '3'},
                       {name: 'Farmacotécnico', value: '4'},

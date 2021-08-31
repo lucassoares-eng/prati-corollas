@@ -4,6 +4,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import { useRouter } from 'next/router'
 import { UrlObject } from 'url'
+import { optionType } from './Layout';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -12,12 +13,7 @@ function classNames(...classes: string[]) {
 type dropdownType = {
 	title: string,
   value: string | string[],
-	options: optionsType []
-}
-
-type optionsType = {
-	name: string,
-	value: string
+	options: optionType []
 }
 
 export default function Dropdown({title, value, options}: dropdownType) {
@@ -46,7 +42,7 @@ export default function Dropdown({title, value, options}: dropdownType) {
         <Menu.Items className="origin-top-right absolute mt-1 min-w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none cursor-pointer z-50">
           <div className="py-1">
 						{options.map((item) => (
-							<Menu.Item key={item.name}>
+							<Menu.Item key={item.ID}>
 								{({ active }) => (
 									<a
 										onClick={() => {                     
@@ -54,12 +50,12 @@ export default function Dropdown({title, value, options}: dropdownType) {
                       if (title === 'ano') {
                         url = {
                           pathname: router.pathname,
-                          query: { areaID: areaID, ano: item.value},
+                          query: { areaID: areaID, ano: item.ID},
                         }
                       } else {
                         url = {
                           pathname: router.pathname,
-                          query: { areaID: item.value, ano: ano},
+                          query: { areaID: item.ID, ano: ano},
                         }
                       }
 											router.push(url, undefined, { shallow: true })

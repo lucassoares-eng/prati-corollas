@@ -12,7 +12,11 @@ type Props = {
   children?: ReactNode,
   title: string,
   diretoriaFilter: boolean,
-  gerenciaFilter: boolean
+  gerenciaFilter: boolean,
+  nivel: string,
+  anos: optionType[],
+  diretorias: optionType [],
+  gerencias: optionType []
 }
 
 type navigationType = {
@@ -22,9 +26,10 @@ type navigationType = {
   onclick?: VoidFunction
 }
 
-export type areasType = {
-  areaID: number,
-  area: string,
+export type optionType = {
+  ID: number,
+  name: string,
+  superior?: number
 }
 
 const navigation: navigationType[] = [
@@ -50,7 +55,7 @@ function SignOut() {
   router.push('/')
 }
 
-export default function Layout( { children, title, diretoriaFilter, gerenciaFilter } : Props ) {
+export default function Layout( { children, title, diretoriaFilter, gerenciaFilter, nivel, anos, diretorias, gerencias } : Props ) {
 
   useEffect(() => {
     const { 'corollas.token': token } = parseCookies()
@@ -62,6 +67,25 @@ export default function Layout( { children, title, diretoriaFilter, gerenciaFilt
   const { user, isAuthenticated } = useContext(AuthContext)
   const router = useRouter()
   const { areaID, ano } = router.query
+
+  let diretoria : string
+  let gerencia : string
+  let superior : number
+
+  if (areaID == '1') {
+    diretoria = 'todos'
+    gerencia = 'todos'
+  } else {
+    try {
+      diretoria = diretorias.find( el => el.ID == parseInt(areaID[0])).name
+      gerencia = 'todos'
+    } catch {
+      gerencia = gerencias.find( el => el.ID == parseInt(areaID[0])).name
+      superior = gerencias.find( el => el.ID == parseInt(areaID[0])).superior
+      diretoria = diretorias.find( el => el.ID == superior).name
+    }
+  }
+
   return (
     <>
       {isAuthenticated? (
@@ -209,28 +233,12 @@ export default function Layout( { children, title, diretoriaFilter, gerenciaFilt
           <main>
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
               <div className="px-4 sm:px-0">
-                <Dropdown title='ano' value= { ano } options = {
-                  [
-                    {name: '2021', value: '2021'},
-                    {name: '2020', value: '2020'},
-                  ]
-                }/>
+                <Dropdown title='ano' value= { ano } options = { anos }/>
                 { diretoriaFilter? (
-                  <Dropdown title='diretoria' value= 'diretoria' options = {
-                    [
-                      {name: 'Comercial', value: '1'},
-                      {name: 'Engenharia', value: '2'},
-                    ]
-                  }/>
+                  <Dropdown title='diretoria' value= { diretoria } options = { diretorias }/>
                 ): null}
                 { gerenciaFilter? (
-                  <Dropdown title='gerência' value= 'gerencia' options = {
-                    [
-                      {name: 'Analítico I', value: '3'},
-                      {name: 'Farmacotécnico', value: '4'},
-                      {name: 'Projetos de Engenharia', value: '5'},
-                    ]
-                  }/>
+                  <Dropdown title='gerência' value= { gerencia } options = { gerencias }/>
                 ): null}
               </div>
               <div className="px-4 py-4 sm:px-0">

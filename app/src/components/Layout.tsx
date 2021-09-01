@@ -85,13 +85,13 @@ export default function Layout( { children, title, anos, diretorias, gerencias }
     }
   }
 
-  const isPermited: boolean = user?.areaID == 1 || user?.areaID == parseInt(areaID[0]) || user?.areaID == superior
+  const isPermitted: boolean = user?.areaID == 1 || user?.areaID == parseInt(areaID[0]) || user?.areaID == superior
 
   return (
     <>
       {isAuthenticated? (
         <>
-          {isPermited? (
+          {isPermitted? (
           <div>
             <Disclosure as="nav" className="bg-roxo_prati">
               {({ open }) => (

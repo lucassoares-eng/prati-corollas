@@ -1,4 +1,4 @@
-import React, { Fragment, ReactNode, useContext, useEffect } from 'react'
+import React, { Fragment, ReactNode, useContext, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
 import { destroyCookie, parseCookies } from 'nookies'
@@ -7,6 +7,7 @@ import router, { useRouter } from 'next/router'
 import Image from 'next/image'
 import { AuthContext } from '../contexts/AuthContext';
 import Dropdown from './Dropdown'
+import { UrlObject } from 'url'
 
 type Props = {
   children?: ReactNode,
@@ -19,7 +20,6 @@ type Props = {
 type navigationType = {
   name: string,
   href?: string,
-  current?: boolean,
   onclick?: VoidFunction
 }
 
@@ -30,11 +30,10 @@ export type optionType = {
 }
 
 const navigation: navigationType[] = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
-  { name: 'Reports', href: '#', current: false },
+  { name: 'Dashboard', href: 'dashboard'},
+  { name: 'Pareto', href: 'pareto'},
+  { name: 'Plano de Ação', href: 'plano-de-acao'},
+  { name: 'Indicadores', href: 'indicadores'}
 ]
 
 const userNavigation: navigationType[] = [
@@ -89,6 +88,8 @@ export default function Layout( { children, title, anos, diretorias, gerencias }
 
   const isPermitted: boolean = user?.areaID == 1 || user?.areaID == parseInt(areaID[0]) || user?.areaID == superior
 
+  const [loading, setLoading] = useState(false)
+
   return (
     <>
       {isAuthenticated? (
@@ -112,18 +113,27 @@ export default function Layout( { children, title, anos, diretorias, gerencias }
                           </div>
                         </div>
                         <div className="hidden md:block">
-                          <div className="ml-10 flex items-baseline space-x-4">
+                          <div className="ml-10 flex items-baseline space-x-4 cursor-pointer">
                             {navigation.map((item) => (
                               <a
                                 key={item.name}
-                                href={item.href}
+                                onClick={() => {  
+                                  if (item.name != title) {
+                                    setLoading(true)             
+                                    const url: string | UrlObject = {
+                                    pathname: `/${ item.href }/[areaID]/[ano]`,
+                                    query: { areaID: areaID, ano: ano},
+                                  }
+                                    router.push(url, undefined, { shallow: true })
+                                  }
+                                }}
                                 className={classNames(
-                                  item.current
+                                  (item.name == title)
                                     ? 'bg-gray-800 text-white font-medium'
                                     : 'text-white hover:bg-white hover:text-roxo_prati',
-                                  'px-3 py-2 rounded-md text-sm font-medium'
+                                  'px-3 py-2 rounded-md text-sm font-medium active:bg-gray-800 active:text-white'
                                 )}
-                                aria-current={item.current ? 'page' : undefined}
+                                aria-current={(item.name != title) ? 'page' : undefined}
                               >
                                 {item.name}
                               </a>
@@ -191,12 +201,21 @@ export default function Layout( { children, title, anos, diretorias, gerencias }
                       {navigation.map((item) => (
                         <a
                           key={item.name}
-                          href={item.href}
+                          onClick={() => {  
+                            if (item.name != title) {
+                              setLoading(true)             
+                              const url: string | UrlObject = {
+                              pathname: `/${ item.href }/[areaID]/[ano]`,
+                              query: { areaID: areaID, ano: ano},
+                            }
+                              router.push(url, undefined, { shallow: true })
+                            }
+                          }}
                           className={classNames(
-                            item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-white hover:text-roxo_prati',
+                            (item.name == title) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-white hover:text-roxo_prati',
                             'block px-3 py-2 rounded-md text-base font-medium'
                           )}
-                          aria-current={item.current ? 'page' : undefined}
+                          aria-current={(item.name == title) ? 'page' : undefined}
                         >
                           {item.name}
                         </a>
@@ -243,9 +262,17 @@ export default function Layout( { children, title, anos, diretorias, gerencias }
                   <Dropdown title='gerência' value= { gerencia } superior= { superior } options= { gerencias }/>
                 </div>
                 <div className="px-4 py-4 sm:px-0">
-                  <div className="border-4 border-dashed border-gray-200 rounded-lg h-96">
-                    {children}
-                  </div>
+                  <>
+                  {loading? (
+                    <div className="h-100 w-100 flex justify-center items-center lg:mt-32">
+                      <div className="animate-spin rounded-full h-28 w-28 border-b-4 border-roxo_prati"></div>
+                    </div>
+                  ): (
+                    <div className="border-4 border-dashed border-gray-200 rounded-lg h-96">
+                      {children}
+                    </div>
+                  )}
+                  </>
                 </div>
               </div>
             </main>

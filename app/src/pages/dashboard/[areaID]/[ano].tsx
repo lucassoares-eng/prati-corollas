@@ -25,7 +25,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 			{ params: { areaID: '4', ano: '2020' } },
 			{ params: { areaID: '4', ano: '2021' } },
 			{ params: { areaID: '5', ano: '2020' } },
-			{ params: { areaID: '5', ano: '2021' } }
+			{ params: { areaID: '5', ano: '2021' } },
+			{ params: { areaID: '6', ano: '2020' } },
+			{ params: { areaID: '6', ano: '2021' } }
 		],
     fallback: true
   }
@@ -46,7 +48,8 @@ export const getStaticProps = async () => {
 	const gerencias : optionType[] = [
 		{ID: -1, name:'-todos-', superior: -1},
 		{ID: 4, name: 'Farmacotécnico', superior: 2},
-		{ID: 5, name: 'Manutenção Interna', superior: 3}
+		{ID: 5, name: 'Manutenção Interna', superior: 3},
+		{ID: 6, name: 'Projetos de Engenharia', superior: 3}
 	]
 
 	return {

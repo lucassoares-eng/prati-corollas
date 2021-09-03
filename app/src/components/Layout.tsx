@@ -72,9 +72,11 @@ export default function Layout( { children, title, anos, diretorias, gerencias }
   if (areaID == '1') {
     diretoria = '-todos-'
     gerencia = '-todos-'
+    superior = 1
   } else {
     try {
       diretoria = diretorias.find(el => el.ID == parseInt(areaID[0])).name
+      superior = 1
       gerencia = '-todos-'
       gerencias = gerencias.filter(el => el.superior == parseInt(areaID[0]) || el.superior == -1)
     } catch {
@@ -237,8 +239,8 @@ export default function Layout( { children, title, anos, diretorias, gerencias }
               <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div className="px-4 sm:px-0">
                   <Dropdown title='ano' value= { ano } options = { anos }/>
-                  <Dropdown title='diretoria' value= { diretoria } options = { diretorias }/>
-                  <Dropdown title='gerência' value= { gerencia } superior= { superior } options = { gerencias }/>
+                  <Dropdown title='diretoria' value= { diretoria } options= { diretorias }/>
+                  <Dropdown title='gerência' value= { gerencia } superior= { superior } options= { gerencias }/>
                 </div>
                 <div className="px-4 py-4 sm:px-0">
                   <div className="border-4 border-dashed border-gray-200 rounded-lg h-96">
@@ -269,8 +271,7 @@ export default function Layout( { children, title, anos, diretorias, gerencias }
                 </a>
               </div>
             </div>
-          )
-          }
+          )}
         </>
       ): (
         <div className="h-screen w-screen flex justify-center items-center">

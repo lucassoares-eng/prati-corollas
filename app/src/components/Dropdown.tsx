@@ -53,7 +53,7 @@ export default function Dropdown({title, value, superior, options}: dropdownType
                           pathname: router.pathname,
                           query: { areaID: areaID, ano: item.ID},
                         }
-                      } else if (superior) {
+                      } else if (item.ID == -1) {
                         url = {
                           pathname: router.pathname,
                           query: { areaID: superior, ano: ano},

@@ -29,7 +29,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 			{ params: { areaID: '6', ano: '2020' } },
 			{ params: { areaID: '6', ano: '2021' } }
 		],
-    fallback: true
+    fallback: false
   }
 }
 

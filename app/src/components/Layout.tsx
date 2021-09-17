@@ -74,19 +74,19 @@ export default function Layout( { children, title, anos, diretorias, gerencias }
     superior = 1
   } else {
     try {
-      diretoria = diretorias.find(el => el.ID == parseInt(areaID[0])).name
+      diretoria = diretorias.find(el => el.ID.toString() == areaID).name
       superior = 1
       gerencia = '-todos-'
-      gerencias = gerencias.filter(el => el.superior == parseInt(areaID[0]) || el.superior == -1)
+      gerencias = gerencias.filter(el => el.superior.toString() == areaID || el.superior == -1)
     } catch {
-      gerencia = gerencias.find( el => el.ID == parseInt(areaID[0])).name
-      superior = gerencias.find( el => el.ID == parseInt(areaID[0])).superior
+      gerencia = gerencias.find( el => el.ID.toString() == areaID).name
+      superior = gerencias.find( el => el.ID.toString() == areaID).superior
       diretoria = diretorias.find( el => el.ID == superior).name
       gerencias = gerencias.filter(el => el.superior == superior || el.superior == -1)
     }
   }
 
-  const isPermitted: boolean = user?.areaID == 1 || user?.areaID == parseInt(areaID[0]) || user?.areaID == superior
+  const isPermitted: boolean = user?.areaID == 1 || user?.areaID.toString() == areaID || user?.areaID == superior
 
   const [loading, setLoading] = useState(false)
 

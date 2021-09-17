@@ -53,15 +53,15 @@ export default function Login() {
         <div className={`back ${success? 'invisible' : 'visible'}`}>
           <div>
             <div className="mx-auto h-auto w-auto flex items-center justify-center" >
-              <Image src="/logo_prati_roxo.png" alt="logo" width="120" height="120" />
-              <div className="h-70px w-0.5 bg-roxo_prati"></div>
-              <div className="flex-column ml-1 text-roxo_prati font-bold text-left text-xl ">
+              <Image src="/logo_prati_roxo.png" alt="logo" width="90" height="81" />
+              <div className="h-70px w-0.5 ml-2 bg-roxo_prati"></div>
+              <div className="flex-column ml-2 text-roxo_prati font-bold text-left text-xl ">
                 <h2 className="-mb-2">Perdas</h2>
                 <h2 >em</h2>
                 <h2 className="-mt-2">Corollas</h2>
               </div>
             </div>
-            <h2 className="mt-4 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+            <h2 className="mt-4 text-center text-3xl font-extrabold text-gray-900">Acesse seu relatório</h2>
           </div>
           <form className="mt-8 space-y-6" onSubmit={handleSubmit(handleSignIn)}>
             <input type="hidden" name="remember" defaultValue="true" />
@@ -97,10 +97,10 @@ export default function Login() {
         </div>
         <div className={`front ${success? 'visible' : 'invisible'} position: absolute top-0 w-full h-full flex flex-col items-center justify-center`}>
           <div className= "animate-bounce">
-          <MailOpenIcon className="h-14 w-14 text-indigo-600" aria-hidden="true" />
+          <MailOpenIcon className="h-14 w-14 text-roxo_prati" aria-hidden="true" />
           </div>
-          <h2 className="mt-4 text-center text-3xl font-bold text-gray-900">Confirm your e-mail</h2>
-          <h3 className="mt-1 text-center text-xl text-gray-900">An email has been sent with a link</h3>
+          <h2 className="mt-4 text-center text-3xl font-bold text-gray-900">Confirme seu e-mail</h2>
+          <h3 className="mt-1 text-center text-xl text-gray-900">Um link foi enviado para o e-mail informado</h3>
         </div>
       </div>
       <>

@@ -22,7 +22,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	const res = await fetch(`${process.env.URL_API_CC}corollas-paths`)
 	const data = await res.json()
 
-	const paths = data.map(el => ({
+	const paths = data.map((el: { areaID: string; ano: string; }) => ({
     params: { areaID: el.areaID, ano: el.ano },
   }))
 
@@ -30,14 +30,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps = async ({ params }) => {
-	const anos : optionType[] = [
-		{ID:2021, name:'2021'},
-		{ID:2020, name:'2020'}
-	]
+	const res_anos = await fetch(`${process.env.URL_API_CC}corollas-anos`)
+	const anos = await res_anos.json()
 
-	const areas = await fetch(`${process.env.URL_API_CC}corollas-areas?areaID=${params.areaID}`)
-	const data = await areas.json()
-  const { diretorias, gerencias }: areasType = data
+	const res_areas = await fetch(`${process.env.URL_API_CC}corollas-areas?areaID=${params.areaID}&ano=${params.ano}`)
+	const areas = await res_areas.json()
+  const { diretorias, gerencias }: areasType = areas
 
 	return {
 		props:{
